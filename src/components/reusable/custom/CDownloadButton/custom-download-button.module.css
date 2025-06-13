@@ -1,0 +1,28 @@
+.downloadButton {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--flex-gap-sm);
+    /* border: 1px solid; */
+}
+
+.downloadButton label {
+    color: var(--color-grey);
+    font-weight: var(--font-weight-regular);
+}
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    column-gap: var(--flex-gap-sm);
+    font-size: var(--font-size-small);
+    border: 2px dashed var(--color-grey);
+    height: 70px !important;
+    border-radius: var(--border-radius-sm);
+    padding-inline: var(--spacing-sm);
+}
+
+@media (max-width: 767px) {
+    .button {
+        height: 50px !important;
+    }
+}

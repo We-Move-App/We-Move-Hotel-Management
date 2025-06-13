@@ -1,0 +1,22 @@
+.box{
+    max-width: 590px;
+    /* width: 'fit-content'; */
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    gap: var(--flex-gap-lg);
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+.imageWrapper{
+    max-width: 144px;
+    max-height: 144px;
+}
+
+.imageWrapper img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}

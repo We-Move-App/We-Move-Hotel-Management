@@ -1,0 +1,86 @@
+.tableContainer {
+    width: 100%;
+    /* margin: 20px 0; */
+    border-collapse: collapse;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: var(--flex-gap-md);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    /* border: 1px solid var(--color-primary-light); */
+    /* border-radius: 8px; */
+}
+
+.table thead tr {
+    width: 100%;
+    background-color: var(--color-primary-light);
+    color: var(--color-white);
+    font-weight: var(--font-weight-bold);
+}
+
+.table th,
+.table td {
+    padding: 12px 15px;
+    font-family: var(--font-secondary);
+    /* border-bottom: 1px solid #ddd; */
+    text-align: left;
+}
+
+.table th {
+    /* background-color: #f4f4f4; */
+    font-weight: var(--font-weight-bold);
+}
+
+/* .table tr:nth-of-type(even) {
+    background-color: #f9f9f9;
+} */
+
+/* .table tr:hover {
+    background-color: #f1f1f1;
+} */
+
+.table td {
+    font-weight: var(--font-weight-regular);
+}
+
+.table tbody tr:nth-of-type(even) {
+    background-color: var(--color-primary-light-type4);
+}
+
+.table tbody tr:nth-of-type(odd) {
+    background-color: var(--color-white);
+}
+
+.table tbody tr:last-child td {
+    padding-bottom: var(--spacing-sm);
+}
+
+.customRow {
+    background-color: var(--color-white);
+    color: var(--color-black);
+    font-weight: bold;
+}
+
+.customCell {
+    background-color: var(--color-white);
+    color: var(--color-primary-light-type4);
+    font-style: italic;
+}
+
+.large {
+    font-size: var(--font-size-small);
+}
+
+.medium {
+    font-size: var(--font-size-extra-small);
+}
+
+.small {
+    font-size: var(--font-size-double-extra-small);
+}

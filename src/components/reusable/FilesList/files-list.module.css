@@ -1,0 +1,89 @@
+.filesList {
+    display: flex;
+    flex-direction: column-reverse;
+    background-color: var(--color-light-grey);
+    padding: var(--spacing-sm);
+    row-gap: var(--flex-gap-sm);
+    border-radius: var(--border-radius-sm);
+    max-height: 354px;
+    overflow-y: auto;
+}
+
+.fileBox {
+    background-color: var(--color-white);
+    padding: var(--spacing-sm);
+    /* border-radius: var(--border-radius-sm); */
+    display: flex;
+    justify-content: space-between;
+}
+
+.fileInfo {
+    width: 65%;
+    display: flex;
+    align-items: flex-start;
+}
+
+.fileDetails {
+    width: 100%;
+    margin-left: 5px;
+    display: flex;
+    flex-direction: column;
+    /* row-gap: var(--flex-gap-sm); */
+    column-gap: var(--flex-gap-sm);
+}
+
+.fileIcon {
+    font-size: var(--font-size-medium);
+    color: var(--color-secondary-light);
+}
+
+.fileName {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    font-size: var(--font-size-small);
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.fileSize {
+    font-size: var(--font-size-double-extra-small);
+    color: var(--color-grey);
+}
+
+.fileActions {
+    width: fit-content;
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: var(--flex-gap-sm);
+}
+
+.progressContainer {
+    width: 100px;
+    height: 10px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-right: 10px;
+}
+
+.progressBar {
+    height: 100%;
+    background-color: #4a90e2;
+    transition: width 0.3s ease;
+}
+
+.deleteBtn {
+    font-size: var(--font-size-large);
+    color: var(--color-primary-light);
+}
+
+.error {
+    font-size: var(--font-size-error-message);
+    color: red;
+    /* position: absolute; */
+    /* bottom: -20px; */
+    /* margin-left: 6px; */
+}

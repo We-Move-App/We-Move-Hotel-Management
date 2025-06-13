@@ -1,0 +1,85 @@
+.formContainer {
+    width: min(100%, 656px);
+    /* max-width: 656px; */
+    /* height: 100%; */
+    margin: auto;
+    padding: 20px;
+    background-color: var(--color-white);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    gap: var(--flex-gap-lg);
+}
+
+.form {
+    max-width: 616px;
+    width: 100%;
+    /* padding: 0 10.5px; */
+    display: flex;
+    flex-direction: column;
+    gap: var(--flex-gap-lg);
+}
+
+.formFieldsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flex-gap-md);
+}
+
+.formSubmitBtn {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flex-gap-md);
+}
+
+.formBottomNoteText {
+    color: var(--color-grey);
+    font-size: var(--font-size-small);
+    text-align: center;
+
+    /* Nested css for span tag */
+    & span {
+        color: var(--color-primary-light);
+        text-decoration: underline;
+    }
+}
+
+.skipBox {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flex-gap-sm);
+    align-items: center;
+}
+
+.skipBox p:nth-of-type(1) {
+    font-size: var(--font-size-extra-small);
+}
+
+.skipBox p:nth-of-type(2) {
+    color: #24A0ED;
+    font-size: var(--font-size-small);
+    text-decoration: underline;
+}
+
+.modal {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--flex-gap-sm);
+    width: fit-content;
+}
+
+.text {
+    width: 65%;
+    /* margin: auto; */
+    align-self: center;
+    text-align: center;
+}
+
+.modalButtonBox {
+    width: 100%;
+    display: flex;
+    column-gap: var(--flex-gap-sm);
+}

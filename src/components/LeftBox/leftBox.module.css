@@ -1,0 +1,28 @@
+.leftBox{
+    background-color: var(--color-primary-light);
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+}
+
+.whiteCircle{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 300px;
+    max-height: 300px;
+    height: 300px;
+    width: 50%;
+    background-color: var(--color-white);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media (max-width: 1023px){
+    .leftBox{
+        display: none;
+    }
+}

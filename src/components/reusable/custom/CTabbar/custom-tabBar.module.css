@@ -1,0 +1,38 @@
+/* Base styles for the tabs container */
+.tabsBox {
+    width: 100%;
+    display: flex;
+    justify-content: left;
+    gap: var(--flex-gap-md);
+}
+
+/* Base tab styles */
+.tab {
+    cursor: pointer;
+    padding: 10px;
+    font-size: var(--font-size-small);
+    border: none;
+    border: 1px solid var(--color-primary-light);
+    text-transform: capitalize;
+    color: var(--color-primary-light);
+}
+
+/* Active tab for the default variant */
+.active {
+    background-color: var(--color-primary-light);
+    color: var(--color-white);
+}
+
+/* Variant for underline (default state) */
+.underlineTab {
+    background-color: transparent; /* No background color */
+    color: var(--color-black); /* Black text */
+    border: none;
+}
+
+/* Active tab with underline (when active) */
+.activeUnderline {
+    color: var(--color-primary-light); /* Primary color text */
+    background-color: var(--color-white); /* White background */
+    border-bottom: 2px solid var(--color-primary-light); /* Underline */
+}

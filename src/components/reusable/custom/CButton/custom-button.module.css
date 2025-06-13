@@ -1,0 +1,39 @@
+.customButton {
+    width: 100%;
+    border-radius: var(--border-radius-sm);
+    overflow: hidden;
+    cursor: pointer;
+    /* min-height: 70px; */
+}
+
+.disabled {
+    background-color: var(--color-grey-type2) !important;
+}
+
+.btn {
+    display: flex;
+    gap: var(--flex-gap-xs);
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    width: 100%;
+    /* min-width: 209px; */
+    padding: 0 var(--spacing-lg);
+}
+
+
+.large {
+    height: 70px;
+}
+
+.medium {
+    height: 64px;
+}
+
+.small {
+    height: 50px;
+}
+
+/* @media (max-width: 768px) {
+ 
+} */

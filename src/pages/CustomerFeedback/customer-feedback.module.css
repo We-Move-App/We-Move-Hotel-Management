@@ -1,0 +1,34 @@
+.headerBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--flex-gap-lg);
+}
+
+.feedbackGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--flex-gap-md);
+    width: 100%;
+}
+
+.contentBoxWrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--flex-gap-lg);
+}
+
+.customerFeedbackBox {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+}
+
+
+.paginationWrapper {
+    display: flex;
+    justify-content: end;
+    gap: var(--flex-gap-md);
+}

@@ -1,0 +1,156 @@
+import React, { useState, useEffect } from 'react';
+import styles from './custom-input.module.css';
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; // For eye icon (you can use any icon library)
+import { VscUnverified, VscVerifiedFilled } from "react-icons/vsc";
+
+const CustomInput = ({
+  label, name,
+  type = 'text', placeholder = '', takeSpecialChar = false, alphaNumeric = false,
+  value, onChange, isDisabled = false,
+  required = false,
+  // pattern,
+  error, touched, onBlur,
+  ...props
+}) => {
+  const [inputValue, setInputValue] = useState(value || ''); // Manage input state locally
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false); // Track password visibility
+  const { verifyStatus, handleVerifyStatus } = props;
+
+  // useEffect(() => {
+  //   // Sync local input state with the value prop if it changes from parent
+  //   setInputValue(value);
+  // }, [value]);
+
+  const handlePasswordToggle = () => {
+    setIsPasswordVisible((prevState) => !prevState); // Toggle password visibility
+  };
+
+  // Handler to prevent first space and handle input change
+  const handleInputChange = (e) => {
+    let newValue = e.target.value;
+
+    // Check if the first character is a space and remove it
+    if (newValue[0] === ' ') {
+      newValue = newValue.slice(1);
+    }
+
+    // // If type is 'text' and takeSpecialChar is false, restrict to only alphabets
+    // if (type === 'text' && !takeSpecialChar) {
+    //   newValue = newValue.replace(/[^a-zA-Z\s]/g, ''); // Allow only alphabets and spaces
+    // }
+
+    // // If takeSpecialChar is false, restrict special characters
+    // if (!takeSpecialChar) {
+    //   newValue = newValue.replace(/[^a-zA-Z0-9\s]/g, ''); // Allow only alphabets, numbers, and spaces
+    // }
+
+    if (type === 'text') {
+      if (takeSpecialChar && alphaNumeric) {
+        // Allow alphabets, numbers, common special characters
+        newValue = newValue.replace(/[^A-Za-z0-9\s\-,.()/#@!$&]/g, '');
+      }
+      else if (alphaNumeric) {
+        // Allow only alphabets and numbers
+        newValue = newValue.replace(/[^a-zA-Z0-9\s]/g, '');
+      } else if (!takeSpecialChar) {
+        // Only alphabets (and space)
+        newValue = newValue.replace(/[^a-zA-Z\s]/g, '');
+      }
+    }
+
+    // Handle specific input types
+    if (type === 'email') {
+      newValue = newValue.replace(/\s/g, ''); // Remove all spaces for email
+    }
+    else if (type === 'tel' || type === 'number') {
+      newValue = newValue.replace(/\D/g, ''); // Remove non-digit characters
+    }
+    console.log(newValue)
+    // Set the local state with the cleaned-up value
+    setInputValue(newValue);
+
+    // Trigger the onChange prop to pass the updated value to parent component
+    onChange({
+      target: {
+        name: name,
+        value: newValue,
+      }
+    });
+  };
+
+  // Prevent the scroll value change on number inputs
+  const handleWheel = (e) => {
+    if (type === 'number') {
+      e.preventDefault(); // Prevent scroll
+    }
+  };
+
+
+  useEffect(() => {
+    if (type === 'number') {
+      const inputElement = document.getElementById(name);
+      if (inputElement) {
+        inputElement.addEventListener('wheel', handleWheel, { passive: false }); // Add non-passive listener
+      }
+
+      // Clean up the event listener when the component unmounts
+      return () => {
+        if (inputElement) {
+          inputElement.removeEventListener('wheel', handleWheel);
+        }
+      };
+    }
+  }, [type, name]); // Only add the listener if the input type is 'number'
+
+
+  return (
+    <div className={styles.customInput} style={props.boxStyle || {}}>
+      <label htmlFor={name}>
+        <p>
+          {label} {required ? <span style={{ color: 'red' }}>*</span> : <span style={{ fontSize: '14px' }}>(optional)</span>}
+        </p>
+        {
+          verifyStatus === false && <p onClick={handleVerifyStatus}> <VscUnverified className={styles.notVerified} />Verify Now</p>
+        }
+        {
+          verifyStatus && <p> <VscVerifiedFilled className={styles.verified} />Verified</p>
+        }
+      </label>
+      {/* Wrap the input and password toggle in a div */}
+      <div className={`${styles.inputWrapper} ${error && touched && styles.inputWrapperError}`}>
+        <input
+          id={name}
+          name={name}
+          required={required}
+          placeholder={placeholder}
+          disabled={isDisabled}
+          value={inputValue} // Bind local state to the input value
+          type={type === 'password' && isPasswordVisible ? 'string' : type} // Toggle password visibility
+          onChange={handleInputChange}
+          onBlur={onBlur}
+          className={`${isDisabled && styles.disabled}`}
+          // onWheel={handleWheel}
+          // pattern={pattern} // Apply custom pattern if provided
+          style={props.style}
+        />
+
+        {type === 'password' && (
+          <span
+            type="button"
+            onClick={handlePasswordToggle}
+            className={styles.passwordToggle}
+            aria-label="Toggle password visibility"
+          >
+            {!isPasswordVisible ? <FaEyeSlash /> : <FaEye />} {/* Show/hide icon */}
+          </span>
+        )}
+      </div>
+
+      {/* {<div className={`${styles.error} `}>{error} error</div>} */}
+      {touched && error && <div className={`${styles.error} `}>{error}</div>}
+      {/* {touched && error && <div className="error-message">{error}</div>} */}
+    </div>
+  );
+};
+
+export default CustomInput;

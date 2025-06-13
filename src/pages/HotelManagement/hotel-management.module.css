@@ -1,0 +1,160 @@
+.hotelManagement {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--flex-gap-lg);
+    width: 100%;
+    /* height: 100%; */
+}
+
+.headerBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--flex-gap-lg);
+}
+
+.headerBox h1 {
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-medium);
+}
+
+.textBold {
+    font-weight: var(--font-weight-bold);
+}
+
+.contentBox {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--flex-gap-lg);
+}
+
+.contentDetailsBox {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--flex-gap-md);
+}
+
+.detailsBoxWrapper {
+    width: 100%;
+    display: flex;
+    /* gap: var(--flex-gap-lg); */
+    justify-content: space-between;
+    row-gap: var(--flex-gap-lg);
+    flex-wrap: wrap;
+}
+
+.detailsBox {
+    width: 23%;
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--flex-gap-sm);
+    padding: var(--spacing-md);
+    background-color: var(--color-light-grey);
+    border-radius: var(--border-radius-sm);
+}
+
+.detailsBoxHeading {
+    font-size: var(--font-size-extra-small);
+    /* font-weight: var(--font-weight-bold); */
+}
+
+.detailsBox>ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--flex-gap-sm);
+}
+
+.detailsBoxKey {
+    font-weight: var(--font-weight-regular);
+    color: var(--color-grey);
+}
+
+.detailsBoxKey .textBold {
+    color: var(--color-black);
+}
+
+.amenitiesBox {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: var(--spacing-lg);
+
+}
+
+.amenityItem {
+    display: inline-flex;
+    align-items: center;
+    column-gap: var(--flex-gap-sm);
+    font-size: var(--font-size-double-extra-small);
+    font-weight: var(--font-weight-bold);
+}
+
+.gridLayout {
+    width: 98%;
+    padding-right: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));
+    grid-auto-rows: 202px;
+    gap: var(--flex-gap-sm);
+    height: 405px;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+}
+
+.gridItem {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* border: 1px solid blue; */
+}
+
+.gridItem img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+ul>li {
+    line-height: 150%;
+}
+
+.featured {
+    grid-row: span 2;
+}
+
+/* Every even .featured is placed on the left */
+.gridItem:nth-of-type(6n+1) .featured {
+    grid-column: 1 / span 1;
+    /* Left side */
+}
+
+/* Every odd .featured is placed on the right */
+.gridItem:nth-of-type(6n+1) .featured-right {
+    grid-column: 3 / span 1;
+    /* Right side */
+}
+
+/* Responsive styles */
+
+/* Tablet screens (768px to 1024px): display two items per row */
+
+@media (max-width: 1300px) {
+    .detailsBox {
+        width: 48%;
+    }
+}
+
+@media (max-width: 1024px) {
+    /* .detailsBox {
+        width: 48%;
+    } */
+}
+
+/* Mobile screens (up to 768px): display one item per row */
+@media (max-width: 768px) {
+    .detailsBox {
+        width: 100%;
+        /* One item per row */
+    }
+}

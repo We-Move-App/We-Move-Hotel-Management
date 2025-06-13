@@ -1,0 +1,27 @@
+.dashboardLayout {
+    width: 100%;
+    height: 100vh;
+    background-color: var(--color-light-grey);
+}
+
+.container {
+    display: flex;
+    gap: var(--flex-gap-md);
+    width: 100%;
+    height: calc(100vh - 123px);
+    overflow: hidden;
+}
+
+.contentBox {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flex-gap-lg);
+    /* background-color: var(--color-light-grey); */
+    background-color: var(--color-white);
+    /* margin-left: 36px; */
+    width: 100%;
+    height: 100%;
+    padding: 60px 20px;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+}

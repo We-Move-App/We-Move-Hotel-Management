@@ -1,0 +1,12 @@
+.tableHeaderBox {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-grey-type1);
+}
+
+.title {
+    font-size: var(--font-size-extra-small);
+    font-weight: var(--font-weight-bold);
+}

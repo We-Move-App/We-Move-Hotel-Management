@@ -1,0 +1,210 @@
+.roomManagement {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--flex-gap-lg);
+    width: 100%;
+    height: 100%;
+}
+
+.headerBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--flex-gap-md);
+}
+
+.headerBox h1 {
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-medium);
+}
+
+.datePickerWrapper {
+    height: '48px' !important;
+}
+
+.gridBoxWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flex-gap-md);
+}
+
+.gridBoxWrapper>p {
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-bold);
+}
+
+.roomDetailsBox {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flex-gap-md);
+    width: 100%;
+    background-color: var(--color-white);
+    /* padding: var(--spacing-md); */
+    border-radius: var(--border-radius-sm);
+}
+
+.roomDetailsBox>p {
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-bold);
+}
+
+.roomDetailsHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--flex-gap-md);
+}
+
+.roomGridWrapper {
+    width: 100%;
+    overflow: hidden;
+}
+
+.roomGrid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-auto-columns: 1fr;
+    row-gap: var(--flex-gap-md);
+    column-gap: var(--flex-gap-sm);
+    width: 100%;
+    /* overflow: hidden; */
+    /* max-width: calc(129px * 8); */
+    min-height: 60%;
+    overflow: auto;
+}
+
+.room {
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--flex-gap-sm);
+    text-align: end;
+    max-width: 129px;
+    cursor: pointer;
+}
+
+.statusTrue {
+    width: 100%;
+    height: 60px;
+    background-color: var(--color-primary-light);
+    color: var(--color-white);
+}
+
+.statusFalse {
+    width: 100%;
+    height: 60px;
+    background-color: var(--color-grey-type2);
+    color: var(--color-white);
+}
+
+.typeIdentifierBox {
+    display: flex;
+    /* flex-direction: column; */
+    column-gap: var(--flex-gap-sm);
+}
+
+.reserved,
+.available {
+    display: flex;
+    align-items: center;
+    column-gap: var(--spacing-xs);
+}
+
+.reserved>span,
+.available>span {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 5px;
+}
+
+.available>span {
+    background-color: var(--color-primary-light);
+}
+
+.reserved>span {
+    background-color: var(--color-grey-type2);
+}
+
+.dataNotFound {
+    width: 100%;
+    border: 1px solid;
+    font-size: var(--font-size-small);
+}
+
+/* .reserved > span{
+    background-color: var(--color-primary-light);
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 5px;
+} */
+
+/* .modalContentBox {
+    
+} */
+
+.modalOneBox {
+    width: 500px;
+    margin-inline: auto;
+    margin-bottom: 50px;
+    /* margin-inline: auto; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--flex-gap-md);
+    /* background-color: var(--color-primary-light); */
+    /* padding: var(--spacing-md); */
+}
+
+.modalTwoBox {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: var(--flex-gap-md);
+    margin-top: -40px;
+    padding: 0 20px 40px 20px;
+}
+
+.modalTwoBox>p {
+    font-size: var(--font-size-medium);
+    font-weight: var(--font-weight-bold);
+    text-align: center;
+    color: var(--color-primary-light);
+}
+
+.modalTwoBox table {
+    border-collapse: collapse;
+    width: 100%;
+    /* display: flex;
+    flex-direction: column;
+    justify-content: center; */
+}
+
+
+
+.modalTwoBox tr th {
+    font-weight: var(--font-weight-bold);
+}
+
+.modalTwoBox tr th,
+.modalTwoBox tr td {
+    padding: 10px;
+    text-align: left;
+    font-size: var(--font-size-small);
+}
+
+.checkoutButton {
+    width: fit-content;
+    align-self: center;
+}
+
+.error {
+    margin-inline: auto;
+    width: 60%;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: var(--font-size-extra-small);
+    color: red;
+    text-align: center;
+}

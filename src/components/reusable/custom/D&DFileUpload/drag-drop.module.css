@@ -1,0 +1,184 @@
+.fileUpload {
+    width: 100%;
+    /* max-width: 190px; */
+    height: 193px;
+    margin: 0 auto;
+    border-radius: var(--border-radius-xl);
+    background-color: var(--color-light-grey);
+}
+
+.uploadArea {
+    height: 100%;
+    border: 2px dashed #ccc;
+    border-radius: var(--border-radius-xl);
+    padding: var(--spacing-md);
+    position: relative;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.uploadAreaDragging {
+    border-color: #2196f3;
+    background-color: #e3f2fd;
+}
+
+.uploadAreaComplete {
+    border-color: #4caf50;
+    background-color: #e8f5e9;
+}
+
+.uploadPlaceholder {
+    text-align: center;
+}
+
+.uploadIcon {
+    width: 42px;
+    height: 42px;
+    margin: 0 auto 16px;
+    color: #666;
+}
+
+.uploadText {
+    /* margin: 8px 0; */
+    color: var(--color-grey);
+    font-size: var(--font-size-extra-small);
+}
+
+.browseButton {
+    color: #2196f3;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font: inherit;
+    text-decoration: underline;
+}
+
+.browseButton:hover {
+    color: #1976d2;
+}
+
+.fileInput {
+    display: none;
+}
+
+.fileInfo {
+    margin-top: var(--spacing-sm);
+    /* margin-top: 16px; */
+}
+
+.fileHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--flex-gap-sm);
+    /* border: 1px solid; */
+}
+
+.fileHeaderBox{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.fileIcon {
+    width: 32px;
+    height: 32px;
+    color: var(--color-grey);
+}
+
+.fileName {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-black);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.resetButton {
+    background: none;
+    border: none;
+    padding: 2px;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.resetButton:hover {
+    background-color: #0e0e0e;
+    /* background-color: #f5f5f5; */
+}
+
+.progressSection {
+    margin-top: 16px;
+}
+
+.progressHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.statusBadge {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 12px;
+    text-transform: uppercase;
+}
+
+.statusBadgeUploading {
+    background-color: #e3f2fd;
+    color: #2196f3;
+}
+
+.statusBadgeComplete {
+    background-color: #e8f5e9;
+    color: #4caf50;
+}
+
+.progressValue {
+    font-size: 12px;
+    font-weight: 600;
+    color: #666;
+}
+
+.progressBarContainer {
+    width: 100%;
+    height: 8px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progressBar {
+    height: 100%;
+    background-color: #2196f3;
+    transition: width 0.5s ease;
+}
+
+.progressBarComplete {
+    background-color: #4caf50;
+}
+
+.completeMessage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4caf50;
+    margin-top: 16px;
+    gap: 4px;
+    font-size: 14px;
+}
+
+.completeIcon {
+    width: 20px;
+    height: 20px;
+}

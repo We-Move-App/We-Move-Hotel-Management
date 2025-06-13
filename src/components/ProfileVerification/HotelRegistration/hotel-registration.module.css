@@ -1,0 +1,50 @@
+.loaderParent {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.formContainer {
+    width: min(100%, 656px);
+    /* max-width: 656px; */
+    /* height: 100%; */
+    padding: 20px;
+    background-color: var(--color-white);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+
+    gap: var(--flex-gap-lg);
+}
+
+.tabsBox {
+    width: 100%;
+    display: flex;
+    justify-content: left;
+    gap: var(--flex-gap-md);
+}
+
+.tab {
+    cursor: pointer;
+    padding: 10px;
+    border: none;
+    border: 1px solid var(--color-primary-light);
+    text-transform: capitalize;
+    /* background-color: var(--color-light-grey); */
+    color: var(--color-primary-light);
+}
+
+.active {
+    background-color: var(--color-primary-light);
+    color: var(--color-white);
+}
+
+#form-parent {
+    width: 100%;
+
+}
