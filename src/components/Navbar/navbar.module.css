@@ -5,7 +5,8 @@
     background-color: var(--color-primary-light-type3);
     justify-content: space-between;
     align-items: center;
-    height: 123px;
+    /* height: 123px; */
+    height: calc(75px + (123 - 75) * ((100vw - 576px) / (1920 - 576)));
     padding: 0 30px;
 }
 
@@ -26,10 +27,12 @@
 }
 
 .logoBox>span {
-    font-size: var(--font-size-medium);
+    /* font-size: var(--font-size-medium); */
+     font-size: clamp(16px, 1.5vw, 24px);
     color: var(--color-white);
     font-weight: var(--font-weight-bold);
 }
+
 
 .navProfileSection {
     display: flex;

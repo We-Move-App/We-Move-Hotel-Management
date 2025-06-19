@@ -206,9 +206,9 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 /* Hide input arrows for Firefox */
-input[type="number"] {
+/* input[type="number"] {
   -moz-appearance: textfield;
-}
+} */
 
 
 

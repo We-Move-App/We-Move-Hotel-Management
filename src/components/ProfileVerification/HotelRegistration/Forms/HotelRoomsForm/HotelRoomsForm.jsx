@@ -51,9 +51,9 @@ const roomValidationSchema = Yup.object().shape({
       return count >= 3;
     }),
   // .min(1, 'At least one file is required'),
-  amenities: Yup.array()
-    .of(Yup.mixed())
-    .min(1, 'At least one amenity must be selected'),
+  // amenities: Yup.array()
+  //   .of(Yup.mixed())
+  //   .min(1, 'At least one amenity must be selected'),
 });
 
 const HotelRoomsValidationSchema = Yup.object().shape({
@@ -339,7 +339,7 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
 
               <div className={styles.amenitiesContainer}>
                 <div className={styles.dragDropLabelBox}>
-                  <CustomLabel labelText={"Select Amenities"} htmlFor="label" required={true} />
+                  <CustomLabel labelText={"Select Amenities"} htmlFor="label" required={false} />
                   {/* <span><p>Add more</p></span> */}
                 </div>
 
@@ -425,7 +425,7 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
 
               <div className={styles.amenitiesContainer}>
                 <div className={styles.dragDropLabelBox}>
-                  <CustomLabel labelText={"Select Amenities"} htmlFor="label" required={true} />
+                  <CustomLabel labelText={"Select Amenities"} htmlFor="label" required={false} />
                   {/* <span><p>Add more</p></span> */}
                 </div>
 

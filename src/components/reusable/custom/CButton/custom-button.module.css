@@ -18,7 +18,12 @@
     background: transparent;
     width: 100%;
     /* min-width: 209px; */
-    padding: 0 var(--spacing-lg);
+    /* padding: 0 var(--spacing-lg); */
+    padding: var( --spacing-xs) var(--spacing-sm);
+    max-width: clamp(150px, 100%, 264px);
+    min-width: 120px;
+    width: fit-content;
+    height: 50px;
 }
 
 
@@ -26,9 +31,9 @@
     height: 70px;
 }
 
-.medium {
+/* .medium {
     height: 64px;
-}
+} */
 
 .small {
     height: 50px;

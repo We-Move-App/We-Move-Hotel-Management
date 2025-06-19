@@ -190,7 +190,7 @@ const BookingManagement = () => {
             <div className={styles.tableBoxWrapper} >
 
                 <CustomTable
-                    fontSize='medium'
+                    // fontSize='medium'
                     columns={[
                         { Header: 'Booking ID', accessor: 'bookingId' },
                         { Header: 'Room Type', accessor: 'roomType' },

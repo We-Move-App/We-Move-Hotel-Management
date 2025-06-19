@@ -33,12 +33,12 @@ const HotelPolicyValidationSchema = Yup.object().shape({
         name: Yup.string().required(),
         checked: Yup.boolean(),
       })
-    )
-    .test(
-      'at-least-one-checked',
-      'At least one amenity must be checked',
-      (amenities) => amenities.some((amenity) => amenity.checked)
     ),
+    // .test(
+    //   'at-least-one-checked',
+    //   'At least one amenity must be checked',
+    //   (amenities) => amenities.some((amenity) => amenity.checked)
+    // ),
   files: Yup.array()
     .of(
       Yup.mixed()
@@ -216,7 +216,7 @@ const HotelPolicyForm = ({ initialValues, onPrev, onSubmit }) => {
 
         <div className={styles.amenitiesContainer}>
           <div className={styles.dragDropLabelBox}>
-            <CustomLabel labelText={"Select Amenities"} htmlFor="label" required={true} />
+            <CustomLabel labelText={"Select Amenities"} htmlFor="label" required={false} />
             {/* <span><p>Add more</p></span> */}
           </div>
 

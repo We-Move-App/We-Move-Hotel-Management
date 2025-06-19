@@ -23,7 +23,7 @@ const Dashboard = () => {
           <CustomButton
             buttonText={"Export"}
             style={{ width:"100%",  }}
-            buttonSize={'medium'}
+            // buttonSize={'medium'}
             icon={<SquareArrowOutUpRight style={{ color: 'white' }} />}
             // onClick={()=> goTo('/dashboard/profile')}
           // icon={<img src={images.exportIcon}  alt="export" />}
