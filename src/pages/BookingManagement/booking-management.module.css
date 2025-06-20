@@ -108,11 +108,9 @@
         align-items: flex-start;
     }
 
-    /* .headerBoxActionsBox {
+    .headerBoxActionsBox {
         width: 100%;
-        display: flex;
-        justify-content: flex-start;
-    } */
+    }
 
     .searchbarWrapper,
     .headerBoxActionsBox,

@@ -1,0 +1,51 @@
+.uploadBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.customUpload {
+  justify-content: space-between;
+}
+
+.uploadBlock p {
+  color: #5a5a5a;
+}
+
+.customUpload p {
+  font-size: clamp(20px, 1.2vw, 24px);
+}
+
+.uploadWrapper {
+  width: 215px;
+  height: 70px;
+  border: 2px dashed #e5e4e4;
+  background-color: #f6f6f6;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  position: relative;
+}
+
+.uploadWrapper:hover {
+  background-color: #c2c2c250;
+}
+
+.contentUploadBlock {
+  width: 100px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  line-clamp: 1;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.uploadBlock .contentUploadBlock p {
+  font-size: 1rem !important;
+}

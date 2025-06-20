@@ -140,10 +140,10 @@
 }
 
 @media (max-width: 1600px) {
-    .contentContainer {
+    /* .contentContainer {
         flex-direction: column;
 
-    }
+    } */
 
     .doubleFormFieldBox {
         justify-content: center;

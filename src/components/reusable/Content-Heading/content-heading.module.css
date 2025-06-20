@@ -1,0 +1,83 @@
+.contentHeading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-size);
+  margin-bottom: clamp(15px, 1.5vw, 30px);
+}
+
+.mainHeadingBlock {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.belowHeadingComponent {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.headingContainer h1 {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-xs);
+}
+
+.breadcrumbs {
+  font-weight: 300;
+}
+
+.subHeadingContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--gap-md);
+}
+
+.rightComponent button {
+  border: 1px solid #008533;
+  border-radius: 10px;
+  background-color: #fff;
+  color: #2d6a4f;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-xs);
+  position: relative;
+}
+
+.rightComponent button:hover {
+  border: none;
+  background-color: #2d6a4f;
+  color: #fff;
+  transition: background 0.3s ease;
+}
+
+@media screen and (max-width: 1600px) {
+  .belowHeadingComponent {
+    max-width: 100%;
+    width: auto;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .belowHeadingComponent {
+    max-width: 100%;
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .subHeadingContainer {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: var(--gap-md);
+  }
+  .mainHeadingBlock {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-md);
+    align-items: flex-start;
+  }
+}

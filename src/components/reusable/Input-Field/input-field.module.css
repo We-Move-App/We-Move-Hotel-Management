@@ -1,0 +1,51 @@
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.inputContainer {
+  flex: 1;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-md);
+  min-height: auto;
+}
+
+.inputContainerRow {
+  display: grid;
+  grid-template-columns: 2fr 6fr;
+  gap: var(--gap-md);
+  align-items: center;
+}
+
+.input {
+  height: clamp(50px, 4vw, 68px);
+  min-height: 50px;
+  max-height: 68px;
+  font-size: clamp(14px, 1vw, 16px);
+  padding: 0 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 100%;
+  outline: 0;
+  box-sizing: border-box;
+}
+
+.inputContainerRow .input {
+  background-color: #2d6a4f1a;
+  border: none;
+}
+
+.inputContainerRow label {
+  color: #000;
+}

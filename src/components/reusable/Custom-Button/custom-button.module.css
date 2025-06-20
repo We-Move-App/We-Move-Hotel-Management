@@ -1,0 +1,52 @@
+.button {
+  max-width: clamp(150px, 100%, 264px);
+  min-width: 120px;
+  width: fit-content;
+  height: 50px;
+  background-color: #2f604a;
+  color: white;
+  font-size: clamp(18px, 1.2vw, 24px);
+  font-family: var(--font-primary);
+  font-weight: 500;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--gap-sm);
+  padding: 10px 16px;
+  white-space: nowrap;
+}
+
+.button:hover {
+  background-color: #2d6a4f;
+  color: #fff;
+}
+
+.button .icon {
+  flex-shrink: 0;
+  font-size: clamp(20px, 2vw, 32px);
+}
+
+@media (max-width: 768px) {
+  .button {
+    width: 100%;
+    max-width: none;
+    font-size: 16px;
+    height: 45px;
+  }
+}
+
+@media (max-width: 480px) {
+  .button {
+    font-size: 14px;
+    height: 40px;
+    padding: 8px 12px;
+  }
+
+  .icon {
+    font-size: 20px;
+  }
+}
