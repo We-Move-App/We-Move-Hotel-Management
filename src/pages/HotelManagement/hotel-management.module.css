@@ -149,6 +149,14 @@ ul > li {
     grid-template-columns: 100%;
     row-gap: var(--spacing-sm);
   }
+  .detailsBoxWrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--flex-gap-sm);
+  }
+  .detailsBox {
+    width: 100%;
+  }
 }
 
 /* Tablet screens (768px to 1024px): display two items per row */
