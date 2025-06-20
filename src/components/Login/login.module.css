@@ -1,72 +1,76 @@
-
 .formContainer {
-    width: min(100%, 656px);
-    /* max-width: 656px; */
-    /* height: 100%; */
-    /* overflow-y: auto; */
-    margin: auto auto;
-    padding: 20px;
-    background-color: var(--color-white);
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    gap: var(--flex-gap-lg);
+  width: min(100%, 656px);
+  margin: auto auto;
+  padding: clamp(20px, 5vw, 50px);
+  /* background-color: var(--color-white); */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* gap: var(--flex-gap-lg); */
 }
 
 .form {
-    max-width: 616px;
-    width: 100%;
-    position: relative;
-    /* padding: 0 10.5px; */
-    display: flex;
-    flex-direction: column;
-    gap: var(--flex-gap-lg);
+  max-width: 616px;
+  width: 100%;
+  position: relative;
+  /* padding: 0 10.5px; */
+  display: flex;
+  flex-direction: column;
+  /* gap: var(--flex-gap-lg); */
 }
 
 .formFieldsContainer {
-    display: flex;
-    flex-direction: column;
-    gap: var(--flex-gap-md);
+  display: flex;
+  flex-direction: column;
+  /* gap: var(--flex-gap-md); */
+  gap: clamp(20px, 2vw, 30px);
+  padding: clamp(10px, 2vw, 20px) 0 clamp(20px, 2vw, 30px);
 }
 
-.forgotPasswordBox{
-    width: 100%;
-    display: inline-flex;
-    justify-content: flex-end;
-    /* border: 1px solid; */
-    margin-top: -16px;
-    /* margin-top: -15px; */
-    font-size: var(--font-size-small);
-    font-weight: var(--font-weight-regular);
+.forgotPasswordBox {
+  width: 100%;
+  display: inline-flex;
+  justify-content: flex-end;
+  /* border: 1px solid; */
+  /* margin-top: -16px; */
+  /* margin-top: -15px; */
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-regular);
+}
+
+.forgotPasswordBox a {
+  color: #447dc8;
+  font-size: clamp(16px, 1.5vw, 24px);
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .formSubmitBtn {
-    display: flex;
-    flex-direction: column;
-    gap: var(--flex-gap-md);
+  display: flex;
+  flex-direction: column;
+  /* gap: var(--flex-gap-md); */
+  gap: clamp(20px, 1vw, 25px);
 }
 
 .formBottomNoteText {
-    color: var(--color-grey);
-    font-size: var(--font-size-small);
-    text-align: center;
+  color: var(--color-grey);
+  font-size: var(--font-size-small);
+  text-align: center;
 
-    /* Nested css for span tag */
-    & span {
-        color: var(--color-primary-light);
-        text-decoration: underline;
-    }
+  /* Nested css for span tag */
+  & span {
+    color: var(--color-primary-light);
+    text-decoration: underline;
+  }
 }
 
 .error {
-    width: 100%;
-    font-size: var(--font-size-small);
-    color: red;
-    position: absolute;
-    bottom: -40px;
-    text-align: center;
-    /* margin-left: 6px; */
+  width: 100%;
+  font-size: var(--font-size-small);
+  color: red;
+  position: absolute;
+  bottom: -40px;
+  text-align: center;
+  /* margin-left: 6px; */
 }

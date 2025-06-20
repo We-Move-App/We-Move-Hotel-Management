@@ -1,104 +1,101 @@
 /* Navbar start */
 .nav {
-    display: flex;
-    width: 100%;
-    background-color: var(--color-primary-light-type3);
-    justify-content: space-between;
-    align-items: center;
-    /* height: 123px; */
-    height: calc(75px + (123 - 75) * ((100vw - 576px) / (1920 - 576)));
-    padding: 0 30px;
+  display: flex;
+  width: 100%;
+  background-color: var(--color-primary-light-type3);
+  justify-content: space-between;
+  align-items: center;
+  /* height: 123px; */
+  height: calc(75px + (123 - 75) * ((100vw - 576px) / (1920 - 576)));
+  padding: 0 30px;
 }
 
 .menuIconBox {
-    display: none;
+  display: none;
 }
 
 .logoWrapper {
-    display: flex;
-    align-items: center;
-    gap: 0 15px;
+  display: flex;
+  align-items: center;
+  gap: 0 15px;
 }
 
 .logoBox {
-    display: flex;
-    align-items: center;
-    gap: var(--flex-gap-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--flex-gap-sm);
 }
 
-.logoBox>span {
-    /* font-size: var(--font-size-medium); */
-     font-size: clamp(16px, 1.5vw, 24px);
-    color: var(--color-white);
-    font-weight: var(--font-weight-bold);
+.logoBox > span {
+  /* font-size: var(--font-size-medium); */
+  font-size: clamp(16px, 1.5vw, 24px);
+  color: var(--color-white);
+  font-weight: var(--font-weight-bold);
 }
-
 
 .navProfileSection {
-    display: flex;
-    align-items: center;
-    gap: var(--flex-gap-lg);
+  display: flex;
+  align-items: center;
+  /* gap: var(--flex-gap-lg); */
+  gap: clamp(20px, 1vw, 30px);
 }
 
 .profileContainer {
-    display: flex;
-    align-items: center;
-    gap: var(--flex-gap-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--flex-gap-sm);
 }
 
 .profileImageBox {
-    width: 59px;
-    height: 59px;
-    border-radius: 50%;
-    overflow: hidden;
-    cursor: pointer;
+  width: 59px;
+  height: 59px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
 }
 
 .profileImageBox img {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  object-fit: cover;
 }
 
 .profileText {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--flex-gap-sm);
-    color: var(--color-white);
-    cursor: default;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--flex-gap-sm);
+  color: var(--color-white);
+  cursor: default;
 }
 
 .profileText span:nth-of-type(2) {
-    display: inline-flex;
-    text-align: end;
-    font-size: var(--font-size-medium);
-    font-weight: var(--font-weight-bold);
+  display: inline-flex;
+  text-align: end;
+  font-size: var(--font-size-medium);
+  font-weight: var(--font-weight-bold);
 }
 
 /* Navbar end */
 
 @media (max-width: 1023px) {
-    .nav {
-        padding: 0 15px;
-    }
+  .nav {
+    padding: 0 15px;
+  }
 
-    .menuIconBox {
-        display: block;
-        font-size: var(--font-size-medium);
-        color: var(--color-white);
-    }
-
-
+  .menuIconBox {
+    display: block;
+    font-size: var(--font-size-medium);
+    color: var(--color-white);
+  }
 }
 
 @media (max-width: 768px) {
-    .profileText>span {
-        display: none;
-    }
+  .profileText > span {
+    display: none;
+  }
 
-    .logoBox>span {
-        display: none;
-    }
-
+  .logoBox > span {
+    display: none;
+  }
 }

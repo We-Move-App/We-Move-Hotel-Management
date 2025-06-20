@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./profile.module.css";
 import CustomInput from "../../components/reusable/custom/Form-Fields/CInput/CustomInput";
-import CustomButton from "../../components/reusable/custom/CButton/CustomButton";
+// import CustomButton from "../../components/reusable/custom/CButton/CustomButton";
 import images from "../../assets/images";
 import CustomDownloadButton from "../../components/reusable/custom/CDownloadButton/CustomDownloadButton";
 import { LuFileDown } from "react-icons/lu";
@@ -15,6 +15,7 @@ import CustomLabel from "../../components/reusable/custom/CLabel/CustomLabel";
 import { FileUpload } from "../../components/reusable/custom/Form-Fields/CDragAndDrop/CustomDragAndDrop";
 import FilesList from "../../components/reusable/FilesList/FilesList";
 import CustomFileInput from "../../components/reusable/custom/Form-Fields/CFileInput/CustomFileInput";
+import CustomBtn from "../../components/reusable/Custom-Button/CustomBtn";
 
 const FILE_SIZE = 2 * 1024 * 1024; // 2MB
 const SUPPORTED_FORMATS = ["application/pdf"];
@@ -64,6 +65,7 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [isEdit, setIsEdit] = useState(false);
   const [bankId, setBankId] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   const [user, setUser] = useState({
     userName: "",
@@ -321,18 +323,26 @@ const Profile = () => {
 
                 <div className={styles.formSubmitBtn}>
                   {!isEdit && (
-                    <CustomButton
-                      buttonText={"Edit"}
-                      type={"button"}
+                    // <CustomButton
+                    //   buttonText={"Edit"}
+                    //   type={"button"}
+                    //   onClick={() => setIsEdit(!isEdit)}
+                    //   buttonSize={"medium"}
+                    // />
+                    <CustomBtn
+                      label={"Edit"}
                       onClick={() => setIsEdit(!isEdit)}
-                      buttonSize={"medium"}
                     />
                   )}
                   {isEdit && (
-                    <CustomButton
-                      buttonText={bankId ? "Update" : "Add Bank"}
+                    // <CustomButton
+                    //   buttonText={bankId ? "Update" : "Add Bank"}
+                    //   type={"submit"}
+                    //   buttonSize={"medium"}
+                    // />
+                    <CustomBtn
+                      label={bankId ? "Update" : "Add Bank"}
                       type={"submit"}
-                      buttonSize={"medium"}
                     />
                   )}
                 </div>

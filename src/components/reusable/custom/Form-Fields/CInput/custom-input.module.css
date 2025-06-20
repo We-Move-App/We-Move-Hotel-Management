@@ -1,37 +1,37 @@
 .customInput {
-    display: flex;
-    flex-direction: column;
-    gap: var(--flex-gap-sm);
-    position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--flex-gap-sm);
+  position: relative;
 }
 
 .customInput label {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: var(--color-grey);
-    font-weight: var(--font-weight-regular);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--color-grey);
+  font-weight: var(--font-weight-regular);
 }
 
-.customInput label>p:nth-of-type(2) {
-    color: var(--color-primary-light);
-    display: inline-flex;
-    align-items: center;
-    column-gap: 5px;
-    /* text-decoration: underline; */
+.customInput label > p:nth-of-type(2) {
+  color: var(--color-primary-light);
+  display: inline-flex;
+  align-items: center;
+  column-gap: 5px;
+  /* text-decoration: underline; */
 }
 
 .notVerified {
-    /* width: 22px;
+  /* width: 22px;
     height: 22px; */
-    /* border-radius: 50%; */
-    /* background-color: var(--color-primary-light); */
-    color: var(--color-primary-light);
-    font-weight: var(--font-weight-bold);
-    cursor: pointer;
+  /* border-radius: 50%; */
+  /* background-color: var(--color-primary-light); */
+  color: var(--color-primary-light);
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
 }
 
-.inputWrapper {
+/* .inputWrapper {
     width: 100%;
     display: flex;
     border-radius: var(--border-radius-sm);
@@ -40,52 +40,62 @@
     align-items: center;
     position: relative;
     overflow: hidden;
-}
+} */
 
 .inputWrapperError {
-    border-color: red;
+  border-color: red;
 }
 
 .inputWrapper input {
-    width: 100%;
-    /* border-radius: var(--border-radius-sm); */
-    border: none;
-    /* border: 1px solid var(--color-black); */
-    height: 100%;
-    text-indent: 5px;
-    font-size: var(--font-size-small);
+  /* width: 100%;
+  border: none;
+  height: 100%;
+  text-indent: 5px;
+  font-size: var(--font-size-small); */
+  /* height: clamp(50px, 4vw, 68px);
+  min-height: 50px;
+  max-height: 68px; */
+  font-size: clamp(14px, 1vw, 16px);
+  padding: 0 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 100%;
+  outline: 0;
+  box-sizing: border-box;
+  height: clamp(40px, 4vw, 70px);
 }
 
 .error {
-    font-size: var(--font-size-error-message);
-    color: red;
-    position: absolute;
-    bottom: -20px;
-    margin-left: 6px;
+  font-size: var(--font-size-error-message);
+  color: red;
+  position: absolute;
+  bottom: -20px;
+  margin-left: 6px;
 }
 
 .disabled {
-    background-color: var(--color-light-grey);
-    color: var(--color-black);
-    padding: 0 0 0 10px;
+  background-color: var(--color-light-grey);
+  color: var(--color-black);
+  padding: 0 0 0 10px;
 }
 
 .inputWrapper input:focus {
-    outline: none;
+  outline: none;
 }
 
 .passwordToggle {
-    position: absolute;
-    right: 10px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    color: #666;
-    font-size: var(--font-size-small);
+  position: absolute;
+  right: 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #666;
+  font-size: var(--font-size-small);
+  transform: translate(-50%, 50%);
 }
 
 .passwordToggle:hover {
-    color: #000;
+  color: #000;
 }
 
 /* .customInput input {
@@ -98,11 +108,11 @@
 } */
 
 @media (max-width: 768px) {
-    .inputWrapper {
-        height: 50px !important;
-    }
+  .inputWrapper {
+    height: 50px !important;
+  }
 
-    .error {
-        bottom: -20px;
-    }
+  .error {
+    bottom: -20px;
+  }
 }

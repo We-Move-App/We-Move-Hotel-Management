@@ -1,94 +1,96 @@
 .bookingManagement {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--flex-gap-md);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* gap: var(--flex-gap-md); */
+  gap: clamp(20px, 2vw, 30px);
 }
 
 .headerBox {
-    width: 100%;
-    display: flex;
-    height: fit-content;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--flex-gap-lg);
+  width: 100%;
+  display: flex;
+  height: fit-content;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--flex-gap-lg);
 }
 
 .headerBoxActionsContainer {
-    width: 100%;
-    display: flex;
-    column-gap: var(--flex-gap-sm);
-    row-gap: var(--flex-gap-md);
-    justify-content: space-between;
-    align-items: center;
+  width: 100%;
+  display: flex;
+  column-gap: var(--flex-gap-sm);
+  /* row-gap: var(--flex-gap-md); */
+  gap: clamp(10px, 1vw, 20px);
+  justify-content: space-between;
+  align-items: center;
 }
 
 .headerBoxHeadingAndSearchWrapper {
-    /* width: 30%; */
-    flex: 1;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  /* width: 30%; */
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .headerBoxActionsBox {
-    /* width: 60%; */
-    /* flex-grow: 1; */
-    flex: 2;
-    /* border: 1px solid ; */
-    display: flex;
-    justify-content: flex-end;
-    column-gap: var(--flex-gap-sm);
-    row-gap: var(--flex-gap-md);
-    align-items: center;
+  /* width: 60%; */
+  /* flex-grow: 1; */
+  flex: 2;
+  /* border: 1px solid ; */
+  display: flex;
+  /* justify-content: flex-end; */
+  column-gap: var(--flex-gap-sm);
+  row-gap: var(--flex-gap-md);
+  align-items: center;
 }
 
 .searchbarWrapper {
-    flex-grow: 1;
-    flex-shrink: auto;
-    max-width: 500px;
-    height: 100%;
+  flex-grow: 1;
+  flex-shrink: auto;
+  max-width: 500px;
+  height: 100%;
 }
 
 .subheading {
-    font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-bold);
 }
 
 .actionBtn {
-    /* width: 45%; */
-    width: 'fit-content';
-    /* border: 1px solid red; */
-    /* align-self: flex-end; */
+  /* width: 45%; */
+  width: "fit-content";
+  /* border: 1px solid red; */
+  /* align-self: flex-end; */
 }
 
 .addGuest {
-    width: auto;
+  width: auto;
 }
 
 .filterAndAddUserBox {
-    display: flex;
-    gap: var(--flex-gap-sm);
-    align-items: center;
+  display: flex;
+  gap: var(--flex-gap-sm);
+  align-items: center;
 }
 
 .tableBoxWrapper {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .paginationWrapper {
-    display: flex;
-    justify-content: end;
-    gap: var(--flex-gap-md);
-    align-self: flex-end;
+  display: flex;
+  justify-content: end;
+  gap: var(--flex-gap-md);
+  align-self: flex-end;
 }
 
 .dataNotFound {
-    margin: auto;
+  margin: auto;
 }
 
 /* @media(max-width:1023px) {
@@ -97,36 +99,35 @@
         gap: var(--flex-gap-md);
     }
 } */
-@media(max-width:1500px) {
-    /* .headerBoxActionsContainer {
+@media (max-width: 1500px) {
+  /* .headerBoxActionsContainer {
         flex-direction: column;
         gap: var(--flex-gap-md);
     } */
 
-    .headerBoxActionsContainer {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+  .headerBoxActionsContainer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-    .headerBoxActionsBox {
-        width: 100%;
-    }
+  .headerBoxActionsBox {
+    width: 100%;
+  }
 
-    .searchbarWrapper,
-    .headerBoxActionsBox,
-    .filterAndAddUserBox {
-        align-self: flex-end;
-    }
+  .searchbarWrapper,
+  .headerBoxActionsBox,
+  .filterAndAddUserBox {
+    align-self: flex-end;
+  }
 
-    .headerBoxActionsBox {
-        /* flex-direction: column; */
-        align-items: flex-start;
-    }
+  .headerBoxActionsBox {
+    /* flex-direction: column; */
+    align-items: flex-start;
+  }
 
-    .searchbarWrapper {
-        width: 100%;
-    }
-
+  .searchbarWrapper {
+    width: 100%;
+  }
 }
 
 /* @media(max-width:1500px) {
