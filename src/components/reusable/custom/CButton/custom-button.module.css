@@ -27,6 +27,8 @@
   min-width: 120px;
   width: fit-content;
   height: 50px;
+  font-size: clamp(0.875rem, 0.8125rem + 0.4vw, 1rem);
+  white-space: nowrap;
 }
 
 .large {

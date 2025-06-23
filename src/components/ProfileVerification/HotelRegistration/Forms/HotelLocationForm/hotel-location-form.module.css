@@ -1,56 +1,55 @@
 .form {
-    width: 100%;
-    /* padding: 0 10.5px; */
-    display: flex;
-    flex-direction: column;
-    gap: var(--flex-gap-lg);
+  width: 100%;
+  /* padding: 0 10.5px; */
+  display: flex;
+  flex-direction: column;
+  gap: var(--flex-gap-lg);
 }
 
 .formFieldsContainer {
-    display: flex;
-    flex-direction: column;
-    gap: var(--flex-gap-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--flex-gap-md);
 }
 
-.doubleFormFieldsBox{
-    display: flex;
-    gap: var(--flex-gap-md);
-    justify-content: space-between;
-    align-items: start;
+.doubleFormFieldsBox {
+  display: flex;
+  gap: var(--flex-gap-md);
+  justify-content: space-between;
+  align-items: start;
 }
-
 
 .formSubmitBtn {
-    width: 100%;
-    /* max-width: clamp(11.25rem, 10.8875rem + 1.8125vw, 13.0625rem); */
-    max-width: 209px;
-    /* display: flex; */
-    /* flex-direction: column;
+  width: 100%;
+  /* max-width: clamp(11.25rem, 10.8875rem + 1.8125vw, 13.0625rem); */
+  max-width: 120px;
+  /* display: flex; */
+  /* flex-direction: column;
     gap: var(--flex-gap-md); */
-    /* align-items: end; */
-    align-self: flex-end;
+  /* align-items: end; */
+  align-self: flex-end;
 }
 
-.mapBox{
-    width: 100%;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    gap: var(--flex-gap-sm);
+.mapBox {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--flex-gap-sm);
 
-    & label{
-        color: var(--color-grey);
-        font-weight: var(--font-weight-regular);
-    }
+  & label {
+    color: var(--color-grey);
+    font-weight: var(--font-weight-regular);
+  }
 }
 
-.mapBox img{
-    width: 100%;
-    height: 100%;
+.mapBox img {
+  width: 100%;
+  height: 100%;
 }
 
 @media (max-width: 768px) {
-    .formSubmitBtn{
-        max-width: 180px;
-    }
+  .formSubmitBtn {
+    max-width: 120px;
+  }
 }

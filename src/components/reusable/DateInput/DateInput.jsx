@@ -1,12 +1,17 @@
-import * as React from 'react';
-import dayjs from 'dayjs';
-import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-import { TextField } from '@mui/material';
+import * as React from "react";
+import dayjs from "dayjs";
+import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import { TextField } from "@mui/material";
 
-export default function ResponsiveDatePickers({ height = '50px', textColor = '#000000', backgroundColor = "#0000", setDate }) {
+export default function ResponsiveDatePickers({
+  height = "39px",
+  textColor = "#000000",
+  backgroundColor = "#0000",
+  setDate,
+}) {
   const [selectedDate, setSelectedDate] = React.useState(dayjs());
 
   React.useEffect(() => {
@@ -19,9 +24,9 @@ export default function ResponsiveDatePickers({ height = '50px', textColor = '#0
   };
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs} >
-      <DemoContainer components={['DesktopDatePicker']}   >
-        <DemoItem label="" >
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DemoContainer components={["DesktopDatePicker"]}>
+        <DemoItem label="">
           <DesktopDatePicker
             defaultValue={selectedDate}
             onChange={handleChange}
@@ -31,18 +36,18 @@ export default function ResponsiveDatePickers({ height = '50px', textColor = '#0
                 sx: {
                   height: height,
                   backgroundColor: backgroundColor,
-                  borderRadius: '4px',
-                  overflow: 'hidden',
+                  borderRadius: "4px",
+                  overflow: "hidden",
                   color: textColor,
-                  '& .MuiInputBase-root': {
+                  "& .MuiInputBase-root": {
                     height: height,
-                    overflow: 'hidden',
+                    overflow: "hidden",
                   },
-                  '& input': {
+                  "& input": {
                     height: height,
                     // padding: '0 14px',
                     color: textColor,
-                    overflow: 'hidden',
+                    overflow: "hidden",
                   },
                 },
               },

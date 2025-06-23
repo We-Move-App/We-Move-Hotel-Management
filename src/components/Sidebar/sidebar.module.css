@@ -130,7 +130,7 @@
     z-index: 9999;
     transition: transform 0.3s ease-in-out;
     height: calc(100% - 122px);
-    background-color: var(--color-overlay);
+    /* background-color: var(--color-overlay); */
   }
 
   /* .sidebar {
@@ -143,6 +143,10 @@
 
   .sidebarContainer.open {
     transform: translateX(0);
+  }
+
+  .sidebarContainer.open .sidebar {
+    margin-top: 0px;
   }
 
   /* .closeSidebar {

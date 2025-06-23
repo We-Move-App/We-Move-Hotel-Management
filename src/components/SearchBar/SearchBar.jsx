@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { FiSearch } from 'react-icons/fi';  // Import search icon from react-icons
-import styles from './searchbar.module.css';
+import React, { useState } from "react";
+import { FiSearch } from "react-icons/fi"; // Import search icon from react-icons
+import styles from "./searchbar.module.css";
 
 const SearchBar = ({ onSearch, ...props }) => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleInputChange = (e) => {
     setSearchQuery(e.target.value);
@@ -22,7 +22,7 @@ const SearchBar = ({ onSearch, ...props }) => {
         className={styles.searchInput}
         value={searchQuery}
         onChange={handleInputChange}
-        placeholder="Search..."
+        placeholder="Search"
       />
       <FiSearch className={styles.searchIcon} onClick={handleSearch} />
     </div>

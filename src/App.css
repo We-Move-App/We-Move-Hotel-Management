@@ -11,6 +11,11 @@
   background-image: url("./assets/image/bg-image.jpg");
 }
 
+html,
+body {
+  overflow: hidden;
+}
+
 h1,
 h2,
 h3 {

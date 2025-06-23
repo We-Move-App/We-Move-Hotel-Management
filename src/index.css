@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 
 :root {
   /* Font Family */
-  --font-primary: 'Roboto', sans-serif;
-  --font-secondary: 'Poppins', sans-serif;
-  --font-heading: 'Roboto', serif;
+  --font-primary: "Roboto", sans-serif;
+  --font-secondary: "Poppins", sans-serif;
+  --font-heading: "Roboto", serif;
 
   /* Font Sizes */
   /* --font-size-error-message: 14px;
@@ -17,7 +17,8 @@
   --font-size-error-message: clamp(0.75rem, 0.725rem + 0.125vw, 0.875rem);
   --font-size-double-extra-samll: clamp(0.625rem, 0.55rem + 0.375vw, 1rem);
   --font-size-extra-small: clamp(1.125rem, 1.1rem + 0.125vw, 1.25rem);
-  --font-size-small: clamp(1.25rem, 1.2rem + 0.25vw, 1.5rem);
+  /* --font-size-small: clamp(1.25rem, 1.2rem + 0.25vw, 1.5rem); */
+  --font-size-small: clamp(1.125rem, 1.0625rem + 0.25vw, 1.25rem);
   --font-size-medium: clamp(1.375rem, 1.25rem + 0.625vw, 2rem);
   --font-size-large: clamp(1.875rem, 1.65rem + 1.125vw, 3rem);
 
@@ -30,18 +31,18 @@
   --font-line-height: 23.44px;
 
   /* Primary Colors */
-  --color-primary-light: #2F604A;
-  --color-primary-light-type2: #2F604A4F;
-  --color-primary-light-type3: #2D6A4F;
-  --color-primary-light-type4: #DAE9E2;
+  --color-primary-light: #2f604a;
+  --color-primary-light-type2: #2f604a4f;
+  --color-primary-light-type3: #2d6a4f;
+  --color-primary-light-type4: #dae9e2;
   /* Lighter Green */
-  --color-primary-dark: #1B3A29;
+  --color-primary-dark: #1b3a29;
   /* Darker Green */
 
   /* Secondary Colors */
-  --color-secondary-light: #FFB85A;
+  --color-secondary-light: #ffb85a;
   /* Lighter Coral */
-  --color-secondary-dark: #FF9240;
+  --color-secondary-dark: #ff9240;
   /* Darker Coral */
 
   /* Accent Colors */
@@ -60,9 +61,9 @@
   --color-white: #ffffff;
   --color-light-grey: #f6f6f6;
   --color-grey: #6c6c6c;
-  --color-grey-type2: #E5E4E4;
-  --color-grey-type3: #EDEDED;
-  --color-dark-grey: #46464A;
+  --color-grey-type2: #e5e4e4;
+  --color-grey-type3: #ededed;
+  --color-dark-grey: #46464a;
   --color-black: #000000;
   --color-overlay: #00000080;
 
@@ -100,7 +101,7 @@
   /* Flex Gap */
   --flex-gap-xs: 11px;
   --flex-gap-sm: 14px;
-  --flex-gap-md: 28px;
+  --flex-gap-md: clamp(20px, 1.5vw, 28px);
   --flex-gap-lg: 42px;
   --flex-gap-xl: 100px;
 
@@ -174,7 +175,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   /* line-height: 25px; */
 }
 
-
 a {
   cursor: pointer;
   color: var(--color-primary-light);
@@ -209,8 +209,6 @@ input[type="number"]::-webkit-outer-spin-button {
 /* input[type="number"] {
   -moz-appearance: textfield;
 } */
-
-
 
 @media (max-width: 1920px) {
   .container {

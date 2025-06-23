@@ -312,7 +312,7 @@ const RoomManagement = () => {
             />
           </div>
         </div>
-        <div className={styles.gridBoxWrapper}>
+        {/* <div className={styles.gridBoxWrapper}>
           {tabBarData[0].status && <p>Total Rooms</p>}
           {tabBarData[1].status && <p>Available Rooms</p>}
           {tabBarData[2].status && <p>Reserved Rooms</p>}
@@ -325,10 +325,63 @@ const RoomManagement = () => {
               <span></span>Available
             </div>
             <div>
-              <span>T-Series:</span> Luxury
+              <span>G-Series:</span> Standard
             </div>
             <div>
-              <span>G-Series:</span> Standard
+              <span>T-Series:</span> Luxury
+            </div>
+          </div>
+
+          <div className={styles.roomGridWrapper}>
+            <div className={styles.roomGridWrapper}>
+              {rooms.length === 0 ? (
+                <div>No Data Found</div>
+              ) : (
+                <div className={styles.roomGrid}>
+                  {rooms?.map((room) => (
+                    <div key={room?._id} className={styles.room}>
+                      <div
+                        className={`${
+                          room.isAvailable
+                            ? styles.statusTrue
+                            : styles.statusFalse
+                        }`}
+                        onClick={() => {
+                          room.isAvailable
+                            ? modalOpenFor(room)
+                            : modalOpenForTwo(room);
+                        }}
+                      ></div>
+                      <p>{room?.roomNumber.toUpperCase()}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div> */}
+
+        <div className={styles.gridBoxWrapper}>
+          <div className={styles.topRow}>
+            <div className={styles.statusLabels}>
+              {tabBarData[0].status && <p>Total Rooms</p>}
+              {tabBarData[1].status && <p>Available Rooms</p>}
+              {tabBarData[2].status && <p>Reserved Rooms</p>}
+            </div>
+
+            <div className={styles.typeIdentifierBox}>
+              <div className={styles.reserved}>
+                <span></span>Reserved
+              </div>
+              <div className={styles.available}>
+                <span></span>Available
+              </div>
+              <div>
+                <span>G-Series:</span> Standard
+              </div>
+              <div>
+                <span>T-Series:</span> Luxury
+              </div>
             </div>
           </div>
 

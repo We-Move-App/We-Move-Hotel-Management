@@ -14,76 +14,6 @@ import {
 import { ENDPOINTS } from "../../utils/apiEndpoints";
 import ContentHeading from "../../components/reusable/Content-Heading/ContentHeading";
 
-// const detailsData = [
-//     {
-//         "heading": "Hotel Details",
-//         "details": [
-//             {
-//                 "name": "Hotel Name",
-//                 "value": "ABC Hotel"
-//             },
-//             {
-//                 "name": "City",
-//                 "value": "New York"
-//             },
-//             {
-//                 "name": "Phone",
-//                 "value": "+1 123 456 7890"
-//             },
-//             {
-//                 "name": "Email",
-//                 "value": "abc@hotel.com"
-//             },
-//         ]
-//     },
-//     {
-//         "heading": "Location",
-//         "details": [
-//             {
-//                 "name": "Latitude",
-//                 "value": "40.7128° N"
-//             },
-//             {
-//                 "name": "Longitude",
-//                 "value": "-74.0060° W"
-//             },
-//             {
-//                 "name": "Map",
-//                 "value": "View on Map"
-//             }
-//         ]
-//     },
-//     {
-//         'heading': "Room Details",
-//         "details": [
-//             {
-//                 "name": "Total Rooms",
-//                 "value": "200"
-//             },
-//             {
-//                 "name": "Occupied Rooms",
-//                 "value": "150"
-//             },
-//             {
-//                 "name": "Vacant Rooms",
-//                 "value": "50"
-//             },
-//             {
-//                 "name": "Booked Rooms",
-//                 "value": "20"
-//             },
-//             {
-//                 "name": "Room Rates",
-//                 "value": "$200"
-//             },
-//             {
-//                 "name": "Currency",
-//                 "value": "USD"
-//             }
-//         ]
-//     },
-// ]
-
 const Amenities = [
   {
     icon: images.acIcon,
@@ -188,6 +118,7 @@ const HotelManagement = () => {
       if (success) {
         localStorage.setItem("WEMOVE_HOTELID", data.data.hotel._id);
         const hotelId = data.data.hotel._id;
+        // console.log("Hotel ID:", hotelId);
 
         await getHotelDetails(hotelId);
         await getHotelLocation(hotelId);
@@ -217,7 +148,7 @@ const HotelManagement = () => {
       const { hotelName, businessLicense, totalRoom, termsAndConditions, _id } =
         data.data.hotel;
       const { images: files } = data.data?.images[0];
-      console.log("HotelImages", files);
+      // console.log("HotelImages", files);
       setGridImages(files);
       setDetailsData((prev) =>
         prev.map((section) => {
@@ -302,17 +233,22 @@ const HotelManagement = () => {
       {}
     );
 
-    console.log("FROM ROOMS DATA COUNT", { standardRoomData, luxuryRoomData });
-    const { numberOfRoom: standardRoomCount } = standardRoomData?.data;
-    const { numberOfRoom: luxuryRoomCount } = luxuryRoomData?.data;
+    // console.log("FROM ROOMS DATA COUNT", { standardRoomData, luxuryRoomData });
+    // const { numberOfRoom: standardRoomCount } = standardRoomData?.data;
+    const standardRoomCount =
+      standardRoomData?.data?.sampleRoom?.numberOfRoom ?? "0";
+    // console.log("Standard Room API Response:", standardRoomCount);
+    // const { numberOfRoom: luxuryRoomCount } = luxuryRoomData?.data;
+    const luxuryRoomCount =
+      luxuryRoomData?.data?.sampleRoom?.numberOfRoom ?? "0";
     setDetailsData((prev) =>
       prev.map((section) => {
         if (section?.heading === "Room Details") {
           return {
             heading: "Room Details",
             details: [
-              { name: "Standard Rooms", value: standardRoomCount || "" },
-              { name: "Luxury Rooms", value: luxuryRoomCount || "" },
+              { name: "Standard Rooms", value: standardRoomCount },
+              { name: "Luxury Rooms", value: luxuryRoomCount },
               { name: "Booked Rooms", value: "00" },
               { name: "Vacant Rooms", value: "00" },
             ],
@@ -349,7 +285,7 @@ const HotelManagement = () => {
   useEffect(() => {
     getHotel();
     // console.log(detailsData)
-  }, [loading]);
+  }, []);
 
   return (
     <div className={styles.hotelManagement}>
@@ -426,7 +362,7 @@ const HotelManagement = () => {
                   index % 3 == 0 ? styles.featured : ""
                 } `}
               >
-                <img src={img.url} alt="Hotel" />
+                <img src={img?.url || img} alt="Hotel" />
               </div>
             ))}
           </div>

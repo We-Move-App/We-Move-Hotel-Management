@@ -211,7 +211,7 @@ const BookingManagement = () => {
       </div>
 
       <div className={styles.tableBoxWrapper}>
-        <CustomTable
+        {/* <CustomTable
           // fontSize='medium'
           columns={[
             { Header: "Booking ID", accessor: "bookingId" },
@@ -260,9 +260,30 @@ const BookingManagement = () => {
           }
           customRowClass="customRow"
           customCellClass="customCell"
-        />
-        {bookings.length <= 0 && (
-          <p className={styles.dataNotFound}>Data not available.</p>
+        /> */}
+        {/* {bookings.length <= 0 && (
+          <p className={styles.dataNotFound}>Data not available</p>
+        )} */}
+
+        {bookings.length > 0 ? (
+          <CustomTable
+            columns={[
+              { Header: "Booking ID", accessor: "bookingId" },
+              { Header: "Room Type", accessor: "roomType" },
+              { Header: "Guest Name", accessor: "guestName" },
+              { Header: "Mobile Number", accessor: "mobileNumber" },
+              { Header: "Checkin Date", accessor: "checkIn" },
+              { Header: "Checkout Date", accessor: "checkOut" },
+              { Header: "Adult", accessor: "adult" },
+              { Header: "Child", accessor: "child" },
+              { Header: "Booked By", accessor: "bookedBy" },
+            ]}
+            data={bookings}
+            customRowClass="customRow"
+            customCellClass="customCell"
+          />
+        ) : (
+          <p className={styles.dataNotFound}>Data not available</p>
         )}
 
         {totalPage > 0 && (

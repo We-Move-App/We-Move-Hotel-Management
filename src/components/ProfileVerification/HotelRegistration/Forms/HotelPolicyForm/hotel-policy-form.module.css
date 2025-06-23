@@ -1,80 +1,78 @@
 .form {
-    width: 100%;
-    /* padding: 0 10.5px; */
-    display: flex;
-    flex-direction: column;
-    gap: var(--flex-gap-lg);
+  width: 100%;
+  /* padding: 0 10.5px; */
+  display: flex;
+  flex-direction: column;
+  gap: var(--flex-gap-lg);
 }
 
 .formBoxBorder {
-    display: flex;
-    flex-direction: column;
-    gap: var(--flex-gap-md);
-    border: 1px solid var(--color-primary-light);
-    border-radius: var(--border-radius-xxs);
-    padding: var(--flex-gap-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--flex-gap-md);
+  border: 1px solid var(--color-primary-light);
+  border-radius: var(--border-radius-xxs);
+  padding: var(--flex-gap-md);
 }
 
 .formFieldsContainer {
-    display: flex;
-    flex-direction: column;
-    gap: var(--flex-gap-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--flex-gap-md);
 }
 
 .doubleFormFieldsBox {
-    display: flex;
-    gap: var(--flex-gap-md);
-    justify-content: space-between;
-    align-items: start;
+  display: flex;
+  gap: var(--flex-gap-md);
+  justify-content: space-between;
+  align-items: start;
 }
 
 .amenitiesContainer {
-    display: flex;
-    flex-direction: column;
-    gap: var(--flex-gap-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--flex-gap-sm);
 }
 
 .amenitiesWrapper {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(3, auto);
-    grid-template-rows: repeat(auto, auto);
-    row-gap: var(--flex-gap-md);
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  grid-template-rows: repeat(auto, auto);
+  row-gap: var(--flex-gap-md);
 }
 
 .formSubmitBtn {
-    width: 100%;
-    /* max-width: clamp(11.25rem, 10.8875rem + 1.8125vw, 13.0625rem); */
-    max-width: 209px;
-    /* display: flex; */
-    /* flex-direction: column;
+  width: 100%;
+  /* max-width: clamp(11.25rem, 10.8875rem + 1.8125vw, 13.0625rem); */
+  max-width: 120px;
+  /* display: flex; */
+  /* flex-direction: column;
     gap: var(--flex-gap-md); */
-    /* align-items: end; */
-    align-self: flex-end;
+  /* align-items: end; */
+  align-self: flex-end;
 }
-
 
 /* Drag And Drop */
 .dragDropWrapper {
-    display: flex;
-    flex-direction: column;
-    gap: var(--flex-gap-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--flex-gap-sm);
 }
 
 .dragDropBox {
-    /* position: relative; */
-    /* height: auto; */
-    /* border: 1px solid; */
-    width: 100%;
+  /* position: relative; */
+  /* height: auto; */
+  /* border: 1px solid; */
+  width: 100%;
 
-    display: grid;
-    grid-template-columns: repeat(3, auto);
-    grid-template-rows: repeat(auto, auto);
-    row-gap: var(--flex-gap-md);
-    column-gap: max(auto, var(--flex-gap-md));
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  grid-template-rows: repeat(auto, auto);
+  row-gap: var(--flex-gap-md);
+  column-gap: max(auto, var(--flex-gap-md));
 
-
-    /* display: flex;
+  /* display: flex;
     gap: var(--flex-gap-md);
     flex-wrap: wrap;
     align-items: center;
@@ -82,34 +80,33 @@
 }
 
 .item {
-    flex: 1 1 1;
-    /* flex: 1 1 calc(33.33% - var(--flex-gap-md)); */
-    /* Adjust based on your gap and desired column width */
+  flex: 1 1 1;
+  /* flex: 1 1 calc(33.33% - var(--flex-gap-md)); */
+  /* Adjust based on your gap and desired column width */
 }
 
-
 .dragDropLabelBox {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 .dragDropLabelBox label {
-    font-size: var(--font-size-small);
-    color: var(--color-grey);
+  font-size: var(--font-size-small);
+  color: var(--color-grey);
 }
 
-.dragDropLabelBox>span {
-    font-size: var(--font-size-small);
-    color: var(--color-primary-light);
-    text-decoration: underline;
+.dragDropLabelBox > span {
+  font-size: var(--font-size-small);
+  color: var(--color-primary-light);
+  text-decoration: underline;
 
-    &:hover {
-        cursor: pointer;
-    }
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 @media (max-width: 768px) {
-    .formSubmitBtn {
-        width: 80%;
-    }
+  .formSubmitBtn {
+    width: 80%;
+  }
 }
