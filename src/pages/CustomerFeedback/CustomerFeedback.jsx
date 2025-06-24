@@ -6,6 +6,7 @@ import apiCall from "../../hooks/apiCall";
 import { ENDPOINTS } from "../../utils/apiEndpoints";
 import { tokenFromLocalStorage } from "../../utils/helperFunctions";
 import ContentHeading from "../../components/reusable/Content-Heading/ContentHeading";
+import Pagination from "../../components/reusable/PaginationNew/Pagination";
 
 const CustomerFeedback = () => {
   // const token = tokenFromLocalStorage();
@@ -89,10 +90,15 @@ const CustomerFeedback = () => {
 
           {totalPages && (
             <div className={styles.paginationWrapper}>
-              <PaginationComponent
+              {/* <PaginationComponent
                 currentPage={currentPage}
                 totalPages={totalPages}
                 onPageChange={handlePageChange}
+              /> */}
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
               />
             </div>
           )}

@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styles from "./sidebar.module.css";
 import images from "../../assets/images";
-import { IoClose } from "react-icons/io5";
-import { Link, useLocation } from "react-router-dom"; // <-- Import useLocation
+import { Link, useLocation } from "react-router-dom";
 
-const sidebarLinks = [
+const mainSidebarLinks = [
   {
     title: "Dashboard",
     link: "/dashboard",
@@ -30,23 +29,23 @@ const sidebarLinks = [
     link: "/dashboard/wallet",
     icon: images.walletIcon,
   },
-  {
-    title: "Customer Feedback",
-    link: "/dashboard/customer-feedback",
-    icon: images.customerFeedbackIcon,
-  },
 ];
+
+const feedbackLink = {
+  title: "Customer Feedback",
+  link: "/dashboard/customer-feedback",
+  icon: images.customerFeedbackIcon,
+};
 
 const Sidebar = ({ isOpen, toggleSidebar, isMobile }) => {
   const location = useLocation();
   const [active, setActive] = useState(0);
 
-  // Sync active tab with current URL
   useEffect(() => {
     const currentPath = location.pathname;
+    const allLinks = [...mainSidebarLinks, feedbackLink];
 
-    // Sort links so that more specific (longer) links come first
-    const sortedLinks = [...sidebarLinks].sort(
+    const sortedLinks = [...allLinks].sort(
       (a, b) => b.link.length - a.link.length
     );
 
@@ -55,8 +54,7 @@ const Sidebar = ({ isOpen, toggleSidebar, isMobile }) => {
     );
 
     if (activeIndex !== -1) {
-      // Map back to the original index in sidebarLinks
-      const originalIndex = sidebarLinks.findIndex(
+      const originalIndex = allLinks.findIndex(
         (link) => link.link === sortedLinks[activeIndex].link
       );
       setActive(originalIndex);
@@ -78,7 +76,7 @@ const Sidebar = ({ isOpen, toggleSidebar, isMobile }) => {
     >
       <div className={styles.sidebar}>
         <ul className={styles.listBox}>
-          {sidebarLinks?.map((link, index) => (
+          {mainSidebarLinks.map((link, index) => (
             <li
               key={index}
               className={styles.listTab}
@@ -97,6 +95,26 @@ const Sidebar = ({ isOpen, toggleSidebar, isMobile }) => {
             </li>
           ))}
         </ul>
+
+        <div className={styles.bottomLink}>
+          <li
+            className={styles.listTab}
+            onClick={() => handleRouteChange(mainSidebarLinks.length)}
+          >
+            <Link to={feedbackLink.link}>
+              <div
+                className={`${styles.link} ${
+                  active === mainSidebarLinks.length ? styles.active : ""
+                }`}
+              >
+                {feedbackLink.icon && (
+                  <img src={feedbackLink.icon} alt={feedbackLink.title} />
+                )}
+                <span>{feedbackLink.title}</span>
+              </div>
+            </Link>
+          </li>
+        </div>
       </div>
     </div>
   );

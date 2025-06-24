@@ -1,0 +1,38 @@
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--gap-large);
+}
+
+.pagination ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+}
+
+.pagination li {
+  margin: 0 5px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border: 1.7px solid #ccc;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.pagination li.active {
+  background-color: var(--color-bg-btn);
+  color: white;
+  border-color: #f1f1f1;
+}
+
+.pagination li.disabled {
+  color: #ccc;
+  cursor: default;
+  pointer-events: none;
+  border: none;
+}
+
+.pagination li.next {
+  border: none;
+}

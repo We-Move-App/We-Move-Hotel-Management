@@ -14,6 +14,7 @@ import { ENDPOINTS } from "../../utils/apiEndpoints";
 import { tokenFromLocalStorage } from "../../utils/helperFunctions";
 import { useFormattedDate } from "../../hooks/formatISODate";
 import ContentHeading from "../../components/reusable/Content-Heading/ContentHeading";
+import Pagination from "../../components/reusable/PaginationNew/Pagination";
 
 const BookingManagement = () => {
   const formatDate = useFormattedDate();
@@ -288,10 +289,15 @@ const BookingManagement = () => {
 
         {totalPage > 0 && (
           <div className={styles.paginationWrapper}>
-            <PaginationComponent
+            {/* <PaginationComponent
               currentPage={currentPage}
               totalPages={totalPage}
               onPageChange={handlePageChange}
+            /> */}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPage}
+              onPageChange={setCurrentPage}
             />
           </div>
         )}
