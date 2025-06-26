@@ -14,19 +14,20 @@ export const ENDPOINTS = {
     HOTEL_ROOM: '/hotel-room',
     HOTEL_POLICY: '/hotel-policies',
     HOTEL_BY_TOKEN: '/hotel/first-hotel-registeration',
-    ALLOT_ROOM: '/hotel-booking/allot-room',
+    ALLOT_ROOM: '/hotelmanager-booking/allot-room',
     UPDATE_ROOM_STATUS: '/room-layout/update',
     HOTEL_BOOKINGS: '/hotelmanager-booking/bookings',
     FEEDBACK: '/hotel-feedback',
     GET_OTP_RESET_PASSWORD: '/verification/send-otp-email-phone',
-    VERIFY_OTP_WITHOUT_TOKEN:'/hotel-manager/auth/verify-otp-without-auth',
-    RESET_PASSWORD:'/hotel-manager/reset-password2',
+    VERIFY_OTP_WITHOUT_TOKEN: '/hotel-manager/auth/verify-otp-without-auth',
+    RESET_PASSWORD: '/hotel-manager/reset-password2',
+    HOTEL_ALL_ROOMS: '/hotel-room/getAllRooms',
 
     PROFILE: '/hotel-manager/profile',
     USER_PROFILE: '/hotel-manager/user/profile',
     GET_ALL_ROOMS: '/room-layout/all',
-    
-    ADD_GUEST:"/hotelmanager-booking/create-booking",
+
+    ADD_GUEST: "/hotelmanager-booking/bookHotel",
 
     GET_AMENITIES: '/amenities',
 

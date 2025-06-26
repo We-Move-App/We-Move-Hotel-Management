@@ -128,8 +128,8 @@ const BookingManagement = () => {
         mobileNumber: userInfo.phoneNumber,
         checkIn: formatDate(b?.checkInDate),
         checkOut: formatDate(b?.checkOutDate),
-        adult: b?.noOfAdults || "",
-        child: b?.noOfKids || "",
+        adult: b?.noOfAdults || "0",
+        child: b?.noOfKids || "0",
         bookedBy: b?.bookingBy,
       };
     });
@@ -287,7 +287,7 @@ const BookingManagement = () => {
           <p className={styles.dataNotFound}>Data not available</p>
         )}
 
-        {totalPage > 0 && (
+        {totalPage > 1 && (
           <div className={styles.paginationWrapper}>
             {/* <PaginationComponent
               currentPage={currentPage}

@@ -7,19 +7,33 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependency directories
 node_modules
-package-lock.json
+
+# Build outputs
 dist
 dist-ssr
-*.local
+.turbo/
+.parcel-cache/
+
+# Environment files
+.env
+.env.*
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
 .idea
 .DS_Store
+Thumbs.db
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# Package lock
+package-lock.json
+
+# Coverage reports
+coverage/

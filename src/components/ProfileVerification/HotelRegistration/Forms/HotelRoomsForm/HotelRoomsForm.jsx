@@ -489,7 +489,9 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
             <div className={styles.standardFormBtn}>
               <CustomButton
                 type={"button"}
-                buttonText={"Continue"}
+                buttonText={
+                  formik.values.standardRoom._id ? "Update" : "Continue"
+                }
                 buttonSize={"small"}
                 onClick={handleRoomTypeChange}
               />
@@ -619,7 +621,11 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
       {activeTabBar === "luxuryRoom" && (
         <div className={styles.formSubmitBtn}>
           <CustomButton
-            buttonText={"Save and Continue"}
+            buttonText={
+              formik.values.luxuryRoom._id
+                ? "Update and Continue"
+                : "Save and Continue"
+            }
             type={"submit"}
             buttonSize={"medium"}
           />

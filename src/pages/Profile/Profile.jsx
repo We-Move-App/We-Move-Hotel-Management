@@ -3,7 +3,7 @@ import styles from "./profile.module.css";
 import CustomInput from "../../components/reusable/custom/Form-Fields/CInput/CustomInput";
 // import CustomButton from "../../components/reusable/custom/CButton/CustomButton";
 import images from "../../assets/images";
-import CustomDownloadButton from "../../components/reusable/custom/CDownloadButton/CustomDownloadButton";
+// import CustomDownloadButton from "../../components/reusable/custom/CDownloadButton/CustomDownloadButton";
 import { LuFileDown } from "react-icons/lu";
 import apiCall from "../../hooks/apiCall";
 import { ENDPOINTS } from "../../utils/apiEndpoints";
@@ -16,6 +16,7 @@ import { FileUpload } from "../../components/reusable/custom/Form-Fields/CDragAn
 import FilesList from "../../components/reusable/FilesList/FilesList";
 import CustomFileInput from "../../components/reusable/custom/Form-Fields/CFileInput/CustomFileInput";
 import CustomBtn from "../../components/reusable/Custom-Button/CustomBtn";
+import CustomDownloadButton from "../../components/reusable/custom/Custom-Download-Button/CustomDownloadButton";
 
 const FILE_SIZE = 2 * 1024 * 1024; // 2MB
 const SUPPORTED_FORMATS = ["application/pdf"];
@@ -212,7 +213,7 @@ const Profile = () => {
         bankName: bankName || "",
         accountHolderName: accountHolderName || "",
         bankAccountNumber: accountNumber || "",
-        bankDocs: bankDocs || "", // or fetched file data if available
+        bankDocs: bankDocs?.url ? encodeURI(bankDocs.url) : "", // or fetched file data if available
       });
       setBankId(_id);
       setLoading(false);
@@ -299,16 +300,26 @@ const Profile = () => {
                       />
                       {/* <CustomInput label={'Bank Account Details'} /> */}
                       {/* <CustomDownloadButton buttonText='View file' icon={<LuFileDown />} label={'Bank Accont Details'} /> */}
-                      <CustomFileInput
-                        label={"Bank Details"}
-                        required={true}
-                        icon={<LuFileDown />}
-                        name={"bankDocs"}
-                        value={formik.values?.bankDocs}
-                        onChange={handleFileChange}
-                        placeholder={"View file"}
-                        accept={".pdf, .png, .jpeg, .jpg"}
-                      />
+
+                      {!isEdit && formik.values?.bankDocs ? (
+                        <CustomDownloadButton
+                          label={"Bank Details"}
+                          icon={<LuFileDown />}
+                          buttonText={"View file"}
+                          downloadLink={formik.values.bankDocs}
+                        />
+                      ) : (
+                        <CustomFileInput
+                          label={"Bank Details"}
+                          required={true}
+                          icon={<LuFileDown />}
+                          name={"bankDocs"}
+                          value={formik.values?.bankDocs}
+                          onChange={handleFileChange}
+                          placeholder={"View file"}
+                          accept={".pdf, .png, .jpeg, .jpg"}
+                        />
+                      )}
                     </div>
                     {/* <div className={styles.dragDropLabelBox}>
                                            <CustomLabel labelText={'Upload Policy Document'} required={true} />
@@ -323,23 +334,12 @@ const Profile = () => {
 
                 <div className={styles.formSubmitBtn}>
                   {!isEdit && (
-                    // <CustomButton
-                    //   buttonText={"Edit"}
-                    //   type={"button"}
-                    //   onClick={() => setIsEdit(!isEdit)}
-                    //   buttonSize={"medium"}
-                    // />
                     <CustomBtn
                       label={"Edit"}
                       onClick={() => setIsEdit(!isEdit)}
                     />
                   )}
                   {isEdit && (
-                    // <CustomButton
-                    //   buttonText={bankId ? "Update" : "Add Bank"}
-                    //   type={"submit"}
-                    //   buttonSize={"medium"}
-                    // />
                     <CustomBtn
                       label={bankId ? "Update" : "Add Bank"}
                       type={"submit"}

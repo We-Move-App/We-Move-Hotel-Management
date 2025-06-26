@@ -15,6 +15,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     if (endPage - startPage < maxPageNumbersToShow - 1) {
       startPage = Math.max(1, endPage - maxPageNumbersToShow + 1);
     }
+    if (totalPages <= 1) return null;
 
     for (let i = startPage; i <= endPage; i++) {
       pageNumbers.push(

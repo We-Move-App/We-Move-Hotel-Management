@@ -16,25 +16,14 @@ import { tokenFromLocalStorage } from "../../utils/helperFunctions";
 import { toast } from "react-toastify";
 import { useFormattedDate } from "../../hooks/formatISODate";
 import ContentHeading from "../../components/reusable/Content-Heading/ContentHeading";
-
-// const floors = ['G', 'T'];
-// const roomsPerFloor = Math.ceil(50 / floors.length);
-
-// const rooms = floors.flatMap((floor, floorIndex) =>
-//     Array.from({ length: roomsPerFloor }, (_, i) => {
-//         const roomNumber = i + 1;
-//         const roomName = `${floor}${roomNumber}`;
-//         return {
-//             name: roomName,
-//             status: Math.random() > 0.5, // true for booked, false for available
-//         };
-//     })
-// );
+import Pagination from "../../components/reusable/PaginationNew/Pagination";
 
 const RoomManagement = () => {
   const formatDate = useFormattedDate();
-  // const token = tokenFromLocalStorage();
   const hotelID = localStorage.getItem("WEMOVE_HOTELID") || "";
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const limit = 25;
   const [date, setDate] = useState();
 
   const [tabBarData, setTabBarData] = useState([
@@ -74,30 +63,24 @@ const RoomManagement = () => {
   });
 
   const modalOpenFor = (room) => {
-    // console.log("individual selected room", room)
     setBookingId("");
     setIsModalOne(true);
     setSelectedRoom(room?._id);
   };
 
   const modalOpenForTwo = async (room) => {
-    // console.log("ROOM", room)
-    // will get id by params fetch room for that id then find booking details from room.booked by
     setIsModalOne(false);
-    // setIsModalTwo(true);
+
     const hotelIdByToken =
       JSON.parse(localStorage.getItem("WEMOVE_USER"))?._id || "";
 
-    // await getAllRooms();
     setSelectedRoom(room?._id);
-    // console.log(room);
+
     const { data, statusCode, success, error } = await apiCall(
       `${ENDPOINTS.HOTEL_BOOKINGS}?bookingId=${room?.bookingReference}`,
       "GET"
     );
-    // console.log("booking data room:", data?.data);
     if (error) {
-      // console.log("ERROR FROM MODAL TWO:", error);
       setModalTwoError(error?.message);
     }
     if (success) {
@@ -113,14 +96,11 @@ const RoomManagement = () => {
         noOfKids,
         _id,
       } = data.data.bookings[0];
-      // const { fullName, phoneNumber } = bookedBy;
       const userObj = {};
       const { hotelName } = hotelId;
 
       const { roomType } = roomTypeId;
       console.log("BOOKING DETAILS:", data.data);
-      // console.log("BOOKEDBY && HOTELMANAGERID", bookedBy, hotelIdByToken)
-      //  hotelIdByToken == bookedBy then find in hotelManager else in Users
       if (typeof bookedBy === "string" && bookedBy == hotelIdByToken) {
         const { data, success, statusCode, error } = await apiCall(
           `${ENDPOINTS.PROFILE}`,
@@ -154,44 +134,47 @@ const RoomManagement = () => {
 
   const bookRoom = async () => {
     const { data, statusCode, error, success } = await apiCall(
-      `${ENDPOINTS.ALLOT_ROOM}?bookingId=${bookingId}`,
+      `${ENDPOINTS.ALLOT_ROOM}?roomId=${selectedRoom}&bookingId=${bookingId}`,
       "PUT",
-      { body: { roomId: selectedRoom } }
+      { body: {} }
     );
 
-    // console.log("BOOKED ROOM:",data)
     if (error) {
       toast.info(error.message);
       setModalOneError(error?.message);
       return;
     }
+
     if (success) {
-      // if (success && statusCode === 200) {
       setBookingId("");
       console.log("ALLOTED ROOM :", data);
       setIsModalOne(false);
       setIsModalTwo(true);
+
       const reqRoom = rooms.filter((r) => r?._id === selectedRoom);
-      console.log("room", reqRoom);
       modalOpenForTwo(reqRoom);
     }
   };
 
   const getAllRooms = async () => {
-    const status = tabBarData[0].status
-      ? "all"
-      : tabBarData[1].status
-      ? "available"
-      : "booked";
+    const activeTab = tabBarData.find((tab) => tab.status)?.name;
+    let status = "all";
+    if (activeTab === "Available Rooms") status = "available";
+    else if (activeTab === "Reserved Rooms") status = "booked";
+
     const { data, statusCode, error, success } = await apiCall(
-      `${ENDPOINTS.GET_ALL_ROOMS}?hotelId=${hotelID}&status=${status}&date=${date}`,
+      `${ENDPOINTS.GET_ALL_ROOMS}?hotelId=${hotelID}&status=${status}&page=${currentPage}&limit=${limit}`,
       "GET"
     );
 
     if (success && statusCode === 200) {
       console.log("HOTEL ROOMS:", data);
-      const { rooms } = data.data;
+
+      const rooms = data?.data?.rooms || [];
+      const total = data?.data?.totalRooms || 0;
+
       setRooms(rooms);
+      setTotalPages(Math.ceil(total / limit));
       setLoading(false);
     }
   };
@@ -214,15 +197,10 @@ const RoomManagement = () => {
   };
 
   useEffect(() => {
-    console.log(date);
     getAllRooms();
-  }, [tabBarData, date, loading, isModalOne, isModalTwo]);
+  }, [currentPage, tabBarData, date]);
 
-  // useEffect(() => {
-  //     console.log('GET BOOKING DETAILS', selectedRoom)
-  // }, [isModalTwo])
-
-  // if(loading) return <div>loading....</div>
+  console.log("Total Pages:", totalPages);
 
   return (
     <div className={styles.roomManagement}>
@@ -312,54 +290,6 @@ const RoomManagement = () => {
             />
           </div>
         </div>
-        {/* <div className={styles.gridBoxWrapper}>
-          {tabBarData[0].status && <p>Total Rooms</p>}
-          {tabBarData[1].status && <p>Available Rooms</p>}
-          {tabBarData[2].status && <p>Reserved Rooms</p>}
-
-          <div className={styles.typeIdentifierBox}>
-            <div className={styles.reserved}>
-              <span></span>Reserved
-            </div>
-            <div className={styles.available}>
-              <span></span>Available
-            </div>
-            <div>
-              <span>G-Series:</span> Standard
-            </div>
-            <div>
-              <span>T-Series:</span> Luxury
-            </div>
-          </div>
-
-          <div className={styles.roomGridWrapper}>
-            <div className={styles.roomGridWrapper}>
-              {rooms.length === 0 ? (
-                <div>No Data Found</div>
-              ) : (
-                <div className={styles.roomGrid}>
-                  {rooms?.map((room) => (
-                    <div key={room?._id} className={styles.room}>
-                      <div
-                        className={`${
-                          room.isAvailable
-                            ? styles.statusTrue
-                            : styles.statusFalse
-                        }`}
-                        onClick={() => {
-                          room.isAvailable
-                            ? modalOpenFor(room)
-                            : modalOpenForTwo(room);
-                        }}
-                      ></div>
-                      <p>{room?.roomNumber.toUpperCase()}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        </div> */}
 
         <div className={styles.gridBoxWrapper}>
           <div className={styles.topRow}>
@@ -414,6 +344,13 @@ const RoomManagement = () => {
           </div>
         </div>
       </div>
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={(page) => setCurrentPage(page)}
+        />
+      )}
     </div>
   );
 };

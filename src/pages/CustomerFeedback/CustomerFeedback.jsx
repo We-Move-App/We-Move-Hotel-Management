@@ -88,7 +88,7 @@ const CustomerFeedback = () => {
                             <FeedbackCard {...feedbackData} /> */}
           </div>
 
-          {totalPages && (
+          {totalPages > 1 && (
             <div className={styles.paginationWrapper}>
               {/* <PaginationComponent
                 currentPage={currentPage}

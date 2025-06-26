@@ -123,6 +123,7 @@ const HotelManagement = () => {
         await getHotelDetails(hotelId);
         await getHotelLocation(hotelId);
         await getHotelRoomsAndAmenities(hotelId);
+        await getBookedAndVacantRooms(hotelId);
         // await getHotelPolicy(hotelId);
       }
     } catch (error) {
@@ -233,14 +234,19 @@ const HotelManagement = () => {
       {}
     );
 
-    // console.log("FROM ROOMS DATA COUNT", { standardRoomData, luxuryRoomData });
-    // const { numberOfRoom: standardRoomCount } = standardRoomData?.data;
+    const { data: bookedRoomData } = await apiCall(
+      `${ENDPOINTS.HOTEL_ALL_ROOMS}?hotelId=${id}`,
+      "GET",
+      {}
+    );
+
     const standardRoomCount =
       standardRoomData?.data?.sampleRoom?.numberOfRoom ?? "0";
-    // console.log("Standard Room API Response:", standardRoomCount);
-    // const { numberOfRoom: luxuryRoomCount } = luxuryRoomData?.data;
     const luxuryRoomCount =
       luxuryRoomData?.data?.sampleRoom?.numberOfRoom ?? "0";
+    const bookedCount = bookedRoomData?.data?.hotelBookedRooms ?? 0;
+    const vacantCount = bookedRoomData?.data?.hotelAvailableRooms ?? 0;
+
     setDetailsData((prev) =>
       prev.map((section) => {
         if (section?.heading === "Room Details") {
@@ -249,8 +255,8 @@ const HotelManagement = () => {
             details: [
               { name: "Standard Rooms", value: standardRoomCount },
               { name: "Luxury Rooms", value: luxuryRoomCount },
-              { name: "Booked Rooms", value: "00" },
-              { name: "Vacant Rooms", value: "00" },
+              { name: "Booked Rooms", value: bookedCount },
+              { name: "Vacant Rooms", value: vacantCount },
             ],
           };
         } else {

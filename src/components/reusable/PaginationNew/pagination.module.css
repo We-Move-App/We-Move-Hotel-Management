@@ -21,7 +21,7 @@
 }
 
 .pagination li.active {
-  background-color: var(--color-bg-btn);
+  background-color: #2f6e56;
   color: white;
   border-color: #f1f1f1;
 }

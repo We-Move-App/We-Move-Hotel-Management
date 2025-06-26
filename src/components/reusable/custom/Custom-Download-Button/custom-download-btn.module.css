@@ -1,0 +1,53 @@
+.customFileInput {
+    display: flex;
+    flex-direction: column;
+    gap: var(--flex-gap-sm);
+    cursor: pointer;
+}
+
+.customFileInput label {
+    color: var(--color-grey);
+    font-weight: var(--font-weight-regular);
+}
+
+.inputWrapper {
+    /* width: min(100%, 215px); */
+    height: 70px;
+    border-radius: var(--border-radius-xs);
+    border: 2px dashed var(--color-dark-grey);
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--flex-gap-xs);
+    background-color: var(--color-light-grey);
+
+    font-size: var(--font-size-small);
+}
+
+.inputWrapper>span {
+    color: var(--color-dark-grey);
+    font-size: var(--font-size-small);
+    display: -webkit-box;
+    text-align: center;
+    -webkit-line-clamp: 1;
+    /* Clamp to 1 line */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.hiddenInput {
+    display: none;
+    /* Hide the actual file input */
+}
+
+@media (max-width: 768px) {
+    .inputWrapper {
+        height: 50px !important;
+    }
+
+    .error {
+        bottom: -20px;
+    }
+}
