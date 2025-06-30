@@ -68,21 +68,88 @@ const RoomManagement = () => {
     setSelectedRoom(room?._id);
   };
 
+  // const modalOpenForTwo = async (room) => {
+  //   setIsModalOne(false);
+
+  //   const hotelIdByToken =
+  //     JSON.parse(localStorage.getItem("WEMOVE_USER"))?._id || "";
+
+  //   setSelectedRoom(room?._id);
+
+  //   const { data, statusCode, success, error } = await apiCall(
+  //     `${ENDPOINTS.HOTEL_BOOKINGS}?bookingId=${room?.bookingReference}`,
+  //     "GET"
+  //   );
+  //   if (error) {
+  //     setModalTwoError(error?.message);
+  //   }
+  //   if (success) {
+  //     const {
+  //       assingnedRooms,
+  //       bookedBy,
+  //       hotelId,
+  //       roomTypeId,
+  //       noOfAdults,
+  //       checkInDate,
+  //       checkOutDate,
+  //       noOfRooms,
+  //       noOfKids,
+  //       _id,
+  //     } = data.data.bookings[0];
+  //     const userObj = {};
+  //     const { hotelName } = hotelId;
+
+  //     const { roomType } = roomTypeId;
+  //     console.log("BOOKING DETAILS:", data.data);
+  //     if (typeof bookedBy === "string" && bookedBy == hotelIdByToken) {
+  //       const { data, success, statusCode, error } = await apiCall(
+  //         `${ENDPOINTS.PROFILE}`,
+  //         "GET"
+  //       );
+
+  //       console.log("BOOKED BY MANAGER", data.data.user);
+  //       // console.log("BOOKED BY DATA", data)
+  //       userObj.fullName = data?.data?.user?.fullName;
+  //       userObj.phoneNumber = data?.data?.user?.phoneNumber;
+  //     } else {
+  //       console.log("BOOKED BY USER", bookedBy);
+  //       userObj.fullName = bookedBy?.fullName || "";
+  //       userObj.phoneNumber = bookedBy?.phoneNumber || "";
+  //     }
+  //     console.log("USER OBJECT:", userObj);
+
+  //     setBookingTableData({
+  //       bookingId: _id || "",
+  //       roomType: roomType || "",
+  //       adult: noOfAdults || "",
+  //       children: noOfKids || "",
+  //       checkinDate: formatDate(checkInDate) || "",
+  //       checkoutDate: formatDate(checkOutDate) || "",
+  //       guestName: userObj.fullName || "Null",
+  //       mobileNumber: userObj.phoneNumber || "Null",
+  //     });
+  //     setIsModalTwo(true);
+  //   }
+  // };
+
   const modalOpenForTwo = async (room) => {
-    setIsModalOne(false);
+    setIsModalOne(false); // close modal one
+    setModalTwoError(null); // reset errors
 
     const hotelIdByToken =
       JSON.parse(localStorage.getItem("WEMOVE_USER"))?._id || "";
-
     setSelectedRoom(room?._id);
 
     const { data, statusCode, success, error } = await apiCall(
       `${ENDPOINTS.HOTEL_BOOKINGS}?bookingId=${room?.bookingReference}`,
       "GET"
     );
+
     if (error) {
       setModalTwoError(error?.message);
+      return;
     }
+
     if (success) {
       const {
         assingnedRooms,
@@ -96,27 +163,22 @@ const RoomManagement = () => {
         noOfKids,
         _id,
       } = data.data.bookings[0];
-      const userObj = {};
-      const { hotelName } = hotelId;
 
+      const userObj = {};
       const { roomType } = roomTypeId;
-      console.log("BOOKING DETAILS:", data.data);
+
       if (typeof bookedBy === "string" && bookedBy == hotelIdByToken) {
-        const { data, success, statusCode, error } = await apiCall(
+        const { data, success, error } = await apiCall(
           `${ENDPOINTS.PROFILE}`,
           "GET"
         );
 
-        console.log("BOOKED BY MANAGER", data.data.user);
-        // console.log("BOOKED BY DATA", data)
         userObj.fullName = data?.data?.user?.fullName;
         userObj.phoneNumber = data?.data?.user?.phoneNumber;
       } else {
-        console.log("BOOKED BY USER", bookedBy);
         userObj.fullName = bookedBy?.fullName || "";
         userObj.phoneNumber = bookedBy?.phoneNumber || "";
       }
-      console.log("USER OBJECT:", userObj);
 
       setBookingTableData({
         bookingId: _id || "",
@@ -128,6 +190,8 @@ const RoomManagement = () => {
         guestName: userObj.fullName || "Null",
         mobileNumber: userObj.phoneNumber || "Null",
       });
+
+      // ✅ Only open modal after data is set
       setIsModalTwo(true);
     }
   };

@@ -70,7 +70,10 @@ const CustomerFeedback = () => {
                   date={item?.createdAt}
                   rating={item?.rating}
                   feedback={item?.comment}
-                  avatarUrl={item?.userId?.avatar?.url}
+                  avatarUrl={
+                    item?.userId?.avatar?.url ||
+                    "https://randomuser.me/api/portraits/men/32.jpg"
+                  }
                 />
               </div>
             ))}
