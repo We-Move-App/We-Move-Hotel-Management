@@ -167,60 +167,7 @@ const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
 
   const [fileComponentsCount, setFileComponentsCount] = useState(3); // Default to 3 components
 
-  // Handle file change, whether single or multiple files
-  // const handleFileChange = (event) => {
-  //     const files = event.target.files;
-  //     console.log(files, "from handlefilechange")
-  //     const currentFiles = formik.values.files;
-
-  //     if (files.length) {
-  //         // If multiple files, merge them into the existing array
-  //         formik.setFieldValue('files', [...currentFiles, ...Array.from(files)]);
-  //     } else {
-  //         // If it's a single file, ensure it's added to the array
-  //         formik.setFieldValue('files', [...currentFiles, files[0]]);
-  //     }
-  //     // // If it's a single file, ensure it's added to the array
-  //     // if (files.length === 1) {
-  //     //     formik.setFieldValue('files', [...currentFiles, files[0]]);
-  //     // } else {
-  //     //     // If multiple files, merge them into the existing array
-  //     //     formik.setFieldValue('files', [...currentFiles, ...Array.from(files)]);
-  //     // }
-  // };
-
-  // const handleFileChange = (event, index) => {
-
-  //     const files = event.target.value;
-  //     if (!files) {
-  //         console.log("files not found");
-  //         return;
-  //     } // Prevent undefined errors
-
-  //     const currentFiles = formik.values.files || []; // Ensure initial value is an empty array
-
-  //     if (files.length > 1) {
-  //         // If multiple files, merge them into the existing array
-  //         // console.log(files, currentFiles)
-  //         const updatedFiles = [...currentFiles.slice(0, index), ...Array.from(files), ...currentFiles.slice(index + 1)];
-  //         formik.setFieldValue('files', updatedFiles);
-  //         // formik.setFieldValue('files', [...currentFiles, ...Array.from(files)]);
-  //     } else {
-  //         // If single file, ensure it is added to the array
-  //         // console.log(files, currentFiles)
-  //         const updatedFiles = [...currentFiles.slice(0, index), files[0], ...currentFiles.slice(index + 1)];
-  //         formik.setFieldValue('files', updatedFiles);
-  //         // formik.setFieldValue('files', [...currentFiles, files[0]]);
-  //     }
-  // };
-
-  // Handle adding more drag-and-drop components
-
   const handleFilesChange = (newFiles) => {
-    // Add new files to the existing ones
-    // const updatedFiles = [...uploadedFiles, ...newFiles];
-    // setUploadedFiles(updatedFiles);
-
     const currentFiles = formik.values.files;
     formik.setFieldValue("files", [...currentFiles, ...newFiles]);
     // Simulate upload progress for new files
@@ -259,10 +206,6 @@ const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
   const handleAddClick = () => {
     setFileComponentsCount(fileComponentsCount + 1);
   };
-
-  // useEffect(()=>{
-  //     getHotelDetails();
-  // },[hotelId])
 
   return (
     <form className={styles.form} onSubmit={formik.handleSubmit}>

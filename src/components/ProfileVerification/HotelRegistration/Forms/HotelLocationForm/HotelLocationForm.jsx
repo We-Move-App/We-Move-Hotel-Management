@@ -58,7 +58,7 @@ const HotelLocationForm = ({
           street: values.locality,
           landmark: values.landmark,
           pincode: values.pincode,
-          state: values.state || "Karnatakaaww",
+          state: values.state || "Karnataka",
           country: values.country || "India",
           hotelId: hotelID,
           latitude: values.latitude,
@@ -123,8 +123,8 @@ const HotelLocationForm = ({
   };
 
   useEffect(() => {
-    console.log(formik.values);
-  }, [loading]);
+    console.log("Formik values changed:", formik.values);
+  }, [formik.values]);
 
   return (
     <form className={styles.form} onSubmit={formik.handleSubmit}>
@@ -134,7 +134,10 @@ const HotelLocationForm = ({
             <p>Add Location</p>
           </label>
           {/* <GoogleMapComponent handleLocation={(locationDetails) => handleLocation(locationDetails)} formik={formik} /> */}
-          <GooglePlacesAutocomplete formik={formik} />
+          <GooglePlacesAutocomplete
+            formik={formik}
+            handleLocation={handleLocation}
+          />
         </div>
 
         <div className={styles.doubleFormFieldsBox}>
