@@ -76,23 +76,29 @@ const RoomManagement = () => {
     setIsModalOne(false);
     setModalTwoError(null);
 
-    const hotelIdByToken =
-      JSON.parse(localStorage.getItem("WEMOVE_USER"))?._id || "";
-    setSelectedRoom(room?._id);
-
-    const { data, statusCode, success, error } = await apiCall(
-      `${ENDPOINTS.HOTEL_BOOKINGS}?bookingId=${room?.bookingReference}`,
-      "GET"
-    );
-
-    if (error) {
-      setModalTwoError(error?.message);
+    if (!room?.bookingReference) {
+      setModalTwoError("Booking reference not found for this room.");
       return;
     }
 
-    if (success) {
+    const hotelIdByToken =
+      JSON.parse(localStorage.getItem("WEMOVE_USER"))?._id || "";
+
+    setSelectedRoom(room?._id);
+
+    try {
+      const { data, success, error } = await apiCall(
+        `${ENDPOINTS.HOTEL_BOOKINGS}?bookingId=${room.bookingReference}`,
+        "GET"
+      );
+
+      if (error || !success || !data?.data?.bookings?.[0]) {
+        setModalTwoError("Failed to fetch booking details.");
+        return;
+      }
+
       const {
-        assingnedRooms,
+        assignedRooms,
         bookedBy,
         hotelId,
         roomTypeId,
@@ -105,16 +111,12 @@ const RoomManagement = () => {
       } = data.data.bookings[0];
 
       const userObj = {};
-      const { roomType } = roomTypeId;
+      const { roomType } = roomTypeId || {};
 
-      if (typeof bookedBy === "string" && bookedBy == hotelIdByToken) {
-        const { data, success, error } = await apiCall(
-          `${ENDPOINTS.PROFILE}`,
-          "GET"
-        );
-
-        userObj.fullName = data?.data?.user?.fullName;
-        userObj.phoneNumber = data?.data?.user?.phoneNumber;
+      if (typeof bookedBy === "string" && bookedBy === hotelIdByToken) {
+        const userResp = await apiCall(`${ENDPOINTS.PROFILE}`, "GET");
+        userObj.fullName = userResp?.data?.data?.user?.fullName;
+        userObj.phoneNumber = userResp?.data?.data?.user?.phoneNumber;
       } else {
         userObj.fullName = bookedBy?.fullName || "";
         userObj.phoneNumber = bookedBy?.phoneNumber || "";
@@ -124,13 +126,16 @@ const RoomManagement = () => {
         bookingId: _id || "",
         roomType: roomType || "",
         adult: noOfAdults || "",
-        children: noOfKids || "",
+        children: noOfKids ?? 0,
         checkinDate: formatDate(checkInDate) || "",
         checkoutDate: formatDate(checkOutDate) || "",
         guestName: userObj.fullName || "Null",
         mobileNumber: userObj.phoneNumber || "Null",
       });
+
       setIsModalTwo(true);
+    } catch (err) {
+      setModalTwoError("Something went wrong. Please try again.");
     }
   };
 
@@ -151,10 +156,11 @@ const RoomManagement = () => {
       setBookingId("");
       console.log("ALLOTED ROOM :", data);
       setIsModalOne(false);
-      setIsModalTwo(true);
+      alert("Room has been successfully assigned.");
+      getAllRooms();
 
-      const reqRoom = rooms.filter((r) => r?._id === selectedRoom);
-      modalOpenForTwo(reqRoom);
+      const reqRoom = rooms.find((r) => r?._id === selectedRoom);
+      if (reqRoom) modalOpenForTwo(reqRoom);
     }
   };
 
@@ -272,16 +278,18 @@ const RoomManagement = () => {
                 { Header: "Child", accessor: "child" },
               ]}
               data={[
-                {
-                  bookingId: bookingTableData?.bookingId || "roomId",
-                  roomType: bookingTableData?.roomType || "r-type",
-                  guestName: bookingTableData?.guestName || "",
-                  mobileNumber: bookingTableData?.mobileNumber || "",
-                  checkinDate: bookingTableData?.checkinDate || "",
-                  checkoutDate: bookingTableData?.checkoutDate || "",
-                  adult: bookingTableData?.adult || 0,
-                  child: bookingTableData?.children || 0,
-                },
+                bookingTableData
+                  ? {
+                      bookingId: bookingTableData?.bookingId || "roomId",
+                      roomType: bookingTableData?.roomType || "r-type",
+                      guestName: bookingTableData?.guestName || "User",
+                      mobileNumber: bookingTableData?.mobileNumber || "",
+                      checkinDate: bookingTableData?.checkinDate || "",
+                      checkoutDate: bookingTableData?.checkoutDate || "",
+                      adult: bookingTableData?.adult || 0,
+                      child: bookingTableData?.children ?? 0,
+                    }
+                  : {},
               ]}
               customRowClass="customRow"
               customCellClass="customCell"
