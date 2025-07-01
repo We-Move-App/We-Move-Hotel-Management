@@ -21,7 +21,11 @@ import Pagination from "../../components/reusable/PaginationNew/Pagination";
 const RoomManagement = () => {
   const formatDate = useFormattedDate();
   const hotelID = localStorage.getItem("WEMOVE_HOTELID") || "";
-  const [currentPage, setCurrentPage] = useState(1);
+  const [tabPages, setTabPages] = useState({
+    all: 1,
+    available: 1,
+    booked: 1,
+  });
   const [totalPages, setTotalPages] = useState(1);
   const limit = 25;
   const [date, setDate] = useState();
@@ -68,73 +72,9 @@ const RoomManagement = () => {
     setSelectedRoom(room?._id);
   };
 
-  // const modalOpenForTwo = async (room) => {
-  //   setIsModalOne(false);
-
-  //   const hotelIdByToken =
-  //     JSON.parse(localStorage.getItem("WEMOVE_USER"))?._id || "";
-
-  //   setSelectedRoom(room?._id);
-
-  //   const { data, statusCode, success, error } = await apiCall(
-  //     `${ENDPOINTS.HOTEL_BOOKINGS}?bookingId=${room?.bookingReference}`,
-  //     "GET"
-  //   );
-  //   if (error) {
-  //     setModalTwoError(error?.message);
-  //   }
-  //   if (success) {
-  //     const {
-  //       assingnedRooms,
-  //       bookedBy,
-  //       hotelId,
-  //       roomTypeId,
-  //       noOfAdults,
-  //       checkInDate,
-  //       checkOutDate,
-  //       noOfRooms,
-  //       noOfKids,
-  //       _id,
-  //     } = data.data.bookings[0];
-  //     const userObj = {};
-  //     const { hotelName } = hotelId;
-
-  //     const { roomType } = roomTypeId;
-  //     console.log("BOOKING DETAILS:", data.data);
-  //     if (typeof bookedBy === "string" && bookedBy == hotelIdByToken) {
-  //       const { data, success, statusCode, error } = await apiCall(
-  //         `${ENDPOINTS.PROFILE}`,
-  //         "GET"
-  //       );
-
-  //       console.log("BOOKED BY MANAGER", data.data.user);
-  //       // console.log("BOOKED BY DATA", data)
-  //       userObj.fullName = data?.data?.user?.fullName;
-  //       userObj.phoneNumber = data?.data?.user?.phoneNumber;
-  //     } else {
-  //       console.log("BOOKED BY USER", bookedBy);
-  //       userObj.fullName = bookedBy?.fullName || "";
-  //       userObj.phoneNumber = bookedBy?.phoneNumber || "";
-  //     }
-  //     console.log("USER OBJECT:", userObj);
-
-  //     setBookingTableData({
-  //       bookingId: _id || "",
-  //       roomType: roomType || "",
-  //       adult: noOfAdults || "",
-  //       children: noOfKids || "",
-  //       checkinDate: formatDate(checkInDate) || "",
-  //       checkoutDate: formatDate(checkOutDate) || "",
-  //       guestName: userObj.fullName || "Null",
-  //       mobileNumber: userObj.phoneNumber || "Null",
-  //     });
-  //     setIsModalTwo(true);
-  //   }
-  // };
-
   const modalOpenForTwo = async (room) => {
-    setIsModalOne(false); // close modal one
-    setModalTwoError(null); // reset errors
+    setIsModalOne(false);
+    setModalTwoError(null);
 
     const hotelIdByToken =
       JSON.parse(localStorage.getItem("WEMOVE_USER"))?._id || "";
@@ -190,8 +130,6 @@ const RoomManagement = () => {
         guestName: userObj.fullName || "Null",
         mobileNumber: userObj.phoneNumber || "Null",
       });
-
-      // ✅ Only open modal after data is set
       setIsModalTwo(true);
     }
   };
@@ -226,6 +164,8 @@ const RoomManagement = () => {
     if (activeTab === "Available Rooms") status = "available";
     else if (activeTab === "Reserved Rooms") status = "booked";
 
+    const currentPage = tabPages[status];
+
     const { data, statusCode, error, success } = await apiCall(
       `${ENDPOINTS.GET_ALL_ROOMS}?hotelId=${hotelID}&status=${status}&page=${currentPage}&limit=${limit}`,
       "GET"
@@ -241,6 +181,23 @@ const RoomManagement = () => {
       setTotalPages(Math.ceil(total / limit));
       setLoading(false);
     }
+  };
+
+  const getActiveStatus = () => {
+    const activeTabName = tabBarData.find((tab) => tab.status)?.name;
+    if (activeTabName === "Available Rooms") return "available";
+    if (activeTabName === "Reserved Rooms") return "booked";
+    return "all";
+  };
+
+  const handleTabChange = (index) => {
+    let newStatus = "all";
+    if (index === 1) newStatus = "available";
+    else if (index === 2) newStatus = "booked";
+    setTabPages((prev) => ({
+      ...prev,
+      [newStatus]: 1,
+    }));
   };
 
   const handleCheckout = async () => {
@@ -262,7 +219,7 @@ const RoomManagement = () => {
 
   useEffect(() => {
     getAllRooms();
-  }, [currentPage, tabBarData, date]);
+  }, [tabPages, tabBarData, date]);
 
   console.log("Total Pages:", totalPages);
 
@@ -343,7 +300,11 @@ const RoomManagement = () => {
       <div className={styles.roomDetailsBox}>
         <p>Room Details</p>
         <div className={styles.roomDetailsHeader}>
-          <CustomTabBar tabBarData={tabBarData} setTabBarData={setTabBarData} />
+          <CustomTabBar
+            tabBarData={tabBarData}
+            setTabBarData={setTabBarData}
+            onTabChange={handleTabChange}
+          />
           <div className={styles.datePickerWrapper}>
             {/* <CustomInput type='datetime-local' /> */}
             {/* <CustomDateInput/> */}
@@ -410,9 +371,14 @@ const RoomManagement = () => {
       </div>
       {totalPages > 1 && (
         <Pagination
-          currentPage={currentPage}
+          currentPage={tabPages[getActiveStatus()]}
           totalPages={totalPages}
-          onPageChange={(page) => setCurrentPage(page)}
+          onPageChange={(page) =>
+            setTabPages((prev) => ({
+              ...prev,
+              [getActiveStatus()]: page,
+            }))
+          }
         />
       )}
     </div>
