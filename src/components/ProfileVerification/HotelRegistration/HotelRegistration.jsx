@@ -160,9 +160,24 @@ const HotelRegistration = () => {
     );
     if (success) {
       // console.log("HOTEL DETAILS FUN", data);
-      const { hotelName, businessLicense, totalRoom, termsAndConditions, _id } =
-        data.data.hotel;
-      const { images: files } = data.data?.images[0];
+      // const { hotelName, businessLicense, totalRoom, termsAndConditions, _id } =
+      //   data.data.hotel;
+      // const { images: files } = data.data?.images[0];
+
+      const {
+        hotelName,
+        businessLicense,
+        totalRoom,
+        termsAndConditions,
+        _id,
+        images: files,
+      } = data.data;
+
+      console.log("HotelImages (files):", files);
+      const imageIds = files.map((img) => img._id);
+      console.log("Hotel Image IDs:", imageIds);
+
+      localStorage.setItem("WEMOVE_HOTEL_IMAGE_IDS", JSON.stringify(imageIds));
 
       setMultipartFormState((prev) => ({
         ...prev,

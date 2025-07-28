@@ -69,12 +69,13 @@ const HotelDetailsValidationSchema = Yup.object().shape({
     .oneOf([true], "You must accept the terms and conditions"),
 });
 const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
-  // console.log(initialValues)
   const [errorObj, setErrorObj] = useState({});
   const [fileProgress, setFileProgress] = useState({});
   const [hotelId, setHotelId] = useState(
     localStorage.getItem("WEMOVE_HOTELID") || ""
   );
+  const [deletedImageIds, setDeletedImageIds] = useState([]);
+
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: HotelDetailsValidationSchema,
@@ -90,11 +91,32 @@ const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
         payloadBody.append("businessLicense", values.bussinessLicense);
         payloadBody.append("totalRoom", values.totalRooms);
 
+        const existingImageIds = [];
+        const newUploads = [];
+
         for (const image of values.files) {
-          payloadBody.append("hotelImages", image);
+          if (image instanceof File) {
+            newUploads.push(image); // New file to upload
+          } else if (typeof image === "object" && image._id) {
+            existingImageIds.push(image._id); // Backend image reference
+          }
         }
 
+        // Append new files if any
+        if (newUploads.length > 0) {
+          newUploads.forEach((file) => payloadBody.append("hotelImages", file));
+        } else {
+          // If no new images, ensure field is sent to indicate no upload
+          payloadBody.append("hotelImages", null);
+        }
+
+        const finalImageIds =
+          deletedImageIds.length > 0 ? deletedImageIds : [""];
+
+        payloadBody.append("imageId", JSON.stringify(finalImageIds));
+
         payloadBody.append("termsAndConditions", values.termsAndConditions);
+
         window.scrollTo({ top: 0, behavior: "smooth" });
 
         // if values._id then update else post req
@@ -191,12 +213,20 @@ const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
   };
 
   const removeFile = (index, fileName) => {
-    console.log("removeFile", fileName, index);
     const files = formik.values.files;
+    const fileToRemove = files[index];
+
+    // Track deleted backend image IDs only
+    if (fileToRemove && typeof fileToRemove === "object" && fileToRemove._id) {
+      setDeletedImageIds((prev) => [...prev, fileToRemove._id]);
+    }
+
     formik.setFieldValue("files", [
       ...files.slice(0, index),
       ...files.slice(index + 1),
     ]);
+
+    // Remove upload progress for local files
     setFileProgress((prev) => {
       const { [fileName]: removed, ...rest } = prev;
       return rest;
@@ -247,18 +277,12 @@ const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
         {/* Drag and Drop Components Wrapper */}
         <div className={styles.dragDropWrapper}>
           <div className={styles.dragDropLabelBox}>
-            {/* <label htmlFor="upload images" ><p>Upload Hotel Photo (min: 3 img)</p></label> */}
             <CustomLabel
               labelText={"Upload Hotel Photo (min: 3 img)"}
               required={true}
             />
-            {/* <span onClick={handleAddClick}><p>Add more</p></span> */}
           </div>
           <div className={styles.dragDropBox}>
-            {/* Drag and Drop Components */}
-            {/* Add your drag and drop components here */}
-            {/* Dynamically render CustomDragAndDrop components */}
-
             <FileUpload
               onFilesChange={handleFilesChange}
               accept={".png, .jpg, .JPEG"}
@@ -295,7 +319,6 @@ const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
           type={"submit"}
           buttonSize={"medium"}
         />
-        {/* <CustomButton buttonText={'Continue'} type={'submit'} style={{ height: '70px', width: 'fit-content', minWidth: '209px' }} /> */}
       </div>
     </form>
   );

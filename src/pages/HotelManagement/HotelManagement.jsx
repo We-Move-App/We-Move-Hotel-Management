@@ -123,7 +123,7 @@ const HotelManagement = () => {
         await getHotelDetails(hotelId);
         await getHotelLocation(hotelId);
         await getHotelRoomsAndAmenities(hotelId);
-        await getBookedAndVacantRooms(hotelId);
+        // await getBookedAndVacantRooms(hotelId);
         // await getHotelPolicy(hotelId);
       }
     } catch (error) {
@@ -146,11 +146,21 @@ const HotelManagement = () => {
     );
     if (success) {
       // console.log("HOTEL DETAILS FUN", data);
-      const { hotelName, businessLicense, totalRoom, termsAndConditions, _id } =
-        data.data.hotel;
-      const { images: files } = data.data?.images[0];
+      // const { hotelName, businessLicense, totalRoom, termsAndConditions, _id } =
+      //   data.data.hotel;
+      // const { images: files } = data.data?.images[0];
+      const {
+        hotelName,
+        businessLicense,
+        totalRoom,
+        termsAndConditions,
+        _id,
+        images: files,
+      } = data.data;
+
       // console.log("HotelImages", files);
       setGridImages(files);
+
       setDetailsData((prev) =>
         prev.map((section) => {
           if (section?.heading == "Hotel Details") {
