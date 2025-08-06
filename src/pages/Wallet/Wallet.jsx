@@ -19,12 +19,15 @@ import CustomRadioButton from "../../components/reusable/custom/Form-Fields/CRad
 import { ENDPOINTS } from "../../utils/apiEndpoints";
 import apiCall from "../../hooks/apiCall";
 import { tokenFromLocalStorage } from "../../utils/helperFunctions";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Wallet = () => {
+  const navigate = useNavigate();
   // const token = tokenFromLocalStorage();
   const [tabBarData, setTabBarData] = useState([
     { name: "Transaction History", status: true },
-    { name: "Bank Details", styles: false },
+    { name: "Withdraw", status: false },
   ]);
   const [searchQuery, setSearchQuery] = useState("");
   const [bankDetails, setBankDetails] = useState({
@@ -41,22 +44,89 @@ const Wallet = () => {
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
+  const setActiveTab = (indexToActivate) => {
+    setTabBarData((prev) =>
+      prev.map((tab, index) => ({
+        ...tab,
+        status: index === indexToActivate,
+      }))
+    );
+  };
   const handleOpenCongratulationModal = () =>
     setIsCongratulationModalOpen(true);
-  const handleCloseCongratulationModal = () =>
+  const handleCloseCongratulationModal = () => {
     setIsCongratulationModalOpen(false);
+    setTimeout(() => {
+      setActiveTab(0);
+      navigate("/dashboard/wallet"); // if you have a route for transaction details
+    }, 300);
+  };
 
   const [amount, setAmount] = useState("");
-  const walletBalance = 1000; // Example balance, replace with actual balance
+  const walletBalance = 1000;
+  const [transactions, setTransactions] = useState([]);
 
-  const handleSubmit = (e) => {
+  const formattedTransactions = transactions.map((tx) => {
+    const date = new Date(tx.createdAt);
+
+    return {
+      transactionId: `${tx.transactionId?.slice(
+        0,
+        6
+      )}...${tx.transactionId?.slice(-4)}`,
+      userName: "N/A", // Replace if you have user data
+      date: date.toLocaleDateString(), // e.g., "06/08/2025"
+      time: date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }), // e.g., "12:15 PM"
+      amount: tx.amount,
+      status: tx.type, // No such field in your API
+    };
+  });
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   console.log("Withdrawal amount:", amount);
+
+  //   setTimeout(() => {
+  //     setIsModalOpen(false);
+  //     handleOpenCongratulationModal();
+  //   }, 1 * 1000);
+  // };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Withdrawal amount:", amount);
 
-    setTimeout(() => {
+    const token = tokenFromLocalStorage();
+    const withdrawAmount = Number(amount);
+
+    if (!withdrawAmount || withdrawAmount <= 0) {
+      alert("Please enter a valid amount.");
+      return;
+    }
+
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/v1/momo/withdraw`,
+        {
+          amount: withdrawAmount,
+          entity: "hotelManager", // adjust based on backend requirement
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("✅ Withdraw success:", res.data);
+
       setIsModalOpen(false);
-      handleOpenCongratulationModal();
-    }, 1 * 1000);
+      setAmount(""); // clear input
+      handleOpenCongratulationModal(); // show second modal
+      fetchTransactions(); // refresh transaction list
+    } catch (err) {
+      console.error("❌ Withdraw failed:", err);
+      alert("Withdraw failed. Please try again.");
+    }
   };
 
   const firstModal = () => {
@@ -73,19 +143,15 @@ const Wallet = () => {
               onChange={(e) => setAmount(e.target.value)}
             />
 
-            <div className={styles.walletSection}>
+            {/* <div className={styles.walletSection}>
               <CustomLabel labelText={"Your Wallet"} />
-              {/* <div className={styles.wallet_option}>
-                                <input type="radio" id="withdrawAll" name="wallet" defaultChecked={false} />
-                                <label htmlFor="withdrawAll">Withdraw All</label>
-                            </div> */}
               <div>
                 <CustomRadioButton id={1} label={"Withdraw All"} />
                 <p className={styles.wallet_balance}>
                   Balance: ${walletBalance.toFixed(2)}XAF
                 </p>
               </div>
-            </div>
+            </div> */}
 
             <div className={styles.btnWrapper}>
               <CustomButton buttonText={"Withdraw"} buttonSize={"medium"} />
@@ -158,18 +224,55 @@ const Wallet = () => {
     }
   };
 
+  const fetchTransactions = async () => {
+    try {
+      const token = tokenFromLocalStorage();
+
+      const res = await axios.get(
+        `${
+          import.meta.env.VITE_BASE_URL
+        }/api/v1/wallet/transactions?entity=hotelManager`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("Transaction Data:", res.data);
+      setTransactions(res.data.data.transactions || []);
+      // You can update state here with res.data if needed
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+    }
+  };
+
   useEffect(() => {
     fetchUserBank();
+    fetchTransactions();
   }, []);
+
+  useEffect(() => {
+    const withdrawTab = tabBarData.find((tab) => tab.name === "Withdraw");
+    if (withdrawTab?.status) {
+      setIsModalOpen(true);
+    } else {
+      setIsModalOpen(false);
+    }
+  }, [tabBarData]);
 
   return (
     <div className={styles.wallet}>
       <h1>Wallet</h1>
       <div className={styles.digitalWalletWrapper}>
-        <DebitCard showAmount={true} amount={"12,000"} />
+        <DebitCard showAmount={true} />
       </div>
       <div className={styles.transactionHistoryAndBankDetialsContianer}>
-        <CustomTabBar tabBarData={tabBarData} setTabBarData={setTabBarData} />
+        <CustomTabBar
+          tabBarData={tabBarData}
+          setTabBarData={setTabBarData}
+          activeTabIndex={tabBarData.findIndex((tab) => tab.status)}
+        />
 
         {tabBarData[0].status && (
           <div className={styles.transactionTable}>
@@ -188,130 +291,21 @@ const Wallet = () => {
             <CustomTable
               columns={[
                 { Header: "Transaction ID", accessor: "transactionId" },
-                { Header: "User Name", accessor: "userName" },
+                // { Header: "User Name", accessor: "userName" },
                 { Header: "Date", accessor: "date" },
                 { Header: "Time", accessor: "time" },
                 { Header: "Amount", accessor: "amount" },
-                { Header: "Available Balance", accessor: "availableBalance" },
+                { Header: "Status", accessor: "status" },
               ]}
-              data={[
-                {
-                  transactionId: "OL6768057",
-                  userName: "Harry Potter",
-                  date: "11-03-2024",
-                  time: "01.30 PM",
-                  amount: 89988998,
-                  availableBalance: "34,457",
-                },
-                {
-                  transactionId: "OL6768057",
-                  userName: "Jane Smith",
-                  date: "21-03-2024",
-                  time: "10.30 PM",
-                  amount: 89988998,
-                  availableBalance: "34,457",
-                },
-                {
-                  transactionId: "OL6768057",
-                  userName: "Dr. Banner",
-                  date: "22-03-2024",
-                  time: "11.30 PM",
-                  amount: 89988998,
-                  availableBalance: "34,457",
-                },
-                {
-                  transactionId: "OL6768057",
-                  userName: "John Wick",
-                  date: "22-03-2024",
-                  time: "10.30 PM",
-                  amount: 89988998,
-                  availableBalance: "34,457",
-                },
-                {
-                  transactionId: "OL6768057",
-                  userName: "Tony Stark",
-                  date: "24-03-2024",
-                  time: "11.30 PM",
-                  amount: 89988998,
-                  availableBalance: "34,457",
-                },
-                {
-                  transactionId: "OL6768057",
-                  userName: "Scarlet Witch",
-                  date: "24-03-2024",
-                  time: "11.30 PM",
-                  amount: 89988998,
-                  availableBalance: "34,457",
-                },
-              ]}
+              data={formattedTransactions}
               customRowClass="customRow"
               customCellClass="customCell"
             />
           </div>
         )}
-        {tabBarData[1].status && (
-          <div className={styles.formHeaderAndFormContainer}>
-            {isModalOpen && firstModal()}
-            {isCongratulationModalOpen && secondModal()}
-            {/* <FormHeader
-                                heading={'Bank Details'}
-                                headingStyle={{ textAlign: 'left', fontSize: GlobalStyles.fontSizeExtraSmall, fontWeight: GlobalStyles.fontWeightBold }}
-                            /> */}
-            <div className={styles.form}>
-              <div className={styles.formFieldsContainer}>
-                <div className={styles.doubleFormFieldsBox}>
-                  <CustomInput
-                    required={true}
-                    label={"Bank name"}
-                    name="bankName"
-                    value={bankDetails.bankName}
-                    onChange={() => {}}
-                    isDisabled={true}
-                    boxStyle={{ width: "45%" }}
-                  />
-                  <CustomInput
-                    required={true}
-                    label={"Bank Account Number"}
-                    name="bankAccountNumber"
-                    value={bankDetails.bankAccountNumber}
-                    onChange={() => {}}
-                    isDisabled={true}
-                    boxStyle={{ width: "45%" }}
-                  />
-                </div>
-                <div className={styles.doubleFormFieldsBox}>
-                  <CustomInput
-                    required={true}
-                    label={"Account Holder Name"}
-                    name="bankName"
-                    value={bankDetails.accountHolderName}
-                    onChange={() => {}}
-                    isDisabled={true}
-                    boxStyle={{ width: "45%" }}
-                  />
-                  <div className={styles.customFileInput}>
-                    <CustomFileInput
-                      label={"Bank Account Details"}
-                      name="bankAccountDetails"
-                      icon={<LuFileDown />}
-                      placeholder={"View file"}
-                      // boxStyle={{width: '45%'}}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={styles.withdrawBtn}>
-              <CustomButton
-                type={"button"}
-                onClick={handleOpenModal}
-                buttonText={"Withdraw"}
-                buttonSize={"medium"}
-                // style={{ width: '250px', height: '70px' }}
-              />
-            </div>
-          </div>
-        )}
+
+        {tabBarData[1].status && <>{isModalOpen && firstModal()}</>}
+        {isCongratulationModalOpen && secondModal()}
       </div>
     </div>
   );

@@ -13,9 +13,56 @@ import SearchBar from "../components/SearchBar/SearchBar";
 import CustomTable from "../components/Table/CustomTable";
 import useNavigation from "../hooks/useNavigation";
 import ContentHeading from "../components/reusable/Content-Heading/ContentHeading";
+import { tokenFromLocalStorage } from "../utils/helperFunctions";
+import axios from "axios";
 
 const Dashboard = () => {
   const { goTo } = useNavigation();
+
+  const [transactions, setTransactions] = useState([]);
+
+  const formattedTransactions = transactions.map((tx) => {
+    const date = new Date(tx.createdAt);
+
+    return {
+      transactionId: `${tx.transactionId?.slice(
+        0,
+        6
+      )}...${tx.transactionId?.slice(-4)}`,
+      userName: "N/A", // Replace if you have user data
+      date: date.toLocaleDateString(), // e.g., "06/08/2025"
+      time: date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }), // e.g., "12:15 PM"
+      amount: tx.amount,
+      status: tx.type, // No such field in your API
+    };
+  });
+
+  const fetchTransactions = async () => {
+    try {
+      const token = tokenFromLocalStorage();
+
+      const res = await axios.get(
+        `${
+          import.meta.env.VITE_BASE_URL
+        }/api/v1/wallet/transactions?entity=hotelManager`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("Transaction Data:", res.data);
+      setTransactions(res.data.data.transactions || []);
+      // You can update state here with res.data if needed
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTransactions();
+  }, []);
   return (
     <>
       <div className={styles.headerBox}>
@@ -39,7 +86,7 @@ const Dashboard = () => {
             <div className={styles.debitAndEarningCardContainer}>
               <div className={styles.card}>
                 {" "}
-                <DebitCard />
+                <DebitCard showAmount={true} />
               </div>
               <div className={`${styles.card} ${styles.earningCard}`}>
                 <TodayEarningCard />
@@ -73,44 +120,15 @@ const Dashboard = () => {
           <CustomTable
             columns={[
               { Header: "Transaction ID", accessor: "transactionId" },
-              { Header: "User Name", accessor: "userName" },
+              // { Header: "User Name", accessor: "userName" },
+              { Header: "Date", accessor: "date" },
+              { Header: "Time", accessor: "time" },
               { Header: "Amount", accessor: "amount" },
+              { Header: "Status", accessor: "status" },
             ]}
-            data={[
-              {
-                transactionId: "OL6768057",
-                userName: "Harry Potter",
-                amount: 89988998,
-              },
-              {
-                transactionId: "OL6768057",
-                userName: "Jane Smith",
-                amount: 89988998,
-              },
-              {
-                transactionId: "OL6768057",
-                userName: "Dr. Banner",
-                amount: 89988998,
-              },
-              {
-                transactionId: "OL6768057",
-                userName: "John Wick",
-                amount: 89988998,
-              },
-              {
-                transactionId: "OL6768057",
-                userName: "Tony Stark",
-                amount: 89988998,
-              },
-              {
-                transactionId: "OL6768057",
-                userName: "Scarlet Witch",
-                amount: 89988998,
-              },
-            ]}
+            data={formattedTransactions}
             customRowClass="customRow"
             customCellClass="customCell"
-            fontSize="small"
           />
         </div>
       </div>
