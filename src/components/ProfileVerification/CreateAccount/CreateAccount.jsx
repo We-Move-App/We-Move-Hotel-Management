@@ -24,6 +24,7 @@ import apiCall from "../../../hooks/apiCall";
 import { ENDPOINTS } from "../../../utils/apiEndpoints";
 import { tokenDecode } from "../../../utils/helperFunctions";
 import { toast } from "react-toastify";
+import BranchSelect from "../../Branch-Select/BranchSelect";
 
 // Validation Schema
 const SignupSchema = Yup.object().shape({
@@ -67,6 +68,7 @@ const SignupSchema = Yup.object().shape({
       "Confirm password cannot start with a space",
       (value) => value && value[0] !== " "
     ),
+  branch: Yup.string().required("Branch is required"),
 });
 
 const CreateAccount = () => {
@@ -83,21 +85,25 @@ const CreateAccount = () => {
       email: "",
       password: "",
       confirmPassword: "",
+      branch: "",
     },
     validationSchema: SignupSchema,
 
     onSubmit: async (values, { setErrors, setStatus }) => {
       console.log("Form submitted");
       console.log("Form data:", values);
+      console.log("Selected branch id:", values.branch);
 
       try {
         const payloadBody = {
           email: values.email,
           password: values.password,
           phoneNumber: "+91" + values.mobile,
-          fullName: "userName",
+          fullName: values.fullName || "userName",
           // role: 'hotelManager',
-          address: "123 kathmandu",
+          companyName: values.companyName || "We Move All",
+          address: values.companyAddress || "123 kathmandu",
+          branch: values.branch,
         };
 
         if (!mobileVerifyStatus || !emailVerifyStatus) {
@@ -172,10 +178,6 @@ const CreateAccount = () => {
 
   const [mobileVerifyStatus, setMobileVerifyStatus] = useState(false);
   const [emailVerifyStatus, setEmailVerifyStatus] = useState(false);
-
-  // const { data, loading, error, callApi: handleMobileVerification } = useApi();
-
-  // const { data, loading, error, refetch: mobileVerification } = callApi('/verification/send-otp-email-phone', 'POST', { body: payload });
 
   const handleVerifyMobileStatus = async () => {
     const mobileNumber = formik.values.mobile;
@@ -329,10 +331,6 @@ const CreateAccount = () => {
     );
   };
 
-  // useEffect(() => {
-  //   const isVerified = localStorage.getItem("isVerified");
-  //   isVerified && goTo('/')
-  // }, [])
   return (
     <div className={styles.formContainer}>
       {
@@ -351,6 +349,51 @@ const CreateAccount = () => {
       <form onSubmit={formik.handleSubmit} className={styles.form}>
         {/* Add your form fields here */}
         <div className={styles.formFieldsContainer}>
+          <CustomInput
+            label={"Full Name"}
+            required={true}
+            name="fullName"
+            type="text"
+            value={formik.values.fullName}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            touched={formik.touched.fullName}
+            error={formik.errors.fullName}
+          />
+          <CustomInput
+            label={"Company Name"}
+            required={true}
+            name="companyName"
+            type="text"
+            value={formik.values.companyName}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            touched={formik.touched.companyName}
+            error={formik.errors.companyName}
+          />
+          <CustomInput
+            label={"Company Address"}
+            required={true}
+            name="companyAddress"
+            type="textarea"
+            value={formik.values.companyAddress}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            touched={formik.touched.companyAddress}
+            error={formik.errors.companyAddress}
+          />
+
+          <BranchSelect
+            label="Choose Branch"
+            required={true}
+            name="branch"
+            value={formik.values.branch}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            touched={formik.touched.branch}
+            error={formik.errors.branch}
+          />
+
           <CustomInput
             label={"Mobile Number"}
             required={true}
