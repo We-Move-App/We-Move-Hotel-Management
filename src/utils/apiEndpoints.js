@@ -20,7 +20,7 @@ export const ENDPOINTS = {
     FEEDBACK: '/hotel-feedback',
     GET_OTP_RESET_PASSWORD: '/verification/send-otp-email-phone',
     VERIFY_OTP_WITHOUT_TOKEN: '/hotel-manager/auth/verify-otp-without-auth',
-    RESET_PASSWORD: '/hotel-manager/reset-password2',
+    RESET_PASSWORD: '/hotel-manager/reset-password',
     HOTEL_ALL_ROOMS: '/hotel-room/getAllRooms',
 
     PROFILE: '/hotel-manager/profile',
