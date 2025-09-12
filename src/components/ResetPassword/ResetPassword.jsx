@@ -10,6 +10,7 @@ import FormHeader from "../reusable/custom/FormHeader/FormHeader";
 import CustomModal from "../reusable/custom/CModal/CustomModal";
 import VerificationModal from "../ProfileVerification/VerificationModal/VerificationModal";
 import useNavigation from "../../hooks/useNavigation";
+import SnackbarNotification from "../reusable/Snackbar-Notification/SnackbarNotification";
 
 const emailSchema = Yup.object().shape({
   emailOrPhone: Yup.string()
@@ -61,6 +62,16 @@ const ResetPassword = () => {
   const [error, setError] = useState("");
   const { goTo } = useNavigation();
 
+  // Snackbar state
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
+
+  const handleCloseSnackbar = () => {
+    setSnackbar((prev) => ({ ...prev, open: false }));
+  };
   // const formik = useFormik({
   //     initialValues: {
   //         emailOrPhone: '',
@@ -119,12 +130,12 @@ const ResetPassword = () => {
   const sendOtp = async (values) => {
     try {
       console.log(values);
-      const payload = { emailOrPhone: "+91" + values.emailOrPhone };
-      setEmailOrPhone("+91" + values.emailOrPhone);
+      const payload = { emailOrPhone: values.emailOrPhone };
+      setEmailOrPhone(values.emailOrPhone);
       setOtp("");
 
       const { data, statusCode, success, error } = await apiCall(
-        `${ENDPOINTS.GET_OTP_RESET_PASSWORD}`,
+        `${ENDPOINTS.GET_OTP_WITHOUT_TOKEN}`,
         "POST",
         { body: payload }
       );
@@ -136,21 +147,46 @@ const ResetPassword = () => {
   };
 
   const handleResetPassword = async (values) => {
-    console.log(values);
     try {
       const payload = {
-        emailOrPhone,
+        emailOrPhone: values.emailOrPhone,
         password: values.password,
         confirmPassword: values.confirmPassword,
       };
-      const { data, statusCode, success, error } = await apiCall(
-        `${ENDPOINTS.RESET_PASSWORD}`,
+
+      const { data, success, error } = await apiCall(
+        `${ENDPOINTS.RESET_PASSWORD_WITHOUT_TOKEN}`,
         "PUT",
         { body: payload }
       );
-      console.log(data, error);
-    } catch (error) {
-      console.log(error);
+
+      if (success) {
+        // ✅ Show success snackbar
+        setSnackbar({
+          open: true,
+          message: "Password updated successfully",
+          severity: "success",
+        });
+
+        // ✅ Navigate after short delay
+        setTimeout(() => {
+          goTo("/login");
+        }, 1500);
+      } else {
+        // ❌ Show error snackbar
+        setSnackbar({
+          open: true,
+          message: error || "Something went wrong. Please try again.",
+          severity: "error",
+        });
+      }
+    } catch (err) {
+      console.log(err);
+      setSnackbar({
+        open: true,
+        message: "Server error. Please try again later.",
+        severity: "error",
+      });
     }
   };
 
@@ -256,6 +292,11 @@ const ResetPassword = () => {
           )}
         </Formik>
       )}
+
+      <SnackbarNotification
+        snackbar={snackbar}
+        handleClose={handleCloseSnackbar}
+      />
 
       {/* {!verified ? (
         <form onSubmit={formik.handleSubmit} className={styles.form}>
