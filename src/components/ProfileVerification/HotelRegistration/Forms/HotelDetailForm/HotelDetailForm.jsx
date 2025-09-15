@@ -14,6 +14,7 @@ import * as Yup from "yup";
 import { formatFileSize } from "../../../../../utils/helperFunctions";
 import apiCall from "../../../../../hooks/apiCall";
 import { ENDPOINTS } from "../../../../../utils/apiEndpoints";
+import SnackbarNotification from "../../../../reusable/Snackbar-Notification/SnackbarNotification";
 
 const SUPPORTED_FORMATS = [
   "image/jpg",
@@ -75,6 +76,15 @@ const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
     localStorage.getItem("WEMOVE_HOTELID") || ""
   );
   const [deletedImageIds, setDeletedImageIds] = useState([]);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    severity: "info", // "success" | "error" | "warning" | "info"
+    message: "",
+  });
+
+  const handleSnackbarClose = () => {
+    setSnackbar((prev) => ({ ...prev, open: false }));
+  };
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -268,10 +278,25 @@ const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
           label="Total Rooms"
           type="number"
           value={formik.values.totalRooms}
-          onChange={formik.handleChange}
+          // onChange={formik.handleChange}
+          onChange={(e) => {
+            formik.handleChange(e);
+
+            // 👇 Trigger Snackbar when user updates totalRooms
+            setSnackbar({
+              open: true,
+              severity: "warning",
+              message:
+                "Please also update Standard and Luxury room counts to match Total Rooms.",
+            });
+          }}
           onBlur={formik.handleBlur}
           error={formik.errors?.totalRooms}
           touched={formik.touched?.totalRooms}
+        />
+        <SnackbarNotification
+          snackbar={snackbar}
+          handleClose={handleSnackbarClose}
         />
 
         {/* Drag and Drop Components Wrapper */}

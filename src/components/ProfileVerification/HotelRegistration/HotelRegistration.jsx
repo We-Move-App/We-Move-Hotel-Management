@@ -61,6 +61,8 @@ const HotelRegistration = () => {
       hotelAddress: "",
       city: "",
       locality: "",
+      latitude: "",
+      longitude: "",
       landmark: "",
       pincode: "",
     },
@@ -221,8 +223,8 @@ const HotelRegistration = () => {
           locality: hotelAddress.state,
           landmark: hotelAddress.landmark,
           hotelAddress: hotelAddress.address,
-          latitude: hotelAddress.coordinates.latitude,
-          longitude: hotelAddress.coordinates.longitude,
+          latitude: hotelAddress?.coordinates?.latitude || "",
+          longitude: hotelAddress?.coordinates?.longitude || "",
         },
       }));
       return { hotelAddress };

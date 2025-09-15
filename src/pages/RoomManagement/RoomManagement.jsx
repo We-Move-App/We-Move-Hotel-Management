@@ -156,7 +156,8 @@ const RoomManagement = () => {
       setBookingId("");
       console.log("ALLOTED ROOM :", data);
       setIsModalOne(false);
-      alert("Room has been successfully assigned.");
+      // alert("Room has been successfully assigned.");
+      toast.success("Room has been successfully assigned.");
       getAllRooms();
 
       const reqRoom = rooms.find((r) => r?._id === selectedRoom);
@@ -206,20 +207,66 @@ const RoomManagement = () => {
     }));
   };
 
+  // const handleCheckout = async () => {
+  //   console.log("checkout here");
+  //   const { data, statusCode, success, error } = await apiCall(
+  //     `${ENDPOINTS.UPDATE_ROOM_STATUS}?roomId=${selectedRoom}`,
+  //     "PUT",
+  //     {}
+  //   );
+  //   if (error) {
+  //     console.log(error);
+  //     return;
+  //   }
+  //   if (success) {
+  //     console.log("ROOM VACANT:", data.data);
+  //     getAllRooms();
+  //   }
+  // };
+
   const handleCheckout = async () => {
     console.log("checkout here");
+
+    const payload = {
+      status: "vacant",
+      isAvailable: true,
+      bookingReference: bookingTableData?.bookingId, // bookingId
+    };
+
+    // log payload before sending
+    console.log("Checkout Payload:", JSON.stringify(payload, null, 2));
+
     const { data, statusCode, success, error } = await apiCall(
       `${ENDPOINTS.UPDATE_ROOM_STATUS}?roomId=${selectedRoom}`,
       "PUT",
-      {}
+      {
+        body: JSON.stringify(payload),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("WEMOVE_TOKEN")).accessToken
+          }`,
+        },
+      }
     );
+
     if (error) {
-      console.log(error);
+      console.log("Checkout error:", error);
+      toast.error("Failed to checkout. Please try again.");
       return;
     }
+
     if (success) {
       console.log("ROOM VACANT:", data.data);
+
+      // ✅ Show toast
+      toast.success("Room checked out successfully!");
+
+      // ✅ Refresh rooms
       getAllRooms();
+
+      // ✅ Close modal
+      closeModalTwo();
     }
   };
 
@@ -265,35 +312,36 @@ const RoomManagement = () => {
         <CustomModal isOpen={isModalTwo} onClose={closeModalTwo}>
           <div className={styles.modalTwoBox}>
             <p>Booking Details</p>
-
-            <CustomTable
-              columns={[
-                { Header: "Booking Id", accessor: "bookingId" },
-                { Header: "Room Type", accessor: "roomType" },
-                { Header: "Guest Name", accessor: "guestName" },
-                { Header: "Mobile Number", accessor: "mobileNumber" },
-                { Header: "Checkin Date", accessor: "checkinDate" },
-                { Header: "Checkout Date", accessor: "checkoutDate" },
-                { Header: "Adult", accessor: "adult" },
-                { Header: "Child", accessor: "child" },
-              ]}
-              data={[
-                bookingTableData
-                  ? {
-                      bookingId: bookingTableData?.bookingId || "roomId",
-                      roomType: bookingTableData?.roomType || "r-type",
-                      guestName: bookingTableData?.guestName || "User",
-                      mobileNumber: bookingTableData?.mobileNumber || "",
-                      checkinDate: bookingTableData?.checkinDate || "",
-                      checkoutDate: bookingTableData?.checkoutDate || "",
-                      adult: bookingTableData?.adult || 0,
-                      child: bookingTableData?.children ?? 0,
-                    }
-                  : {},
-              ]}
-              customRowClass="customRow"
-              customCellClass="customCell"
-            />
+            <div className={styles.tableWrapper}>
+              <CustomTable
+                columns={[
+                  { Header: "Booking Id", accessor: "bookingId" },
+                  { Header: "Room Type", accessor: "roomType" },
+                  { Header: "Guest Name", accessor: "guestName" },
+                  { Header: "Mobile Number", accessor: "mobileNumber" },
+                  { Header: "Checkin Date", accessor: "checkinDate" },
+                  { Header: "Checkout Date", accessor: "checkoutDate" },
+                  { Header: "Adult", accessor: "adult" },
+                  { Header: "Child", accessor: "child" },
+                ]}
+                data={[
+                  bookingTableData
+                    ? {
+                        bookingId: bookingTableData?.bookingId || "roomId",
+                        roomType: bookingTableData?.roomType || "r-type",
+                        guestName: bookingTableData?.guestName || "User",
+                        mobileNumber: bookingTableData?.mobileNumber || "",
+                        checkinDate: bookingTableData?.checkinDate || "",
+                        checkoutDate: bookingTableData?.checkoutDate || "",
+                        adult: bookingTableData?.adult || 0,
+                        child: bookingTableData?.children ?? 0,
+                      }
+                    : {},
+                ]}
+                customRowClass="customRow"
+                customCellClass="customCell"
+              />
+            </div>
 
             <div className={styles.checkoutButton}>
               <CustomButton

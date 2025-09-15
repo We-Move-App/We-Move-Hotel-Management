@@ -62,7 +62,8 @@
   width: 100%;
   outline: 0;
   box-sizing: border-box;
-  height: clamp(40px, 4vw, 70px);
+  /* height: clamp(40px, 4vw, 70px); */
+  height: 40px;
 }
 
 .error {
