@@ -29,9 +29,14 @@ const HotelLocationValidationSchema = Yup.object().shape({
   landmark: Yup.string()
     .min(2, "Landmark must be at least 2 characters long")
     .max(50, "Landmark cannot exceed 50 characters"),
+  // pincode: Yup.string()
+  //   .required("Pincode is required")
+  //   .matches(/^\d{6}$/, "Pincode must be exactly 6 digits"),
   pincode: Yup.string()
-    .required("Pincode is required")
-    .matches(/^\d{6}$/, "Pincode must be exactly 6 digits"), // Ensures exactly 6 digits
+    .nullable() // ✅ allows null
+    .notRequired() // ✅ optional
+    .matches(/^\d{6}$/, "Pincode must be exactly 6 digits")
+    .transform((value, originalValue) => (originalValue === "" ? null : value)),
 });
 
 const HotelLocationForm = ({
@@ -178,7 +183,7 @@ const HotelLocationForm = ({
             touched={formik.touched?.landmark}
           />
           <CustomInput
-            required={true}
+            // required={true}
             name="pincode"
             label="Pincode"
             type="number"
