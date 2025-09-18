@@ -73,6 +73,8 @@ const Profile = () => {
     mobile: "",
     email: "",
     avatar: "",
+    companyName: "",
+    companyAddress: "",
   });
 
   const formik = useFormik({
@@ -174,13 +176,22 @@ const Profile = () => {
 
     if (success && statusCode === 200) {
       // console.log("Data Profile:", data);
-      const { email, phoneNumber, fullName, avatar } = data?.data?.user;
+      const {
+        email,
+        phoneNumber,
+        fullName,
+        avatar,
+        companyName,
+        companyAddress,
+      } = data?.data?.user;
       setUser((prev) => ({
         ...prev,
         userName: fullName || "Priya Dey Bhaumik",
         mobile: phoneNumber || "+91 8767760912",
         email: email || "priyadey.d@gmail.com",
         avatar: avatar?.url,
+        companyName: companyName || "WeMove Pvt Ltd",
+        companyAddress: companyAddress || "Kolkata, West Bengal",
       }));
     }
   };
@@ -248,6 +259,14 @@ const Profile = () => {
               <p>{user?.userName}</p>
               <p>{user?.mobile}</p>
               <p>{user?.email}</p>
+            </div>
+          </div>
+
+          <div className={styles.detailsBoxWrapper}>
+            <p className={styles.detailsHeading}>Company Details</p>
+            <div className={styles.detailsBox}>
+              <p>{user?.companyName}</p>
+              <p>{user?.companyAddress}</p>
             </div>
           </div>
         </div>

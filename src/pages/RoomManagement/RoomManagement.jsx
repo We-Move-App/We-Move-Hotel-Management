@@ -364,11 +364,11 @@ const RoomManagement = () => {
           <div className={styles.datePickerWrapper}>
             {/* <CustomInput type='datetime-local' /> */}
             {/* <CustomDateInput/> */}
-            <ResponsiveDatePickers
+            {/* <ResponsiveDatePickers
               textColor="#000000"
               backgroundColor={GlobalStyles.colorPrimaryLightType4}
               setDate={setDate}
-            />
+            /> */}
           </div>
         </div>
 

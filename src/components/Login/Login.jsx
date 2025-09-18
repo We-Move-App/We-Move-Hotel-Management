@@ -126,10 +126,31 @@ const Login = () => {
             accessToken: data.accessToken,
             refreshToken: data.refreshToken,
           };
-
           if (success && statusCode === 200) {
             console.log(tokenObj, data, data.data);
             login(tokenObj);
+
+            // Fetch hotelId right after login
+            apiCall(ENDPOINTS.HOTEL_BY_TOKEN, "GET", {
+              headers: { Authorization: `Bearer ${tokenObj.accessToken}` },
+            })
+              .then((res) => {
+                console.log("Hotel response full:", res);
+
+                // ✅ check nested structure
+                const hotelId = res?.data?.data?.hotel?._id;
+                if (res.success && hotelId) {
+                  localStorage.setItem("WEMOVE_HOTELID", hotelId);
+                  console.log("Saved HOTEL_ID:", hotelId);
+                } else {
+                  console.warn("HotelId not found in response");
+                }
+              })
+              .catch((err) => {
+                console.error("Failed to fetch hotelId after login", err);
+              });
+
+            // Navigate to dashboard
             setTimeout(() => {
               goTo("/dashboard");
             }, 1000);

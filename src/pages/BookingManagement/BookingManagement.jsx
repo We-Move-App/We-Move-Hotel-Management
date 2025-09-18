@@ -122,7 +122,8 @@ const BookingManagement = () => {
           };
 
       return {
-        bookingId: b?._id || "",
+        id: b?._id || "",
+        bookingId: b?.bookingId || "",
         roomType: b?.roomTypeId?.roomType || "",
         guestName: userInfo.fullName,
         mobileNumber: userInfo.phoneNumber,

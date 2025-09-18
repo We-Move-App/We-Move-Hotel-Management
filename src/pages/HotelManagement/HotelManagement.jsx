@@ -13,6 +13,8 @@ import {
 } from "../../utils/helperFunctions";
 import { ENDPOINTS } from "../../utils/apiEndpoints";
 import ContentHeading from "../../components/reusable/Content-Heading/ContentHeading";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const Amenities = [
   {
@@ -33,24 +35,11 @@ const Amenities = [
   },
 ];
 
-// const gridImages = [
-//     images.img1,
-//     images.img2,
-//     images.img3,
-//     images.img4,
-//     images.img5,
-//     images.img1,
-//     images.img2,
-//     images.img3,
-//     images.img4,
-//     images.img5,
-// ]
 const HotelManagement = () => {
   const [showForm, setShowForm] = useState(false);
   const toggleForm = () => setShowForm(!showForm);
   const { goTo } = useNavigation();
   const [loading, setLoading] = useState(true);
-  // const token = tokenFromLocalStorage();
   const user = getDataFromLocalStorage("WEMOVE_USER") || {};
 
   const [gridImages, setGridImages] = useState([
@@ -276,31 +265,8 @@ const HotelManagement = () => {
     );
   };
 
-  // const getHotelPolicy = async (id) => {
-  //     // Fetch hotel policy
-  //     const { data, statusCode, error, success } = await apiCall(`${ENDPOINTS.HOTEL_POLICY}/${id}`, 'GET', {
-  //         headers: {
-  //             Authorization: `Bearer ${token}`
-  //         }
-  //     });
-  //     if (success && !error) {
-  //         // console.log('HOTEL POLICY FUN', data)
-  //         const { checkInTime: checkingTime, checkOutTime: checkoutTime, amenities, uploadDocuments, _id } = data?.data;
-  //         const structuredAmenities = amenities?.map((aminity) => ({ name: aminity.name, _id: aminity._id, checked: aminity.status }))
-
-  //         const obj = { checkingTime, checkoutTime, amenities: structuredAmenities, files: uploadDocuments, _id };
-  //         // setMultipartFormState((prev) => ({
-  //         //     ...prev,
-  //         //     hotelPolicy: obj
-  //         // }))
-  //         return obj;
-  //     }
-
-  // }
-
   useEffect(() => {
     getHotel();
-    // console.log(detailsData)
   }, []);
 
   return (
@@ -336,7 +302,7 @@ const HotelManagement = () => {
       </div>
 
       {/* Content Box */}
-      <div className={styles.contentBox}>
+      {/* <div className={styles.contentBox}>
         <div className={styles.contentDetailsBox}>
           <p className={styles.textBold}>Hotel Details</p>
 
@@ -383,6 +349,87 @@ const HotelManagement = () => {
             ))}
           </div>
         )}
+      </div> */}
+      <div className={styles.contentDetailsBox}>
+        <p className={styles.textBold}>Hotel Details</p>
+
+        <div className={styles.detailsBoxWrapper}>
+          {loading
+            ? Array(3)
+                .fill(0)
+                .map((_, idx) => (
+                  <div key={idx} className={styles.detailsBox}>
+                    <p className={styles.detailsBoxHeading}>
+                      <Skeleton width={120} />
+                    </p>
+                    <ul>
+                      {Array(3)
+                        .fill(0)
+                        .map((__, index) => (
+                          <li key={index} className={styles.detailsBoxKey}>
+                            <Skeleton width={200} />
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                ))
+            : detailsData?.map((item, index) => (
+                <div key={index} className={styles.detailsBox}>
+                  <p className={styles.detailsBoxHeading}>{item?.heading}</p>
+                  <ul>
+                    {item?.details?.map((detail, index) => (
+                      <li key={index} className={styles.detailsBoxKey}>
+                        {detail?.name}:{" "}
+                        <span className={styles.textBold}>{detail?.value}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+
+          <div key={detailsData.length} className={styles.detailsBox}>
+            <p className={styles.detailsBoxHeading}>Amenities</p>
+            <div className={styles.amenitiesBox}>
+              {loading
+                ? Array(4)
+                    .fill(0)
+                    .map((_, idx) => (
+                      <div key={idx} className={styles.amenityItem}>
+                        <Skeleton circle width={30} height={30} />
+                        <Skeleton width={40} />
+                      </div>
+                    ))
+                : Amenities?.map((amenity, index) => (
+                    <div key={index} className={styles.amenityItem}>
+                      <img src={amenity.icon} alt={amenity.name} />
+                      <span>{amenity.name}</span>
+                    </div>
+                  ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Grid Images */}
+      <div className={styles.gridLayout}>
+        {loading
+          ? Array(6)
+              .fill(0)
+              .map((_, idx) => (
+                <div key={idx} className={styles.gridItem}>
+                  <Skeleton height={120} />
+                </div>
+              ))
+          : gridImages?.map((img, index) => (
+              <div
+                key={index}
+                className={`${styles.gridItem} ${
+                  index % 3 == 0 ? styles.featured : ""
+                } `}
+              >
+                <img src={img?.url || img} alt="Hotel" />
+              </div>
+            ))}
       </div>
     </div>
   );
