@@ -138,6 +138,12 @@ ul > li {
   /* Right side */
 }
 
+.amenityItem img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
 /* Responsive styles */
 
 @media (max-width: 1550px) {

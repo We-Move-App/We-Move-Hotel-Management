@@ -88,6 +88,8 @@ const HotelManagement = () => {
     },
   ]);
 
+  const [Amenities, setAmenities] = useState([]);
+
   const handleNavigation = () => {
     goTo("/dashboard/hotel-management/hotel-registration");
   };
@@ -211,58 +213,135 @@ const HotelManagement = () => {
     }
   };
 
+  // const getHotelRoomsAndAmenities = async (id) => {
+  //   const {
+  //     data: standardRoomData,
+  //     statusCode: standardRoomStatusCode,
+  //     error: standardRoomError,
+  //     success: standardRoomSuccess,
+  //   } = await apiCall(
+  //     `${ENDPOINTS.HOTEL_ROOM}?hotelId=${id}&roomType=standard`,
+  //     "GET",
+  //     {}
+  //   );
+  //   const {
+  //     data: luxuryRoomData,
+  //     statusCode: luxuryRoomStatusCode,
+  //     error: luxuryRoomError,
+  //     success: luxuryRoomSuccess,
+  //   } = await apiCall(
+  //     `${ENDPOINTS.HOTEL_ROOM}?hotelId=${id}&roomType=luxury`,
+  //     "GET",
+  //     {}
+  //   );
+
+  //   const { data: bookedRoomData } = await apiCall(
+  //     `${ENDPOINTS.HOTEL_ALL_ROOMS}?hotelId=${id}`,
+  //     "GET",
+  //     {}
+  //   );
+
+  //   const standardRoomCount =
+  //     standardRoomData?.data?.sampleRoom?.numberOfRoom ?? "0";
+  //   const luxuryRoomCount =
+  //     luxuryRoomData?.data?.sampleRoom?.numberOfRoom ?? "0";
+  //   const bookedCount = bookedRoomData?.data?.hotelBookedRooms ?? 0;
+  //   const vacantCount = bookedRoomData?.data?.hotelAvailableRooms ?? 0;
+
+  //   setDetailsData((prev) =>
+  //     prev.map((section) => {
+  //       if (section?.heading === "Room Details") {
+  //         return {
+  //           heading: "Room Details",
+  //           details: [
+  //             { name: "Standard Rooms", value: standardRoomCount },
+  //             { name: "Luxury Rooms", value: luxuryRoomCount },
+  //             { name: "Booked Rooms", value: bookedCount },
+  //             { name: "Vacant Rooms", value: vacantCount },
+  //           ],
+  //         };
+  //       } else {
+  //         return section;
+  //       }
+  //     })
+  //   );
+  // };
+
   const getHotelRoomsAndAmenities = async (id) => {
-    const {
-      data: standardRoomData,
-      statusCode: standardRoomStatusCode,
-      error: standardRoomError,
-      success: standardRoomSuccess,
-    } = await apiCall(
-      `${ENDPOINTS.HOTEL_ROOM}?hotelId=${id}&roomType=standard`,
-      "GET",
-      {}
-    );
-    const {
-      data: luxuryRoomData,
-      statusCode: luxuryRoomStatusCode,
-      error: luxuryRoomError,
-      success: luxuryRoomSuccess,
-    } = await apiCall(
-      `${ENDPOINTS.HOTEL_ROOM}?hotelId=${id}&roomType=luxury`,
-      "GET",
-      {}
-    );
+    try {
+      // Fetch standard and luxury room data
+      const {
+        data: standardRoomData,
+        statusCode: standardRoomStatusCode,
+        error: standardRoomError,
+        success: standardRoomSuccess,
+      } = await apiCall(
+        `${ENDPOINTS.HOTEL_ROOM}?hotelId=${id}&roomType=standard`,
+        "GET",
+        {}
+      );
 
-    const { data: bookedRoomData } = await apiCall(
-      `${ENDPOINTS.HOTEL_ALL_ROOMS}?hotelId=${id}`,
-      "GET",
-      {}
-    );
+      const {
+        data: luxuryRoomData,
+        statusCode: luxuryRoomStatusCode,
+        error: luxuryRoomError,
+        success: luxuryRoomSuccess,
+      } = await apiCall(
+        `${ENDPOINTS.HOTEL_ROOM}?hotelId=${id}&roomType=luxury`,
+        "GET",
+        {}
+      );
 
-    const standardRoomCount =
-      standardRoomData?.data?.sampleRoom?.numberOfRoom ?? "0";
-    const luxuryRoomCount =
-      luxuryRoomData?.data?.sampleRoom?.numberOfRoom ?? "0";
-    const bookedCount = bookedRoomData?.data?.hotelBookedRooms ?? 0;
-    const vacantCount = bookedRoomData?.data?.hotelAvailableRooms ?? 0;
+      // Fetch booked & vacant room data
+      const { data: bookedRoomData } = await apiCall(
+        `${ENDPOINTS.HOTEL_ALL_ROOMS}?hotelId=${id}`,
+        "GET",
+        {}
+      );
 
-    setDetailsData((prev) =>
-      prev.map((section) => {
-        if (section?.heading === "Room Details") {
-          return {
-            heading: "Room Details",
-            details: [
-              { name: "Standard Rooms", value: standardRoomCount },
-              { name: "Luxury Rooms", value: luxuryRoomCount },
-              { name: "Booked Rooms", value: bookedCount },
-              { name: "Vacant Rooms", value: vacantCount },
-            ],
-          };
-        } else {
-          return section;
-        }
-      })
-    );
+      // Fetch amenities
+      const { data: amenitiesData, success: amenitiesSuccess } = await apiCall(
+        `${ENDPOINTS.GET_AMENITIES}?hotelId=${id}`,
+        "GET",
+        {}
+      );
+
+      const standardRoomCount =
+        standardRoomData?.data?.sampleRoom?.numberOfRoom ?? "0";
+      const luxuryRoomCount =
+        luxuryRoomData?.data?.sampleRoom?.numberOfRoom ?? "0";
+      const bookedCount = bookedRoomData?.data?.hotelBookedRooms ?? 0;
+      const vacantCount = bookedRoomData?.data?.hotelAvailableRooms ?? 0;
+
+      // Set Room Details
+      setDetailsData((prev) =>
+        prev.map((section) => {
+          if (section?.heading === "Room Details") {
+            return {
+              heading: "Room Details",
+              details: [
+                { name: "Standard Rooms", value: standardRoomCount },
+                { name: "Luxury Rooms", value: luxuryRoomCount },
+                { name: "Booked Rooms", value: bookedCount },
+                { name: "Vacant Rooms", value: vacantCount },
+              ],
+            };
+          } else {
+            return section;
+          }
+        })
+      );
+
+      // Set Amenities if API success
+      if (amenitiesSuccess) {
+        const hotelAmenities =
+          amenitiesData.data?.data?.filter((item) => item.type === "hotel") ||
+          [];
+        setAmenities(hotelAmenities);
+      }
+    } catch (err) {
+      console.error("Error fetching hotel data:", err);
+    }
   };
 
   useEffect(() => {
@@ -387,7 +466,7 @@ const HotelManagement = () => {
                 </div>
               ))}
 
-          <div key={detailsData.length} className={styles.detailsBox}>
+          {/* <div key={detailsData.length} className={styles.detailsBox}>
             <p className={styles.detailsBoxHeading}>Amenities</p>
             <div className={styles.amenitiesBox}>
               {loading
@@ -405,6 +484,35 @@ const HotelManagement = () => {
                       <span>{amenity.name}</span>
                     </div>
                   ))}
+            </div>
+          </div> */}
+          <div key={detailsData.length} className={styles.detailsBox}>
+            <p className={styles.detailsBoxHeading}>Amenities</p>
+            <div className={styles.amenitiesBox}>
+              {loading
+                ? Array(4)
+                    .fill(0)
+                    .map((_, idx) => (
+                      <div key={idx} className={styles.amenityItem}>
+                        <Skeleton circle width={30} height={30} />
+                        <Skeleton width={40} />
+                      </div>
+                    ))
+                : Amenities?.filter((amenity) => amenity.type === "hotel").map(
+                    (amenity, index) => (
+                      <div
+                        key={amenity._id || index}
+                        className={styles.amenityItem}
+                      >
+                        {amenity.icon ? (
+                          <img src={amenity.icon} alt={amenity.name} />
+                        ) : (
+                          <div className={styles.noIcon}>No Icon</div>
+                        )}
+                        <span>{amenity.name}</span>
+                      </div>
+                    )
+                  )}
             </div>
           </div>
         </div>

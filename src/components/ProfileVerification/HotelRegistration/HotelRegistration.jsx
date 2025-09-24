@@ -354,19 +354,65 @@ const HotelRegistration = () => {
     }
   };
 
+  // const getAmenitiesList = async () => {
+  //   const { data, statusCode, error, success } = await apiCall(
+  //     `${ENDPOINTS.GET_AMENITIES}`,
+  //     "GET",
+  //     {}
+  //   );
+  //   if (success) {
+  //     const mappedAmenities = data.data?.map((amenity) => ({
+  //       ...amenity,
+  //       checked: false, // Track checked state for each amenity
+  //     }));
+  //     setAmenities(mappedAmenities);
+  //     console.log(data, amenities);
+  //     setMultipartFormState((prev) => ({
+  //       ...prev,
+  //       hotelRoomsAmenities: {
+  //         ...prev.hotelRoomsAmenities,
+  //         standardRoom: {
+  //           ...prev.hotelRoomsAmenities.standardRoom,
+  //           amenities: mappedAmenities,
+  //         },
+  //         luxuryRoom: {
+  //           ...prev.hotelRoomsAmenities.luxuryRoom,
+  //           amenities: mappedAmenities,
+  //         },
+  //       },
+  //       hotelPolicy: {
+  //         ...prev.hotelPolicy,
+  //         amenities: mappedAmenities,
+  //       },
+  //     }));
+  //     // setLoading(false)
+  //   } else {
+  //     console.log(error);
+  //   }
+  // };
+
   const getAmenitiesList = async () => {
-    const { data, statusCode, error, success } = await apiCall(
+    const { data, success } = await apiCall(
       `${ENDPOINTS.GET_AMENITIES}`,
       "GET",
       {}
     );
     if (success) {
-      const mappedAmenities = data.data?.map((amenity) => ({
-        ...amenity,
-        checked: false, // Track checked state for each amenity
+      // Filter for hotel amenities only
+      const hotelAmenities =
+        data.data?.data?.filter((amenity) => amenity.type === "hotel") || [];
+
+      // Map to your checkbox format
+      const mappedAmenities = hotelAmenities.map((amenity) => ({
+        _id: amenity._id,
+        name: amenity.name,
+        icon: amenity.icon,
+        checked: false, // initial unchecked
       }));
+
       setAmenities(mappedAmenities);
-      console.log(data, amenities);
+
+      // Update multipartFormState
       setMultipartFormState((prev) => ({
         ...prev,
         hotelRoomsAmenities: {
@@ -385,11 +431,8 @@ const HotelRegistration = () => {
           amenities: mappedAmenities,
         },
       }));
-      // setLoading(false)
-    } else {
-      console.log(error);
     }
-  };
+  }
 
   useEffect(() => {
     getAmenitiesList();
