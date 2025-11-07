@@ -253,3 +253,33 @@ input[type="number"]::-webkit-outer-spin-button {
     max-width: var(--container-xxs);
   }
 }
+
+/* Always keep Google Translate dropdown visible and clickable */
+.goog-te-banner-frame.skiptranslate,
+.goog-te-menu-frame.skiptranslate {
+  z-index: 2147483647 !important;
+  position: absolute !important;
+}
+
+.goog-te-gadget {
+  font-family: inherit !important;
+}
+
+body {
+  top: 0 !important;
+}
+
+/* Hide the ugly Google bar at top */
+body > .skiptranslate {
+  display: none !important;
+}
+
+/* Make translate dropdown look cleaner */
+#google_translate_element select {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 6px;
+  color: #333;
+  font-size: 14px;
+}

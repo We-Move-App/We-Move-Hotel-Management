@@ -14,12 +14,15 @@ import { tokenFromLocalStorage } from "../../utils/helperFunctions";
 import CustomDropDown from "../reusable/custom/CDropDown/CustomDropDown";
 import { MdOutlineExpandMore } from "react-icons/md";
 import DropdownMenu from "../reusable/Dropdown/DropdownMenu";
+import { BadgeCheck } from "lucide-react";
+import LanguageSelector from "../GoogleTranslate/LanguageSelector";
 
 const Navbar = ({ toggleSidebar, isMobile, isOpen }) => {
   // const token = tokenFromLocalStorage();
   const { logout } = useAuth();
   const { goTo } = useNavigation();
   const [userName, setUserName] = useState("");
+  const [batchVerified, setBatchVerified] = useState("");
   const [userProfile, setUserProfile] = useState("");
 
   const handleProfileNavigation = () => {
@@ -48,11 +51,13 @@ const Navbar = ({ toggleSidebar, isMobile, isOpen }) => {
     );
 
     if (success && statusCode === 200) {
-      const { email, phoneNumber, fullName, avatar } = data?.data?.user;
+      const { email, phoneNumber, fullName, avatar, batchVerified } =
+        data?.data?.user;
       setUserName(fullName);
       avatar
         ? setUserProfile(avatar?.url)
         : setUserProfile(images.profileImage);
+      setBatchVerified(batchVerified);
     } else {
       return;
     }
@@ -86,6 +91,9 @@ const Navbar = ({ toggleSidebar, isMobile, isOpen }) => {
 
       <div className={styles.navProfileSection}>
         <div className={styles.profileContainer}>
+          <div className={styles.languageSelectorWrapper}>
+            <LanguageSelector />
+          </div>
           <div
             className={styles.profileImageBox}
             onClick={() => goTo("/dashboard/profile")}
@@ -93,8 +101,11 @@ const Navbar = ({ toggleSidebar, isMobile, isOpen }) => {
             <img src={userProfile} alt="profile-image" />
           </div>
           <div className={styles.profileText}>
-            <span>
+            <span className={styles.nameBlock}>
               <p>{userName}</p>
+              {batchVerified && (
+                <BadgeCheck size={18} color="#4CAF50" title="Verified" />
+              )}
             </span>
             {/* <span><MdKeyboardArrowDown /></span> */}
             {/* <CustomDropDown items={customDropDownList} /> */}

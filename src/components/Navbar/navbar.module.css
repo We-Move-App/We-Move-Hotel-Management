@@ -40,6 +40,12 @@
   gap: clamp(20px, 1vw, 30px);
 }
 
+.nameBlock {
+  display: flex;
+  gap: var(--flex-gap-xs);
+  align-items: center;
+}
+
 .profileContainer {
   display: flex;
   align-items: center;

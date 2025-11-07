@@ -36,6 +36,12 @@
   object-fit: cover;
 }
 
+.nameBlock {
+  display: flex;
+  gap: var(--flex-gap-xs);
+  align-items: center;
+}
+
 .detailsBoxWrapper {
   width: 100%;
   padding: var(--spacing-lg);

@@ -67,7 +67,7 @@ const Dashboard = () => {
     <>
       <div className={styles.headerBox}>
         <ContentHeading heading="Dashboard" />
-        <div>
+        {/* <div>
           <CustomButton
             buttonText={"Export"}
             style={{ width: "100%" }}
@@ -76,7 +76,7 @@ const Dashboard = () => {
             // onClick={()=> goTo('/dashboard/profile')}
             // icon={<img src={images.exportIcon}  alt="export" />}
           />
-        </div>
+        </div> */}
       </div>
 
       <div className={styles.reportContianer}>

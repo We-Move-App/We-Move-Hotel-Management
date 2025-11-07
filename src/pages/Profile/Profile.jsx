@@ -17,6 +17,7 @@ import FilesList from "../../components/reusable/FilesList/FilesList";
 import CustomFileInput from "../../components/reusable/custom/Form-Fields/CFileInput/CustomFileInput";
 import CustomBtn from "../../components/reusable/Custom-Button/CustomBtn";
 import CustomDownloadButton from "../../components/reusable/custom/Custom-Download-Button/CustomDownloadButton";
+import { BadgeCheck } from "lucide-react";
 
 const FILE_SIZE = 2 * 1024 * 1024; // 2MB
 const SUPPORTED_FORMATS = ["application/pdf"];
@@ -72,6 +73,7 @@ const Profile = () => {
     userName: "",
     mobile: "",
     email: "",
+    batchVerified: "",
     avatar: "",
     companyName: "",
     companyAddress: "",
@@ -181,6 +183,7 @@ const Profile = () => {
         phoneNumber,
         fullName,
         avatar,
+        batchVerified,
         companyName,
         companyAddress,
       } = data?.data?.user;
@@ -189,6 +192,7 @@ const Profile = () => {
         userName: fullName || "Priya Dey Bhaumik",
         mobile: phoneNumber || "+91 8767760912",
         email: email || "priyadey.d@gmail.com",
+        batchVerified: batchVerified || "",
         avatar: avatar?.url,
         companyName: companyName || "WeMove Pvt Ltd",
         companyAddress: companyAddress || "Kolkata, West Bengal",
@@ -256,7 +260,12 @@ const Profile = () => {
           <div className={styles.detailsBoxWrapper}>
             <p className={styles.detailsHeading}>Personal Details</p>
             <div className={styles.detailsBox}>
-              <p>{user?.userName}</p>
+              <span className={styles.nameBlock}>
+                <p>{user?.userName}</p>
+                {user?.batchVerified && (
+                  <BadgeCheck size={18} color="#4CAF50" title="Verified" />
+                )}
+              </span>
               <p>{user?.mobile}</p>
               <p>{user?.email}</p>
             </div>
