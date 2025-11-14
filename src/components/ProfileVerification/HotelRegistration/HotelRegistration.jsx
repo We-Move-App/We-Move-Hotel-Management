@@ -175,9 +175,9 @@ const HotelRegistration = () => {
         images: files,
       } = data.data;
 
-      console.log("HotelImages (files):", files);
+      // console.log("HotelImages (files):", files);
       const imageIds = files.map((img) => img._id);
-      console.log("Hotel Image IDs:", imageIds);
+      // console.log("Hotel Image IDs:", imageIds);
 
       localStorage.setItem("WEMOVE_HOTEL_IMAGE_IDS", JSON.stringify(imageIds));
 
@@ -432,7 +432,7 @@ const HotelRegistration = () => {
         },
       }));
     }
-  }
+  };
 
   useEffect(() => {
     getAmenitiesList();
@@ -446,7 +446,7 @@ const HotelRegistration = () => {
 
   useEffect(() => {
     window.scrollTo({ top: 50, behavior: "smooth" });
-    console.log("from window set top:", activeTab);
+    // console.log("from window set top:", activeTab);
     if (formTopRef.current) {
       formTopRef.current.scrollIntoView({
         behavior: "smooth",
@@ -463,7 +463,7 @@ const HotelRegistration = () => {
           <HotelDetailForm
             initialValues={multipartFormState.hotelDetails}
             onNext={(values) => {
-              console.log("hit detail submit");
+              // console.log("hit detail submit");
               updateCentralizedState("hotelDetails", values);
               // setActiveTab(1)
               toggleTab(1);
@@ -512,7 +512,7 @@ const HotelRegistration = () => {
           <HotelDetailForm
             initialValues={multipartFormState.hotelDetails}
             onNext={(values) => {
-              console.log("hit detail submit");
+              // console.log("hit detail submit");
               updateCentralizedState("hotelDetails", values);
               // setActiveTab(1)
               toggleTab(1);

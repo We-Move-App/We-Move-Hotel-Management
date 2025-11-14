@@ -20,7 +20,7 @@ const BranchSelect = ({
       try {
         setLoading(true);
         const res = await apiCall("/admin/branch/all", "GET");
-        console.log("Branch API response:", res);
+        // console.log("Branch API response:", res);
 
         if (res?.data?.data?.branches) {
           setBranches(res.data.data.branches);
@@ -49,7 +49,7 @@ const BranchSelect = ({
         name={name}
         value={value}
         onChange={(e) => {
-          console.log("Selected branch id:", e.target.value); // ✅ branch _id
+          // console.log("Selected branch id:", e.target.value);
           onChange(e); // keep Formik or parent handler working
         }}
         onBlur={onBlur}

@@ -90,9 +90,9 @@ const CreateAccount = () => {
     validationSchema: SignupSchema,
 
     onSubmit: async (values, { setErrors, setStatus }) => {
-      console.log("Form submitted");
-      console.log("Form data:", values);
-      console.log("Selected branch id:", values.branch);
+      // console.log("Form submitted");
+      // console.log("Form data:", values);
+      // console.log("Selected branch id:", values.branch);
 
       try {
         const payloadBody = {
@@ -140,7 +140,7 @@ const CreateAccount = () => {
         }
 
         if (statusCode === 200 && success) {
-          console.log("From Create Account:", data);
+          // console.log("From Create Account:", data);
           if (data.data.hotelmanager.verificationStatus === "submitted") {
             const wemove_token = {
               accessToken: data.data.accessToken,
@@ -159,7 +159,7 @@ const CreateAccount = () => {
           goTo("/add-bank");
         }
       } catch (err) {
-        console.log("Error during API call:", err);
+        // console.log("Error during API call:", err);
       }
     },
   });
@@ -194,13 +194,13 @@ const CreateAccount = () => {
           { body: payload }
         );
 
-        console.log("OTP sent:", data);
+        // console.log("OTP sent:", data);
         if (statusCode === 200 && success) {
           setVerifyMobileModal(true); // Show the OTP modal
         }
 
         if (error) {
-          console.log("Error sending OTP:", error);
+          // console.log("Error sending OTP:", error);
         }
       } catch (err) {
         console.error("Error during API call:", err);
@@ -232,7 +232,7 @@ const CreateAccount = () => {
         }
 
         if (error) {
-          console.log("Error sending OTP:", error);
+          // console.log("Error sending OTP:", error);
         }
       } catch (err) {
         console.error("Error during API call:", err);
@@ -278,7 +278,7 @@ const CreateAccount = () => {
         email: formik.values.email,
         otp: emailOtp,
       };
-      console.log(payload);
+      // console.log(payload);
       const { data, statusCode, error, success } = await apiCall(
         ENDPOINTS.VERIFY_OTP_EMAIL,
         "PUT",

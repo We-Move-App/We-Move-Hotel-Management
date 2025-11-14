@@ -53,8 +53,8 @@ const HotelLocationForm = ({
     validationSchema: HotelLocationValidationSchema,
     onSubmit: async (values) => {
       try {
-        console.log("Hotel Location Form submitted.");
-        console.log("Hotel Location Form data:", values);
+        // console.log("Hotel Location Form submitted.");
+        // console.log("Hotel Location Form data:", values);
 
         const hotelID = localStorage.getItem("WEMOVE_HOTELID") || "";
         const payload = {
@@ -71,7 +71,7 @@ const HotelLocationForm = ({
         };
 
         if (values._id) {
-          console.log("hit upload", payload);
+          // console.log("hit upload", payload);
           const { data, statusCode, error, success } = await apiCall(
             `${ENDPOINTS.HOTEL_LOCATION}/${hotelID}`,
             "PUT",
@@ -89,7 +89,7 @@ const HotelLocationForm = ({
             onNext(values);
           }
         } else {
-          console.log("hit post", payload);
+          // console.log("hit post", payload);
           const { data, statusCode, error, success } = await apiCall(
             ENDPOINTS.HOTEL_LOCATION,
             "POST",
@@ -128,7 +128,7 @@ const HotelLocationForm = ({
   };
 
   useEffect(() => {
-    console.log("Formik values changed:", formik.values);
+    // console.log("Formik values changed:", formik.values);
   }, [formik.values]);
 
   return (

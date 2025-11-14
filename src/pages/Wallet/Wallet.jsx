@@ -56,9 +56,10 @@ const Wallet = () => {
     setIsCongratulationModalOpen(true);
   const handleCloseCongratulationModal = () => {
     setIsCongratulationModalOpen(false);
+    window.location.reload();
     setTimeout(() => {
       setActiveTab(0);
-      navigate("/dashboard/wallet"); // if you have a route for transaction details
+      navigate("/dashboard/wallet");
     }, 300);
   };
 
@@ -74,23 +75,13 @@ const Wallet = () => {
         0,
         6
       )}...${tx.transactionId?.slice(-4)}`,
-      userName: "N/A", // Replace if you have user data
-      date: date.toLocaleDateString(), // e.g., "06/08/2025"
-      time: date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }), // e.g., "12:15 PM"
+      userName: "N/A",
+      date: date.toLocaleDateString(),
+      time: date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
       amount: tx.amount,
-      status: tx.type, // No such field in your API
+      status: tx.type,
     };
   });
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   console.log("Withdrawal amount:", amount);
-
-  //   setTimeout(() => {
-  //     setIsModalOpen(false);
-  //     handleOpenCongratulationModal();
-  //   }, 1 * 1000);
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -108,7 +99,7 @@ const Wallet = () => {
         `${import.meta.env.VITE_BASE_URL}/api/v1/momo/withdraw`,
         {
           amount: withdrawAmount,
-          entity: "hotelManager", // adjust based on backend requirement
+          entity: "hotelManager",
         },
         {
           headers: {
@@ -117,12 +108,12 @@ const Wallet = () => {
         }
       );
 
-      console.log("✅ Withdraw success:", res.data);
+      // console.log("Withdraw success:", res.data);
 
       setIsModalOpen(false);
-      setAmount(""); // clear input
-      handleOpenCongratulationModal(); // show second modal
-      fetchTransactions(); // refresh transaction list
+      setAmount("");
+      handleOpenCongratulationModal();
+      fetchTransactions();
     } catch (err) {
       console.error("❌ Withdraw failed:", err);
       alert("Withdraw failed. Please try again.");

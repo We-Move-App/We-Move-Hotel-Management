@@ -90,11 +90,11 @@ const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
     initialValues: initialValues,
     validationSchema: HotelDetailsValidationSchema,
     onSubmit: async (values, { setErrors, setStatus }) => {
-      console.log(values);
-      console.log(values._id);
+      // console.log(values);
+      // console.log(values._id);
       try {
-        console.log("Hotel Details Form submitted.");
-        console.log("Hotel Details Form data:", values);
+        // console.log("Hotel Details Form submitted.");
+        // console.log("Hotel Details Form data:", values);
 
         const payloadBody = new FormData();
         payloadBody.append("hotelName", values.hotelName);
@@ -131,7 +131,7 @@ const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
 
         // if values._id then update else post req
         if (values._id) {
-          console.log("UPDATE REQ");
+          // console.log("UPDATE REQ");
           const { data, statusCode, error, success } = await apiCall(
             `${ENDPOINTS.HOTEL_BY_ID}/${values._id}`,
             "PUT",
@@ -152,7 +152,7 @@ const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
             return;
           }
           if (statusCode === 200 && success) {
-            console.log("UPDATE HOTEL DETAILS:", data);
+            // console.log("UPDATE HOTEL DETAILS:", data);
             // onNext(values);
           }
         } else {
@@ -181,7 +181,7 @@ const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
           }
 
           if (statusCode === 201 && success) {
-            console.log("in hotel detailsform", data);
+            // console.log("in hotel detailsform", data);
             localStorage.setItem("WEMOVE_HOTELID", data.data._id);
             setHotelId(data.data._id);
             formik.setFieldValue("_id", data.data._id);

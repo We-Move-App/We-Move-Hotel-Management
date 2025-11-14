@@ -108,8 +108,8 @@ const Login = () => {
       //     console.log(error)
       // }
 
-      console.log("Form submitted");
-      console.log("Form data:", values);
+      // console.log("Form submitted");
+      // console.log("Form data:", values);
       const emailOrPhone = values.emailOrPhone.split("").includes("@")
         ? values.emailOrPhone
         : "+91" + values.emailOrPhone;
@@ -120,14 +120,14 @@ const Login = () => {
       await axios
         .post(`${BASEURL}${ENDPOINTS.LOGIN}`, payloadBody)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           const { data, statusCode, success } = res.data;
           const tokenObj = {
             accessToken: data.accessToken,
             refreshToken: data.refreshToken,
           };
           if (success && statusCode === 200) {
-            console.log(tokenObj, data, data.data);
+            // console.log(tokenObj, data, data.data);
             login(tokenObj);
 
             // Fetch hotelId right after login
@@ -135,13 +135,13 @@ const Login = () => {
               headers: { Authorization: `Bearer ${tokenObj.accessToken}` },
             })
               .then((res) => {
-                console.log("Hotel response full:", res);
+                // console.log("Hotel response full:", res);
 
                 // ✅ check nested structure
                 const hotelId = res?.data?.data?.hotel?._id;
                 if (res.success && hotelId) {
                   localStorage.setItem("WEMOVE_HOTELID", hotelId);
-                  console.log("Saved HOTEL_ID:", hotelId);
+                  // console.log("Saved HOTEL_ID:", hotelId);
                 } else {
                   console.warn("HotelId not found in response");
                 }
@@ -157,7 +157,7 @@ const Login = () => {
           }
         })
         .catch((error) => {
-          console.log(error);
+          // console.log(error);
           error?.response?.data.message &&
             setStatus(error?.response?.data.message || "not authorized");
           return;

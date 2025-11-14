@@ -78,8 +78,8 @@ const HotelPolicyForm = ({ initialValues, onPrev, onSubmit }) => {
     onSubmit: async (values) => {
       const hotelID = localStorage.getItem("WEMOVE_HOTELID") || "";
 
-      console.log("Hotel Policy Form submitted.");
-      console.log("Hotel Policy Form data:", values);
+      // console.log("Hotel Policy Form submitted.");
+      // console.log("Hotel Policy Form data:", values);
 
       const payloadBody = new FormData();
       payloadBody.append("hotelId", hotelID);
@@ -89,13 +89,13 @@ const HotelPolicyForm = ({ initialValues, onPrev, onSubmit }) => {
         name: amenity.name,
         status: amenity.checked,
       }));
-      console.log(
-        amenities,
-        hotelID,
-        values.checkingTime,
-        values.checkoutTime,
-        values.files[0]
-      );
+      // console.log(
+      //   amenities,
+      //   hotelID,
+      //   values.checkingTime,
+      //   values.checkoutTime,
+      //   values.files[0]
+      // );
       payloadBody.append("amenities", JSON.stringify(amenities));
       payloadBody.append("hotel_license", values.files[0]);
 
@@ -188,7 +188,7 @@ const HotelPolicyForm = ({ initialValues, onPrev, onSubmit }) => {
   };
 
   const removeFile = (index, fileName) => {
-    console.log("removeFile", fileName, index);
+    // console.log("removeFile", fileName, index);
     const files = formik.values.files;
     formik.setFieldValue("files", [
       ...files.slice(0, index),

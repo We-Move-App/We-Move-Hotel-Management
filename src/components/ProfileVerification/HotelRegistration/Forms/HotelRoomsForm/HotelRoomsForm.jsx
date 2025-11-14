@@ -79,7 +79,7 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: async (values) => {
-      console.log("Hotel Rooms Form data:", values);
+      // console.log("Hotel Rooms Form data:", values);
       try {
         // create standard rooms
         const hotelID = localStorage.getItem("WEMOVE_HOTELID") || "";
@@ -154,7 +154,7 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
           const luxuryRoomId = values.luxuryRoom._id;
           if (standardRoomId && luxuryRoomId) {
             // update requests
-            console.log("req for UPDATE");
+            // console.log("req for UPDATE");
 
             const {
               data: standardRoomData,
@@ -193,7 +193,7 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
               }));
             } else {
               if (standardRoomError || standardRoomStatusCode !== 200) {
-                console.log("error from standard:", standardRoomError);
+                // console.log("error from standard:", standardRoomError);
                 setFormError((prev) => ({
                   ...prev,
                   standardError: standardRoomError?.message,
@@ -215,12 +215,12 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
               luxuryRoomStatusCode === 200 &&
               luxuryRoomSuccess
             ) {
-              console.log(
-                standardRoomData,
-                luxuryRoomData,
-                standardRoomSuccess,
-                luxuryRoomSuccess
-              );
+              // console.log(
+              //   standardRoomData,
+              //   luxuryRoomData,
+              //   standardRoomSuccess,
+              //   luxuryRoomSuccess
+              // );
               onNext(values);
             }
           } else {
@@ -264,7 +264,7 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
               }));
             } else {
               if (standardRoomError || standardRoomStatusCode !== 201) {
-                console.log("error from standard:", standardRoomError);
+                // console.log("error from standard:", standardRoomError);
                 setFormError((prev) => ({
                   ...prev,
                   standardError: standardRoomError?.message,
@@ -344,7 +344,7 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
   };
 
   const removeFile = (index, fileName) => {
-    console.log("removeFile", fileName, index);
+    // console.log("removeFile", fileName, index);
     const files = formik.values[activeTabBar].files;
     formik.setFieldValue(`${activeTabBar}.files`, [
       ...files.slice(0, index),
@@ -377,7 +377,7 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
 
   useEffect(() => {
     setActiveTabBar(tabBarData[0].status ? "standardRoom" : "luxuryRoom");
-    console.log(tabBarData);
+    // console.log(tabBarData);
   }, [tabBarData]);
 
   return (
