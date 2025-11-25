@@ -28,7 +28,11 @@ const HotelDetailsValidationSchema = Yup.object().shape({
   hotelName: Yup.string()
     .required("Hotel Name is required")
     .min(2, "Hotel Name must be at least 2 characters")
-    .max(50, "Hotel Name cannot exceed 50 characters"),
+    .max(50, "Hotel Name cannot exceed 50 characters")
+    .matches(
+      /^[A-Za-z\s\.\,\-']+$/,
+      "Hotel Name can only contain letters, spaces, and limited punctuation (.,-' )"
+    ),
   bussinessLicense: Yup.string().required("Business License is required"),
   totalRooms: Yup.number()
     .required("Total number of rooms is required")

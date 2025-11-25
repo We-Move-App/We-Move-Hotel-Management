@@ -46,7 +46,7 @@ const BankDetailsSchema = Yup.object().shape({
     .required("Bank Name is required"),
 
   bankAccountNumber: Yup.string()
-    // .matches(/^\d+$/, 'Bank Account Number should only contain numbers') // Ensure only numbers
+    .matches(/^[0-9]+$/, "Bank Account Number should only contain numbers")
     .min(11, "Bank Account Number must be at least 11 digits")
     .required("Bank Account Number is required"),
 

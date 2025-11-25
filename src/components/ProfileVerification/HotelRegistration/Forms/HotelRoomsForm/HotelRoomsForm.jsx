@@ -479,11 +479,7 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
                 removeFile={removeFile}
                 minRequiredFiles={3}
               />
-              <div className={styles.dragDropBox}>
-                {/* Drag and Drop Components */}
-                {/* Add your drag and drop components here */}
-                {/* Dynamically render CustomDragAndDrop components */}
-              </div>
+              <div className={styles.dragDropBox}></div>
             </div>
 
             <div className={styles.standardFormBtn}>

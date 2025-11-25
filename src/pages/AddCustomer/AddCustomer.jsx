@@ -14,6 +14,7 @@ import FilesList from "../../components/reusable/FilesList/FilesList";
 import apiCall from "../../hooks/apiCall";
 import { ENDPOINTS } from "../../utils/apiEndpoints";
 import { useNavigate } from "react-router-dom";
+import SnackbarNotification from "../../components/reusable/Snackbar-Notification/SnackbarNotification";
 
 // Constants (reuse your supported formats & size limit)
 const FILE_SIZE_LIMIT = 5 * 1024 * 1024; // 5 MB
@@ -80,10 +81,98 @@ const AddCustomer = () => {
       files: [],
     },
     validationSchema: customerValidationSchema,
+    // onSubmit: async (values) => {
+    //   const hotelId = localStorage.getItem("WEMOVE_HOTELID");
+    //   if (!hotelId) {
+    //     console.error("Hotel ID not found in localStorage");
+    //     return;
+    //   }
+
+    //   // Step 1: Fetch roomTypeId
+    //   let roomTypeId = "";
+    //   try {
+    //     const roomResponse = await apiCall(
+    //       `/hotel-room/?hotelId=${hotelId}&roomType=${values.roomType}`,
+    //       "GET"
+    //     );
+
+    //     const sampleRoom = roomResponse?.data?.data?.sampleRoom;
+    //     console.log("Room response:", roomResponse);
+    //     if (sampleRoom?._id) {
+    //       roomTypeId = sampleRoom._id;
+    //       console.log("Retrieved roomTypeId:", roomTypeId);
+    //     } else {
+    //       console.error(
+    //         "sampleRoom not found in API response",
+    //         roomResponse?.data
+    //       );
+    //     }
+    //   } catch (err) {
+    //     console.error("Error fetching room type ID:", err);
+    //     return;
+    //   }
+
+    //   // Step 2: Prepare booking payload
+    //   const formData = new FormData();
+
+    //   const formatDate = (date) => {
+    //     if (!(date instanceof Date)) {
+    //       date = new Date(date);
+    //     }
+    //     return date.toLocaleDateString("en-CA");
+    //   };
+
+    //   const checkInDateStr = formatDate(new Date(values.checkInDate));
+    //   const checkOutDateStr = formatDate(new Date(values.checkOutDate));
+
+    //   formData.append("hotelId", hotelId);
+    //   formData.append("roomTypeId", roomTypeId);
+    //   formData.append("checkInDate", checkInDateStr);
+    //   formData.append("checkOutDate", checkOutDateStr);
+    //   formData.append("totalAmount", "55489");
+    //   formData.append("paymentStatus", "PAID");
+    //   formData.append("noOfAdults", values.isAdult ? "1" : "0");
+    //   formData.append("noOfKids", values.isAdult ? "0" : "1");
+    //   formData.append("noOfRoom", "1");
+
+    //   const user = {
+    //     name: values.customerName,
+    //     age: 32,
+    //     gender: "male",
+    //     email: values.email,
+    //     phoneNumber: values.mobile,
+    //   };
+    //   formData.append("user", JSON.stringify(user));
+
+    //   values.files.forEach((file) => {
+    //     formData.append("identity_card", file);
+    //   });
+
+    //   // Step 3: Send booking request
+    //   try {
+    //     const bookingResponse = await apiCall(ENDPOINTS.ADD_GUEST, "POST", {
+    //       body: formData,
+    //     });
+
+    //     if (bookingResponse.success && bookingResponse.statusCode === 201) {
+    //       console.log("Booking successful:", bookingResponse.data);
+    //       navigate("/dashboard/booking-management");
+    //     } else {
+    //       console.error("Booking failed:", bookingResponse.message);
+    //     }
+    //   } catch (err) {
+    //     console.error("Booking error:", err);
+    //   }
+    // },
     onSubmit: async (values) => {
       const hotelId = localStorage.getItem("WEMOVE_HOTELID");
       if (!hotelId) {
         console.error("Hotel ID not found in localStorage");
+        setSnackbar({
+          open: true,
+          message: "Hotel ID missing. Please login again.",
+          severity: "error",
+        });
         return;
       }
 
@@ -96,43 +185,51 @@ const AddCustomer = () => {
         );
 
         const sampleRoom = roomResponse?.data?.data?.sampleRoom;
-        console.log("Room response:", roomResponse);
         if (sampleRoom?._id) {
           roomTypeId = sampleRoom._id;
-          console.log("Retrieved roomTypeId:", roomTypeId);
         } else {
+          const msg =
+            roomResponse?.message ||
+            roomResponse?.data?.message ||
+            "Room type not found";
           console.error(
             "sampleRoom not found in API response",
             roomResponse?.data
           );
+          setSnackbar({ open: true, message: msg, severity: "error" });
+          return;
         }
       } catch (err) {
+        // network / unexpected error
+        const message =
+          err?.response?.data?.message ||
+          err?.message ||
+          "Failed to fetch room type. Please try again.";
         console.error("Error fetching room type ID:", err);
+        setSnackbar({ open: true, message, severity: "error" });
         return;
       }
 
       // Step 2: Prepare booking payload
-      const formData = new FormData();
+      const fd = new FormData();
 
       const formatDate = (date) => {
-        if (!(date instanceof Date)) {
-          date = new Date(date);
-        }
-        return date.toLocaleDateString("en-CA");
+        if (!(date instanceof Date)) date = new Date(date);
+        return date.toLocaleDateString("en-CA"); // YYYY-MM-DD
       };
 
-      const checkInDateStr = formatDate(new Date(values.checkInDate));
-      const checkOutDateStr = formatDate(new Date(values.checkOutDate));
+      const checkInDateStr = formatDate(values.checkInDate);
+      const checkOutDateStr = formatDate(values.checkOutDate);
 
-      formData.append("hotelId", hotelId);
-      formData.append("roomTypeId", roomTypeId);
-      formData.append("checkInDate", checkInDateStr);
-      formData.append("checkOutDate", checkOutDateStr);
-      formData.append("totalAmount", "55489");
-      formData.append("paymentStatus", "PAID");
-      formData.append("noOfAdults", values.isAdult ? "1" : "0");
-      formData.append("noOfKids", values.isAdult ? "0" : "1");
-      formData.append("noOfRoom", "1");
+      fd.append("hotelId", hotelId);
+      fd.append("roomTypeId", roomTypeId);
+      fd.append("checkInDate", checkInDateStr);
+      fd.append("checkOutDate", checkOutDateStr);
+      fd.append("totalAmount", "55489");
+      fd.append("paymentStatus", "PAID");
+      fd.append("noOfAdults", values.isAdult ? "1" : "0");
+      fd.append("noOfKids", values.isAdult ? "0" : "1");
+      fd.append("noOfRoom", "1");
 
       const user = {
         name: values.customerName,
@@ -141,30 +238,59 @@ const AddCustomer = () => {
         email: values.email,
         phoneNumber: values.mobile,
       };
-      formData.append("user", JSON.stringify(user));
+      fd.append("user", JSON.stringify(user));
 
-      values.files.forEach((file) => {
-        formData.append("identity_card", file);
+      (values.files || []).forEach((file) => {
+        fd.append("identity_card", file); // same key as before
       });
 
       // Step 3: Send booking request
       try {
         const bookingResponse = await apiCall(ENDPOINTS.ADD_GUEST, "POST", {
-          body: formData,
+          body: fd,
         });
 
-        if (bookingResponse.success && bookingResponse.statusCode === 201) {
-          console.log("Booking successful:", bookingResponse.data);
-          navigate("/dashboard/booking-management");
+        const success = bookingResponse?.success ?? false;
+        const status = bookingResponse?.statusCode;
+        const serverMessage =
+          bookingResponse?.message || bookingResponse?.data?.message || "";
+
+        if (success && status === 201) {
+          setSnackbar({
+            open: true,
+            message: "Booking successful!",
+            severity: "success",
+          });
+          setTimeout(() => {
+            navigate("/dashboard/booking-management");
+          }, 700);
         } else {
-          console.error("Booking failed:", bookingResponse.message);
+          const msg = bookingResponse?.error?.message || "Booking failed.";
+
+          console.error("Booking failed:", bookingResponse);
+          setSnackbar({ open: true, message: msg, severity: "error" });
         }
       } catch (err) {
+        // network / unexpected error
+        const message =
+          err?.response?.data?.message ||
+          err?.message ||
+          "Booking failed due to network error. Try again.";
         console.error("Booking error:", err);
+        setSnackbar({ open: true, message, severity: "error" });
       }
     },
   });
   const [fileProgress, setFileProgress] = useState({});
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success", // 'success' | 'error' | 'info' | 'warning'
+  });
+
+  const handleCloseSnackbar = () => {
+    setSnackbar((s) => ({ ...s, open: false }));
+  };
 
   const [options, setOptions] = useState([
     { label: "Adult", value: true },
@@ -346,6 +472,10 @@ const AddCustomer = () => {
             buttonText={"Book"}
           />
         </div>
+        <SnackbarNotification
+          snackbar={snackbar}
+          handleClose={handleCloseSnackbar}
+        />
       </form>
     </div>
   );
