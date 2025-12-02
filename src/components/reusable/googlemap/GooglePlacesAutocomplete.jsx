@@ -32,8 +32,19 @@ const GooglePlacesAutocomplete = ({ formik }) => {
   const autocompleteRef = useRef(null);
   const geocoderRef = useRef(null);
 
+  // useEffect(() => {
+  //   if (window.google && !geocoderRef.current) {
+  //     geocoderRef.current = new window.google.maps.Geocoder();
+  //   }
+  // }, [isLoaded]);
+
   useEffect(() => {
-    if (window.google && !geocoderRef.current) {
+    if (
+      isLoaded &&
+      window.google &&
+      window.google.maps &&
+      !geocoderRef.current
+    ) {
       geocoderRef.current = new window.google.maps.Geocoder();
     }
   }, [isLoaded]);
