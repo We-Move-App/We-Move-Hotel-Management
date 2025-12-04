@@ -47,7 +47,10 @@ const DebitCard = ({ showAmount = false, amount }) => {
       <div className={styles.cardDetails}>
         <p className={styles.text}>Digital Debit Card</p>
         <p className={styles.text}>
-          {showCardNumber ? "1234 5678 9012 3456" : "**** **** **** ****"}
+          <span style={{ fontFamily: "monospace", letterSpacing: "0.5px" }}>
+            {showCardNumber ? "1234 5678 9012 3456" : "**** **** **** ****"}
+          </span>
+
           <span onClick={toggleShowCardNumber} className={styles.showHideBtn}>
             {showCardNumber ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
             {/* {showCardNumber ? <FaEye /> : <FaEyeSlash />} */}

@@ -1,58 +1,57 @@
-
 /* Content Box  */
 .headerBox {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: var(--flex-gap-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--flex-gap-lg);
 }
 
 .reportContianer {
-    display: flex;
-    flex-direction: column;
-    gap: var(--flex-gap-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--flex-gap-md);
 }
 
 .sectionHeading {
-    font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-bold);
 }
 
 .highAnalyticsBox {
-    width: 100%;
-    display: flex;
-    /* flex-direction: row-reverse; */
-    column-gap: var(--flex-gap-sm);
-    row-gap: var(--flex-gap-md);
-    /* border: 1px solid ; */
+  width: 100%;
+  display: flex;
+  /* flex-direction: row-reverse; */
+  column-gap: var(--flex-gap-sm);
+  row-gap: var(--flex-gap-md);
+  /* border: 1px solid ; */
 }
 
 .debitAndEarningCardContainer {
-    /* flex: 2; */
-    /* width: 100%; */
-    width: 65%;
-    display: flex;
-    gap: var(--flex-gap-sm);
-    /* justify-content: space-between; */
-    /* border: 1px solid blue; */
+  /* flex: 2; */
+  /* width: 100%; */
+  width: 65%;
+  display: flex;
+  gap: var(--flex-gap-sm);
+  /* justify-content: space-between; */
+  /* border: 1px solid blue; */
 }
 
 .earningCard {
-    /* flex: 1; */
-    /* width: 35%; */
-    flex-grow: 1;
-    /* min-width: 300px; */
-    height: 100%;
-    border-radius: var(--border-radius-md);
-    overflow: hidden;
+  /* flex: 1; */
+  /* width: 35%; */
+  flex-grow: 1;
+  /* min-width: 300px; */
+  height: 100%;
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
 }
 
 .roomOccupancyContainer {
-    /* flex: 1; */
-    /* width: 100%; */
-    width: 35%;
-    /* border: 1px solid red; */
-    border-radius: var(--border-radius-md);
-    overflow: hidden;
+  /* flex: 1; */
+  /* width: 100%; */
+  width: 35%;
+  /* border: 1px solid red; */
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
 }
 
 /* .earningAndOccupancyCardContainer {
@@ -62,14 +61,14 @@
 } */
 
 .card {
-    height: 251px;
-    /* min-width: 454px; */
-    /* height: 100%; */
-    /* width: fit-content; */
-    /* width: 100%; */
-    /* border-radius: var(--border-radius-md); */
-    /* background-color: var(--color-primary-light-type4); */
-    /* overflow: hidden !important; */
+  height: 251px;
+  /* min-width: 454px; */
+  /* height: 100%; */
+  /* width: fit-content; */
+  /* width: 100%; */
+  /* border-radius: var(--border-radius-md); */
+  /* background-color: var(--color-primary-light-type4); */
+  /* overflow: hidden !important; */
 }
 
 /* .cardTypeTwo {
@@ -87,18 +86,17 @@
   flex-grow: 1;
 } */
 
-
 .chartCard {
-    width: 100%;
-    height: 100%;
-    padding: 21px 36px;
-    background-color: var(--color-light-grey);
-    display: flex;
-    /* flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 21px 36px;
+  background-color: var(--color-light-grey);
+  display: flex;
+  /* flex-direction: column;
     gap: var(--flex-gap-sm); */
-    border: 1px solid var(--color-grey-type2);
-    border-radius: var(--border-radius-md);
-    overflow: hidden;
+  border: 1px solid var(--color-grey-type2);
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
 }
 
 /* .chartCardOptionsBox {
@@ -109,49 +107,53 @@
 } */
 
 .bookingRevenueHistoryContianer {
-    width: 100%;
-    display: flex;
-    column-gap: var(--flex-gap-sm);
-    /* flex-wrap: wrap; */
-    /* row-gap: var(--flex-gap-md); */
+  width: 100%;
+  display: flex;
+  column-gap: var(--flex-gap-sm);
+  /* flex-wrap: wrap; */
+  /* row-gap: var(--flex-gap-md); */
 }
 
 .bookingRevenue {
-    /* flex: 2; */
-    /* width: 100%; */
-    width: 65%;
-    /* max-width: 956px; */
-    /* border: 1px solid blue; */
+  /* flex: 2; */
+  /* width: 100%; */
+  width: 65%;
+  /* max-width: 956px; */
+  /* border: 1px solid blue; */
 }
 
 .bookingHistory {
-    /* flex: 1; */
-    width: 35%;
-    /* max-width: 494px; */
-    display: flex;
-    padding: 10px;
-    flex-direction: column;
-    gap: var(--flex-gap-sm);
-    border: 1px solid var(--color-grey-type2);
-    border-radius: var(--border-radius-md);
-    /* font-family: var(--font-secondary) !important; */
+  /* flex: 1; */
+  width: 35%;
+  /* max-width: 494px; */
+  display: flex;
+  padding: 10px;
+  flex-direction: column;
+  gap: var(--flex-gap-sm);
+  border: 1px solid var(--color-grey-type2);
+  border-radius: var(--border-radius-md);
+  /* font-family: var(--font-secondary) !important; */
 }
 
 .bookingHistoryHeader {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--color-grey-type2);
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  /* justify-content: space-between; */
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--color-grey-type2);
 }
 
 .title {
-    display: inline;
-    width: fit-content;
-    font-size: var(--font-size-extra-small);
-    font-weight: var(--font-weight-bold);
-    font-family: var(--font-secondary);
+  display: inline;
+  font-size: var(--font-size-extra-small);
+  font-weight: var(--font-weight-bold);
+  font-family: var(--font-secondary);
+}
+
+.searchField {
+  width: 100%;
 }
 
 /* @media (max-width: 1600px) {
@@ -173,60 +175,59 @@
 } */
 
 @media (max-width: 1600px) {
-    /* .highAnalyticsBox {
+  /* .highAnalyticsBox {
         flex-direction: column;
     } */
 
-    .debitAndEarningCardContainer {
-        width: 65%;
-    }
+  .debitAndEarningCardContainer {
+    width: 65%;
+  }
 
-    .roomOccupancyContainer {
-        width: 35%;
-    }
+  .roomOccupancyContainer {
+    width: 35%;
+  }
 
-    /* .earningCard {
+  /* .earningCard {
         flex-shrink: 1;
     } */
 }
 
 @media (max-width: 1400px) {
+  .highAnalyticsBox {
+    flex-direction: column;
+  }
 
-    .highAnalyticsBox {
-        flex-direction: column;
-    }
+  .debitAndEarningCardContainer {
+    width: 100%;
+  }
 
-    .debitAndEarningCardContainer {
-        width: 100%;
-    }
+  .roomOccupancyContainer {
+    width: 100%;
+  }
 
-    .roomOccupancyContainer {
-        width: 100%;
-    }
+  .earningAndOccupancyCardContainer {
+    flex-direction: column;
+  }
 
-    .earningAndOccupancyCardContainer {
-        flex-direction: column;
-    }
+  .bookingRevenueHistoryContianer {
+    flex-direction: column;
+    gap: var(--flex-gap-md);
+  }
 
-    .bookingRevenueHistoryContianer {
-        flex-direction: column;
-        gap: var(--flex-gap-md);
-    }
-
-    .bookingRevenue,
-    .bookingHistory {
-        max-width: 100%;
-        width: 100%;
-    }
+  .bookingRevenue,
+  .bookingHistory {
+    max-width: 100%;
+    width: 100%;
+  }
 }
 
 @media (max-width: 767px) {
-    .debitAndEarningCardContainer {
-        flex-direction: column;
-        row-gap: var(--flex-gap-md);
-    }
-    
-    .earningCard{
-        width: 100%;
-    }
+  .debitAndEarningCardContainer {
+    flex-direction: column;
+    row-gap: var(--flex-gap-md);
+  }
+
+  .earningCard {
+    width: 100%;
+  }
 }

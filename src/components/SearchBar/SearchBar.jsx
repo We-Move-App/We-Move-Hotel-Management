@@ -10,7 +10,6 @@ const SearchBar = ({ onSearch, ...props }) => {
     const value = e.target.value;
     setSearchQuery(value);
 
-    // debounce: call onSearch after 400ms of inactivity
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       if (onSearch) onSearch(value.trim());
@@ -18,7 +17,6 @@ const SearchBar = ({ onSearch, ...props }) => {
   };
 
   const handleSearch = () => {
-    // immediate trigger (on click)
     if (debounceRef.current) clearTimeout(debounceRef.current);
     if (onSearch) onSearch(searchQuery.trim());
   };
@@ -29,7 +27,7 @@ const SearchBar = ({ onSearch, ...props }) => {
     }
   };
 
-  // cleanup on unmount
+
   useEffect(() => {
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);

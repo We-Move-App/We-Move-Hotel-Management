@@ -12,7 +12,6 @@ const CustomTable = ({
 }) => {
   return (
     <div className={styles.tableContainer}>
-      {/* <TableHeader /> */}
       <table className={styles.table}>
         <thead>
           <tr>
