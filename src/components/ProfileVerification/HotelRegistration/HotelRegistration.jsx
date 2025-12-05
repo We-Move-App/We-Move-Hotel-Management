@@ -31,14 +31,8 @@ const amenitiesList = [
   { id: 8, name: "Safety Deposit Box" },
   { id: 9, name: "Laundry Service" },
 ];
-// const amenitiesList = getAmenities() || [];
-// const mappedAmenities = amenitiesList?.map((amenity) => ({
-//   ...amenity,
-//   checked: false, // Track checked state for each amenity
-// }))
 
 const HotelRegistration = () => {
-  // State to track the currently active tab
   const formTopRef = useRef(null);
   const [activeTab, setActiveTab] = useState(0);
   const [subheading, setSubheading] = useState("Add your hotel details.");
@@ -57,7 +51,6 @@ const HotelRegistration = () => {
       termsAndConditions: false,
     },
     hotelLocation: {
-      // locationUrl: '',
       hotelAddress: "",
       city: "",
       locality: "",
@@ -114,7 +107,6 @@ const HotelRegistration = () => {
 
   const handleFinalSubmit = () => {
     console.log("Final Form Data: ", multipartFormState);
-    // Submit all form data together
     goTo("/profile-verified");
   };
 
@@ -130,7 +122,6 @@ const HotelRegistration = () => {
         "GET",
         {}
       );
-      // console.log(data.data)
       if (success) {
         localStorage.setItem("WEMOVE_HOTELID", data.data.hotel._id);
         const hotelId = data.data.hotel._id;
@@ -145,8 +136,6 @@ const HotelRegistration = () => {
     } finally {
       setLoading(false);
     }
-
-    // return { data }
   };
 
   const getHotelDetails = async (id) => {
@@ -354,43 +343,6 @@ const HotelRegistration = () => {
     }
   };
 
-  // const getAmenitiesList = async () => {
-  //   const { data, statusCode, error, success } = await apiCall(
-  //     `${ENDPOINTS.GET_AMENITIES}`,
-  //     "GET",
-  //     {}
-  //   );
-  //   if (success) {
-  //     const mappedAmenities = data.data?.map((amenity) => ({
-  //       ...amenity,
-  //       checked: false, // Track checked state for each amenity
-  //     }));
-  //     setAmenities(mappedAmenities);
-  //     console.log(data, amenities);
-  //     setMultipartFormState((prev) => ({
-  //       ...prev,
-  //       hotelRoomsAmenities: {
-  //         ...prev.hotelRoomsAmenities,
-  //         standardRoom: {
-  //           ...prev.hotelRoomsAmenities.standardRoom,
-  //           amenities: mappedAmenities,
-  //         },
-  //         luxuryRoom: {
-  //           ...prev.hotelRoomsAmenities.luxuryRoom,
-  //           amenities: mappedAmenities,
-  //         },
-  //       },
-  //       hotelPolicy: {
-  //         ...prev.hotelPolicy,
-  //         amenities: mappedAmenities,
-  //       },
-  //     }));
-  //     // setLoading(false)
-  //   } else {
-  //     console.log(error);
-  //   }
-  // };
-
   const getAmenitiesList = async () => {
     const { data, success } = await apiCall(
       `${ENDPOINTS.GET_AMENITIES}`,
@@ -456,16 +408,13 @@ const HotelRegistration = () => {
   }, [activeTab]);
 
   const renderStage = () => {
-    // It will render active stages of form
     switch (activeTab) {
       case 0:
         return (
           <HotelDetailForm
             initialValues={multipartFormState.hotelDetails}
             onNext={(values) => {
-              // console.log("hit detail submit");
               updateCentralizedState("hotelDetails", values);
-              // setActiveTab(1)
               toggleTab(1);
             }}
           />
@@ -512,9 +461,7 @@ const HotelRegistration = () => {
           <HotelDetailForm
             initialValues={multipartFormState.hotelDetails}
             onNext={(values) => {
-              // console.log("hit detail submit");
               updateCentralizedState("hotelDetails", values);
-              // setActiveTab(1)
               toggleTab(1);
             }}
           />

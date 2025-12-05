@@ -171,9 +171,11 @@ const CreateAccount = () => {
 
   const closeMobileModal = () => {
     setVerifyMobileModal(false);
+    setMobileOtp("");
   };
   const closeEmailModal = () => {
     setVerifyEmailModal(false);
+    setEmailOtp("");
   };
 
   const [mobileVerifyStatus, setMobileVerifyStatus] = useState(false);
@@ -196,6 +198,7 @@ const CreateAccount = () => {
 
         // console.log("OTP sent:", data);
         if (statusCode === 200 && success) {
+          setMobileOtp("");
           setVerifyMobileModal(true); // Show the OTP modal
         }
 
@@ -228,6 +231,7 @@ const CreateAccount = () => {
         );
         // console.log(data, statusCode,success)
         if (statusCode === 200 && success) {
+          setEmailOtp("");
           setVerifyEmailModal(true);
         }
 
