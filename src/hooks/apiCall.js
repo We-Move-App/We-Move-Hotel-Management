@@ -28,7 +28,6 @@ const apiCall = async (url, method = 'GET', { body = null, params = {}, headers 
 
   const axiosInstance = axios.create();
 
-  // Attach Authorization header
   axiosInstance.interceptors.request.use((config) => {
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
@@ -39,7 +38,6 @@ const apiCall = async (url, method = 'GET', { body = null, params = {}, headers 
     return config;
   });
 
-  // Handle refresh logic
   axiosInstance.interceptors.response.use(
     (response) => response,
     async (error) => {

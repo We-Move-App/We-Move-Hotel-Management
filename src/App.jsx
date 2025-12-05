@@ -36,7 +36,7 @@ function ProtectedRoute({ children }) {
   const { isAuthenticated } = useAuth();
   const { goTo } = useNavigation();
 
-  if (isAuthenticated === null) return null; // Or a loading spinner
+  if (isAuthenticated === null) return null;
 
   return isAuthenticated ? children : <Navigate to="/login" replace />;
 }

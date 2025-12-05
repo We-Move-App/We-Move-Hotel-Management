@@ -1,12 +1,23 @@
-.customButton {
+/* .customButton {
   width: 100%;
   border-radius: var(--border-radius-sm);
   overflow: hidden;
   cursor: pointer;
-  /* min-height: 70px; */
   display: flex;
   align-items: center;
   justify-content: center;
+} */
+
+.customButton {
+  display: inline-flex;
+  width: auto;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
 .disabled {
