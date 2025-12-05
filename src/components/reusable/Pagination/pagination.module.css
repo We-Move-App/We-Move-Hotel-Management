@@ -1,52 +1,74 @@
-/* .pagination {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    list-style: none;
-    padding: 0;
-    margin: var(--spacing-md) 0;
+.pagination {
+  display: inline-flex;
+  gap: 8px;
+  padding: 6px 8px;
+  margin: 0 0 12px 0;
+  list-style: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  /* background: rgba(0, 0, 0, 0.02); */
+  -webkit-user-select: none;
+  user-select: none;
+  flex-wrap: wrap;
 }
 
 .pageItem {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 55px;
-    height: 55px;
-    padding: var(--spacing-sm);
-    border-radius: var(--border-radius-sm);
-    border: 2px solid var(--color-grey-type2);
-    background: var(--color-white);
-    color: var(--color-text-primary);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    user-select: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  color: #222;
+  background: transparent;
+  border: 1px solid transparent;
+  transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
 }
 
-.pageItem:hover:not(.active) {
-    background: #f7fafc;
-    border-color: #cbd5e0;
+.pageItem:hover {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.06);
 }
 
 .active {
-    background: var(--color-primary-light);
-    border-color: var(--color-primary-light);
-    color: var(--color-white);
-    font-weight: 600;
-    cursor: default;
+  background: #2f6e56;
+  color: white;
+  border-color: rgba(11, 118, 239, 0.2);
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(11, 118, 239, 0.15);
 }
 
 .disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    pointer-events: none;
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+  background: transparent;
+  border-color: transparent;
 }
 
 .dots {
-    cursor: default;
+  cursor: default;
+  pointer-events: none;
+  background: transparent;
+  color: #666;
+  min-width: 32px;
 }
 
-.dots:hover {
-    background: var(--color-white);
-    border-color: var(--color-light-grey);
-} */
+@media (max-width: 480px) {
+  .pageItem {
+    min-width: 30px;
+    height: 30px;
+    font-size: 13px;
+    padding: 0 8px;
+  }
+
+  .pagination {
+    gap: 6px;
+    padding: 4px 6px;
+  }
+}

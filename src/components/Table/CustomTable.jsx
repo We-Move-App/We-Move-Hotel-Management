@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./custom-table.module.css";
 import TableHeader from "./TableHeader";
+import PaginationComponent from "../reusable/Pagination/PaginationComponent";
 
 const CustomTable = ({
   fontSize = "medium",
@@ -8,6 +9,9 @@ const CustomTable = ({
   data,
   customRowClass,
   customCellClass,
+  currentPage = 1,
+  totalPages = 1,
+  onPageChange = () => {},
   ...props
 }) => {
   return (
@@ -47,6 +51,11 @@ const CustomTable = ({
           ))}
         </tbody>
       </table>
+      <PaginationComponent
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={onPageChange}
+      />
     </div>
   );
 };

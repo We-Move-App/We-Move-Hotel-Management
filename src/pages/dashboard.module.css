@@ -109,6 +109,7 @@
 .bookingRevenueHistoryContianer {
   width: 100%;
   display: flex;
+  flex-direction: column;
   column-gap: var(--flex-gap-sm);
   /* flex-wrap: wrap; */
   /* row-gap: var(--flex-gap-md); */
@@ -116,15 +117,15 @@
 
 .bookingRevenue {
   /* flex: 2; */
-  /* width: 100%; */
-  width: 65%;
+  width: 100%;
+  /* width: 65%; */
   /* max-width: 956px; */
   /* border: 1px solid blue; */
 }
 
 .bookingHistory {
   /* flex: 1; */
-  width: 35%;
+  /* width: 35%; */
   /* max-width: 494px; */
   display: flex;
   padding: 10px;
@@ -143,6 +144,10 @@
   align-items: center;
   padding: 10px 0;
   border-bottom: 1px solid var(--color-grey-type2);
+}
+
+.bookingHistoryHeader .title {
+  width: 50%;
 }
 
 .title {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styles from "./wallet.module.css";
 import DebitCard from "../../components/DebitCard/DebitCard";
 import CustomTabBar from "../../components/reusable/custom/CTabbar/CustomTabBar";
@@ -29,7 +29,6 @@ const Wallet = () => {
     { name: "Transaction History", status: true },
     { name: "Withdraw", status: false },
   ]);
-  const [searchQuery, setSearchQuery] = useState("");
   const [bankDetails, setBankDetails] = useState({
     bankName: "",
     bankAccountNumber: "",
@@ -39,7 +38,143 @@ const Wallet = () => {
   // const [loading, setLoading] = useState(true);
   // const [transactions, setTransactions] = useState([]);
   const [formattedTransactions, setFormattedTransactions] = useState([]);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    pages: 1,
+    total: 0,
+    limit: 10,
+  });
+  const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const fetchTransactions = useCallback(
+    async (page = 1, limit = 10, search = "") => {
+      try {
+        if (typeof page === "string") {
+          const digitsOnly = /^\d+$/.test(page);
+          if (digitsOnly) page = Number.parseInt(page, 10);
+          else {
+            console.warn(
+              "[fetchTransactions] first arg non-numeric -> treating as search:",
+              page
+            );
+            search = page;
+            page = 1;
+          }
+        }
+        page = Number.isFinite(+page) ? Number(page) : 1;
+        limit = Number.isFinite(+limit) ? Number(limit) : 10;
+        search = typeof search === "string" ? search : "";
+
+        setLoading(true);
+        const token = tokenFromLocalStorage();
+        console.debug("[fetchTransactions] REQUEST params:", {
+          entity: "hotelManager",
+          page,
+          limit,
+          search: search || null,
+        });
+
+        const res = await axios.get(
+          `${import.meta.env.VITE_BASE_URL}/api/v1/wallet/transactions`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+            params: {
+              entity: "hotelManager",
+              page,
+              limit,
+              ...(search ? { search } : {}),
+            },
+          }
+        );
+
+        console.debug("[fetchTransactions] RESPONSE raw ->", res?.data);
+        const paginationData = res?.data?.data?.pagination;
+        if (paginationData) {
+          const pagesNum = Number(paginationData.pages) || 1;
+          const pageNum = Number(paginationData.page) || 1;
+          const totalNum = Number(paginationData.total) || 0;
+          const limitNum = Number(paginationData.limit) || limit;
+
+          console.debug("[fetchTransactions] server pagination ->", {
+            page: pageNum,
+            pages: pagesNum,
+            total: totalNum,
+            limit: limitNum,
+          });
+
+          setPagination({
+            page: pageNum,
+            pages: pagesNum,
+            total: totalNum,
+            limit: limitNum,
+          });
+        } else {
+          console.warn(
+            "[fetchTransactions] response missing pagination object"
+          );
+        }
+        const inner = res?.data?.data;
+        let rawArray = [];
+        if (!inner) rawArray = [];
+        else if (Array.isArray(inner.transactions))
+          rawArray = inner.transactions;
+        else if (Array.isArray(inner)) rawArray = inner;
+        else if (typeof inner === "object") rawArray = [inner];
+        else rawArray = [];
+
+        setTransactions(rawArray);
+
+        const formatted = rawArray.map((t, idx) => {
+          const createdAt = t.createdAt || t.created_at;
+          const dt = createdAt ? new Date(createdAt) : null;
+          return {
+            id: t.transactionId || t._id || idx,
+            transactionId: t.transactionId || t._id || "",
+            date: dt ? dt.toLocaleDateString() : "",
+            time: dt
+              ? dt.toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
+              : "",
+            amount: t.amount ?? t.amountPaid ?? "",
+            status: t.status ?? t.state ?? "",
+            __raw: t,
+          };
+        });
+
+        setFormattedTransactions(formatted);
+      } catch (err) {
+        console.error("Error fetching transactions:", err);
+        setTransactions([]);
+        setFormattedTransactions([]);
+      } finally {
+        setLoading(false);
+      }
+    },
+    []
+  );
+
+  useEffect(() => {
+    fetchTransactions(1, pagination.limit, searchQuery);
+  }, []);
+
+  const handlePageChange = (page) => {
+    const p = Number(page) || 1;
+    console.debug(
+      "[handlePageChange] clicked page ->",
+      p,
+      "current search:",
+      searchQuery
+    );
+    fetchTransactions(p, pagination.limit, searchQuery);
+  };
+
+  const handleSearchSubmit = (e) => {
+    if (e && e.preventDefault) e.preventDefault();
+    fetchTransactions(1, pagination.limit, searchQuery);
+  };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCongratulationModalOpen, setIsCongratulationModalOpen] =
@@ -69,19 +204,6 @@ const Wallet = () => {
   const [amount, setAmount] = useState("");
   const walletBalance = 1000;
   const [transactions, setTransactions] = useState([]);
-
-  // const formattedTransactions = transactions.map((tx) => {
-  //   const date = new Date(tx.createdAt);
-
-  //   return {
-  //     transactionId: tx.transactionId,
-  //     userName: "N/A",
-  //     date: date.toLocaleDateString(),
-  //     time: date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-  //     amount: tx.amount,
-  //     status: tx.type,
-  //   };
-  // });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -215,111 +337,6 @@ const Wallet = () => {
     }
   };
 
-  // const fetchTransactions = async () => {
-  //   try {
-  //     const token = tokenFromLocalStorage();
-
-  //     const res = await axios.get(
-  //       `${
-  //         import.meta.env.VITE_BASE_URL
-  //       }/api/v1/wallet/transactions?entity=hotelManager`,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       }
-  //     );
-
-  //     console.log("Transaction Data:", res.data);
-  //     setTransactions(res.data.data.transactions || []);
-  //     // You can update state here with res.data if needed
-  //   } catch (error) {
-  //     console.error("Error fetching transactions:", error);
-  //   }
-  // };
-
-  const fetchTransactions = async (searchQuery = "") => {
-    try {
-      setLoading(true);
-      const token = tokenFromLocalStorage();
-
-      const res = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/api/v1/wallet/transactions`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-          params: {
-            entity: "hotelManager",
-            ...(searchQuery ? { transactionId: searchQuery } : {}),
-          },
-        }
-      );
-
-      console.log("fetchTransactions res.data:", res?.data);
-
-      const inner = res?.data?.data;
-
-      let rawArray = [];
-      if (!inner) {
-        rawArray = [];
-      } else if (Array.isArray(inner.transactions)) {
-        rawArray = inner.transactions;
-      } else if (Array.isArray(inner)) {
-        rawArray = inner;
-      } else if (typeof inner === "object") {
-        rawArray = [inner];
-      } else {
-        rawArray = [];
-      }
-
-      console.log("rawArray length:", rawArray.length);
-      console.table(rawArray.slice(0, 5));
-
-      setTransactions(rawArray);
-      const formatted = rawArray.map((t, idx) => {
-        const txId = t.transactionId || t._id || t.id || `tx-${idx}`;
-        const createdAt = t.createdAt || t.created_at || "";
-        let date = "";
-        let time = "";
-        if (createdAt) {
-          const dt = new Date(createdAt);
-          if (!Number.isNaN(dt.getTime())) {
-            date = dt.toLocaleDateString();
-            time = dt.toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            });
-          }
-        }
-
-        return {
-          id: txId,
-          transactionId: txId,
-          date,
-          time,
-          amount: t.amount ?? t.amountPaid ?? t.transactionAmount ?? "",
-          status: t.status ?? t.state ?? "",
-          __raw: t,
-        };
-      });
-
-      console.log("formatted (first 5):");
-      console.table(formatted.slice(0, 5));
-
-      setFormattedTransactions(formatted);
-    } catch (err) {
-      console.error("Error fetching transactions:", err);
-      setTransactions([]);
-      setFormattedTransactions([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchUserBank();
-    fetchTransactions();
-  }, []);
-
   useEffect(() => {
     const withdrawTab = tabBarData.find((tab) => tab.name === "Withdraw");
     if (withdrawTab?.status) {
@@ -359,6 +376,9 @@ const Wallet = () => {
               data={formattedTransactions}
               customRowClass="customRow"
               customCellClass="customCell"
+              currentPage={pagination.page}
+              totalPages={pagination.pages}
+              onPageChange={handlePageChange}
             />
           </div>
         )}
