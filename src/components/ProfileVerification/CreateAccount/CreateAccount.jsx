@@ -184,7 +184,7 @@ const CreateAccount = () => {
   const handleVerifyMobileStatus = async () => {
     const mobileNumber = formik.values.mobile;
 
-    if (mobileNumber.length === 10) {
+    if (mobileNumber.length === 9) {
       const payload = {
         emailOrPhone: "+91" + mobileNumber,
       };
@@ -209,7 +209,7 @@ const CreateAccount = () => {
         console.error("Error during API call:", err);
       }
     } else {
-      alert("Please enter valid 10 digit mobile number");
+      alert("Please enter valid 9 digit mobile number");
       return;
     }
   };
@@ -398,7 +398,7 @@ const CreateAccount = () => {
             error={formik.errors.branch}
           />
 
-          <CustomInput
+          {/* <CustomInput
             label={"Mobile Number"}
             required={true}
             name="mobile"
@@ -411,9 +411,24 @@ const CreateAccount = () => {
             error={formik.errors.mobile}
             verifyStatus={mobileVerifyStatus}
             handleVerifyStatus={handleVerifyMobileStatus}
-
-            // error={formik.touched.mobile && formik.errors.mobile}
+          /> */}
+          <CustomInput
+            label="Mobile Number"
+            required={true}
+            name="mobile"
+            type="tel"
+            value={formik.values.mobile}
+            onChange={(e) => {
+              const value = e.target.value.replace(/\D/g, "").slice(0, 9);
+              formik.setFieldValue("mobile", value);
+            }}
+            onBlur={formik.handleBlur}
+            touched={formik.touched.mobile}
+            error={formik.errors.mobile}
+            verifyStatus={mobileVerifyStatus}
+            handleVerifyStatus={handleVerifyMobileStatus}
           />
+
           <CustomInput
             label={"E-mail Id"}
             required={true}
