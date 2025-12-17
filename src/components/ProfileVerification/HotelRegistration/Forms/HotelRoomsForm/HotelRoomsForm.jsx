@@ -60,7 +60,8 @@ const HotelRoomsValidationSchema = Yup.object().shape({
 });
 
 const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
-  // console.log(formik.values)
+  // const [loading, setLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formError, setFormError] = useState({
     standardError: "",
     luxuryError: "",
@@ -82,6 +83,7 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
       // console.log("Hotel Rooms Form data:", values);
       try {
         // create standard rooms
+        setIsSubmitting(true);
         const hotelID = localStorage.getItem("WEMOVE_HOTELID") || "";
 
         if (hotelID) {
@@ -294,6 +296,8 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
         }
       } catch (err) {
         console.error("Error during API call:", err);
+      } finally {
+        setIsSubmitting(false);
       }
     },
   });
@@ -617,13 +621,26 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
       {activeTabBar === "luxuryRoom" && (
         <div className={styles.formSubmitBtn}>
           <CustomButton
-            buttonText={
-              formik.values.luxuryRoom._id
-                ? "Update and Continue"
-                : "Save and Continue"
-            }
+            // buttonText={
+            //   formik.values.luxuryRoom._id
+            //     ? "Update and Continue"
+            //     : "Save and Continue"
+            // }
             type={"submit"}
             buttonSize={"medium"}
+            disabled={isSubmitting}
+            buttonText={
+              isSubmitting ? (
+                <span className={styles.loadingText}>
+                  <span className={styles.spinner} />
+                  Please wait
+                </span>
+              ) : formik.values.luxuryRoom._id ? (
+                "Update"
+              ) : (
+                "Continue"
+              )
+            }
           />
         </div>
       )}

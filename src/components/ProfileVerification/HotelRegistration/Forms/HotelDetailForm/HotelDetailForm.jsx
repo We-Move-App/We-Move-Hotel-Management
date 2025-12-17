@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import styles from "./hotel-detail-form.module.css";
-
 import CustomInput from "../../../../reusable/custom/Form-Fields/CInput/CustomInput";
 import CustomButton from "../../../../reusable/custom/CButton/CustomButton";
 import CustomLabel from "../../../../reusable/custom/CLabel/CustomLabel";
@@ -8,7 +7,6 @@ import CustomCheckBox from "../../../../reusable/custom/Form-Fields/CCheckBoxInp
 import DragDrop from "../../../../reusable/custom/D&DFileUpload/DragDrop";
 import { FileUpload } from "../../../../reusable/custom/Form-Fields/CDragAndDrop/CustomDragAndDrop";
 import FilesList from "../../../../reusable/FilesList/FilesList";
-
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { formatFileSize } from "../../../../../utils/helperFunctions";
@@ -74,6 +72,7 @@ const HotelDetailsValidationSchema = Yup.object().shape({
     .oneOf([true], "You must accept the terms and conditions"),
 });
 const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorObj, setErrorObj] = useState({});
   const [fileProgress, setFileProgress] = useState({});
   const [hotelId, setHotelId] = useState(
@@ -93,12 +92,102 @@ const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: HotelDetailsValidationSchema,
+    // onSubmit: async (values, { setErrors, setStatus }) => {
+    //   try {
+    //     const payloadBody = new FormData();
+    //     payloadBody.append("hotelName", values.hotelName);
+    //     payloadBody.append("businessLicense", values.bussinessLicense);
+    //     payloadBody.append("totalRoom", values.totalRooms);
+
+    //     const existingImageIds = [];
+    //     const newUploads = [];
+
+    //     for (const image of values.files) {
+    //       if (image instanceof File) {
+    //         newUploads.push(image);
+    //       } else if (typeof image === "object" && image._id) {
+    //         existingImageIds.push(image._id);
+    //       }
+    //     }
+
+    //     // Append new files if any
+    //     if (newUploads.length > 0) {
+    //       newUploads.forEach((file) => payloadBody.append("hotelImages", file));
+    //     } else {
+    //       payloadBody.append("hotelImages", null);
+    //     }
+
+    //     const finalImageIds =
+    //       deletedImageIds.length > 0 ? deletedImageIds : [""];
+
+    //     payloadBody.append("imageId", JSON.stringify(finalImageIds));
+
+    //     payloadBody.append("termsAndConditions", values.termsAndConditions);
+
+    //     window.scrollTo({ top: 0, behavior: "smooth" });
+
+    //     if (values._id) {
+    //       const { data, statusCode, error, success } = await apiCall(
+    //         `${ENDPOINTS.HOTEL_BY_ID}/${values._id}`,
+    //         "PUT",
+    //         {
+    //           body: payloadBody,
+    //           headers: {
+    //             "Content-Type": "multipart/form-data",
+    //             Authorization: `Bearer ${
+    //               JSON.parse(localStorage.getItem("WEMOVE_TOKEN")).accessToken
+    //             }`,
+    //           },
+    //         }
+    //       );
+
+    //       if (error) {
+    //         const { errors, message } = error;
+    //         message && setStatus(message);
+    //         return;
+    //       }
+    //       if (statusCode === 200 && success) {
+    //       }
+    //     } else {
+    //       const { data, statusCode, error, success } = await apiCall(
+    //         ENDPOINTS.HOTEL_DETAILS,
+    //         "POST",
+    //         {
+    //           body: payloadBody,
+    //           headers: {
+    //             "Content-Type": "multipart/form-data",
+    //             Authorization: `Bearer ${
+    //               JSON.parse(localStorage.getItem("WEMOVE_TOKEN")).accessToken
+    //             }`,
+    //           },
+    //         }
+    //       );
+
+    //       if (error) {
+    //         const { errors, message } = error;
+    //         message && setStatus(message);
+    //         setErrorObj((prev) => ({
+    //           ...prev,
+    //           message: error?.message,
+    //         }));
+    //         return;
+    //       }
+
+    //       if (statusCode === 201 && success) {
+    //         localStorage.setItem("WEMOVE_HOTELID", data.data._id);
+    //         setHotelId(data.data._id);
+    //         formik.setFieldValue("_id", data.data._id);
+    //       }
+    //     }
+
+    //     onNext(values);
+    //   } catch (err) {
+    //     console.error("Error during API call:", err);
+    //   }
+    // },
     onSubmit: async (values, { setErrors, setStatus }) => {
-      // console.log(values);
-      // console.log(values._id);
       try {
-        // console.log("Hotel Details Form submitted.");
-        // console.log("Hotel Details Form data:", values);
+        setIsSubmitting(true);
 
         const payloadBody = new FormData();
         payloadBody.append("hotelName", values.hotelName);
@@ -110,33 +199,31 @@ const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
 
         for (const image of values.files) {
           if (image instanceof File) {
-            newUploads.push(image); // New file to upload
+            newUploads.push(image);
           } else if (typeof image === "object" && image._id) {
-            existingImageIds.push(image._id); // Backend image reference
+            existingImageIds.push(image._id);
           }
         }
 
-        // Append new files if any
         if (newUploads.length > 0) {
           newUploads.forEach((file) => payloadBody.append("hotelImages", file));
         } else {
-          // If no new images, ensure field is sent to indicate no upload
           payloadBody.append("hotelImages", null);
         }
 
-        const finalImageIds =
-          deletedImageIds.length > 0 ? deletedImageIds : [""];
-
-        payloadBody.append("imageId", JSON.stringify(finalImageIds));
+        payloadBody.append(
+          "imageId",
+          JSON.stringify(deletedImageIds.length > 0 ? deletedImageIds : [""])
+        );
 
         payloadBody.append("termsAndConditions", values.termsAndConditions);
 
         window.scrollTo({ top: 0, behavior: "smooth" });
 
-        // if values._id then update else post req
+        let response;
+
         if (values._id) {
-          // console.log("UPDATE REQ");
-          const { data, statusCode, error, success } = await apiCall(
+          response = await apiCall(
             `${ENDPOINTS.HOTEL_BY_ID}/${values._id}`,
             "PUT",
             {
@@ -149,60 +236,44 @@ const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
               },
             }
           );
-
-          if (error) {
-            const { errors, message } = error;
-            message && setStatus(message);
-            return;
-          }
-          if (statusCode === 200 && success) {
-            // console.log("UPDATE HOTEL DETAILS:", data);
-            // onNext(values);
-          }
         } else {
-          const { data, statusCode, error, success } = await apiCall(
-            ENDPOINTS.HOTEL_DETAILS,
-            "POST",
-            {
-              body: payloadBody,
-              headers: {
-                "Content-Type": "multipart/form-data",
-                Authorization: `Bearer ${
-                  JSON.parse(localStorage.getItem("WEMOVE_TOKEN")).accessToken
-                }`,
-              },
-            }
-          );
+          response = await apiCall(ENDPOINTS.HOTEL_DETAILS, "POST", {
+            body: payloadBody,
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${
+                JSON.parse(localStorage.getItem("WEMOVE_TOKEN")).accessToken
+              }`,
+            },
+          });
+        }
 
-          if (error) {
-            const { errors, message } = error;
-            message && setStatus(message);
-            setErrorObj((prev) => ({
-              ...prev,
-              message: error?.message,
-            }));
-            return;
-          }
+        const { data, statusCode, error, success } = response;
 
-          if (statusCode === 201 && success) {
-            // console.log("in hotel detailsform", data);
+        if (error) {
+          setStatus(error.message || "Something went wrong");
+          return;
+        }
+
+        if (success) {
+          if (!values._id) {
             localStorage.setItem("WEMOVE_HOTELID", data.data._id);
             setHotelId(data.data._id);
             formik.setFieldValue("_id", data.data._id);
-            // onNext(values);
           }
-        }
 
-        onNext(values);
-        // onNext: Pass data to parent component
+          onNext(values);
+        }
       } catch (err) {
         console.error("Error during API call:", err);
+        setStatus("Unexpected error occurred");
+      } finally {
+        setIsSubmitting(false);
       }
     },
   });
 
-  const [fileComponentsCount, setFileComponentsCount] = useState(3); // Default to 3 components
-
+  const [fileComponentsCount, setFileComponentsCount] = useState(3);
   const handleFilesChange = (newFiles) => {
     const currentFiles = formik.values.files;
     formik.setFieldValue("files", [...currentFiles, ...newFiles]);
@@ -282,11 +353,8 @@ const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
           label="Total Rooms"
           type="number"
           value={formik.values.totalRooms}
-          // onChange={formik.handleChange}
           onChange={(e) => {
             formik.handleChange(e);
-
-            // 👇 Trigger Snackbar when user updates totalRooms
             setSnackbar({
               open: true,
               severity: "warning",
@@ -333,7 +401,6 @@ const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
           onChange={(e) =>
             formik.setFieldValue("termsAndConditions", e.target.checked)
           }
-          // onChange={formik.handleChange}
           required={true}
           name="termsAndConditions"
           checked={formik.values.termsAndConditions}
@@ -344,9 +411,21 @@ const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
 
       <div className={styles.formSubmitBtn}>
         <CustomButton
-          buttonText={initialValues._id ? "Update" : "Continue"}
-          type={"submit"}
-          buttonSize={"medium"}
+          type="submit"
+          buttonSize="medium"
+          disabled={isSubmitting}
+          buttonText={
+            isSubmitting ? (
+              <span className={styles.loadingText}>
+                <span className={styles.spinner} />
+                Please wait
+              </span>
+            ) : initialValues._id ? (
+              "Update"
+            ) : (
+              "Continue"
+            )
+          }
         />
       </div>
     </form>

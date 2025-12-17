@@ -1,6 +1,5 @@
 .form {
   width: 100%;
-  /* padding: 0 10.5px; */
   display: flex;
   flex-direction: column;
   gap: var(--flex-gap-lg);
@@ -15,16 +14,21 @@
 
 .formSubmitBtn {
   width: 100%;
-  /* max-width: clamp(11.25rem, 10.8875rem + 1.8125vw, 13.0625rem); */
-  max-width: 120px;
-  /* display: flex; */
-  /* flex-direction: column;
-    gap: var(--flex-gap-md); */
-  /* align-items: end; */
+  max-width: 140px;
   align-self: flex-end;
 }
 
-/* Drag And Drop */
+.formSubmitBtn button {
+  width: 100%;
+}
+
+.loadingText {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
 .dragDropWrapper {
   display: flex;
   flex-direction: column;
@@ -32,30 +36,17 @@
 }
 
 .dragDropBox {
-  /* position: relative; */
-  /* height: auto; */
-  /* border: 1px solid; */
   width: 100%;
 
   display: grid;
   grid-template-columns: repeat(1, 1fr);
-  /* grid-template-columns: repeat(3, 190px); */
   grid-template-rows: repeat(auto, auto);
   row-gap: var(--flex-gap-md);
   column-gap: var(--flex-gap-sm);
-
-  /* display: flex;
-    gap: var(--flex-gap-md);
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: flex-start; */
 }
 
 .item {
-  /* flex: 1 1 1; */
   width: 100%;
-  /* flex: 1 1 calc(33.33% - var(--flex-gap-md)); */
-  /* Adjust based on your gap and desired column width */
 }
 
 .dragDropLabelBox {
@@ -83,7 +74,27 @@
   color: red;
   position: absolute;
   bottom: -40px;
-  /* margin-left: 6px; */
+}
+
+.loadingText {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #e5e7eb;
+  border-top-color: #4f46e5;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (max-width: 768px) {

@@ -17,8 +17,8 @@ import apiCall from "../../../../../hooks/apiCall";
 import { ENDPOINTS } from "../../../../../utils/apiEndpoints";
 import { toast } from "react-toastify";
 
-const SUPPORTED_FORMATS = ["application/pdf"]; // Supported file types
-const FILE_SIZE_LIMIT = 5 * 1024 * 1024; // 5MB size limit
+const SUPPORTED_FORMATS = ["application/pdf"];
+const FILE_SIZE_LIMIT = 5 * 1024 * 1024;
 
 const HotelPolicyValidationSchema = Yup.object().shape({
   checkingTime: Yup.string()
@@ -44,106 +44,147 @@ const HotelPolicyValidationSchema = Yup.object().shape({
       Yup.mixed()
         .required("A file is required")
         .test("file-check", "Invalid file", (value) => {
-          // Only validate if it's a local file (File object)
           if (value instanceof File) {
             const validSize = value.size <= FILE_SIZE_LIMIT;
             const validFormat = SUPPORTED_FORMATS.includes(value.type);
             return validSize && validFormat;
           }
-          return true; // Skip validation for mapped backend files (e.g. image URLs or meta objects)
+          return true;
         })
-      // .test(
-      //   'fileSize',
-      //   ({ value, path }) => `${path} is too large, must be less than 5MB`,
-      //   value => value && value.size <= FILE_SIZE_LIMIT
-      // )
-      // .test(
-      //   'fileFormat',
-      //   ({ value, path }) => `${path} has unsupported format, only JPG, PNG, and PDF are allowed`,
-      //   value => value && SUPPORTED_FORMATS.includes(value.type)
-      // )
     )
     .max(1, "You can only upload one file"),
-  // files: Yup.array()
-  //   .of(Yup.mixed().required('Policy document is required'))
-  //   .min(1, 'At least one policy document is required'),
 });
 
 const HotelPolicyForm = ({ initialValues, onPrev, onSubmit }) => {
   const [fileProgress, setFileProgress] = useState({});
+  const [loading, setLoading] = useState(false);
+  // const formik = useFormik({
+  //   initialValues: initialValues,
+  //   validationSchema: HotelPolicyValidationSchema,
+  //   onSubmit: async (values) => {
+  //     setLoading(true);
+  //     const hotelID = localStorage.getItem("WEMOVE_HOTELID") || "";
+  //     const payloadBody = new FormData();
+  //     payloadBody.append("hotelId", hotelID);
+  //     payloadBody.append("checkInTime", values.checkingTime);
+  //     payloadBody.append("checkOutTime", values.checkoutTime);
+  //     const amenities = values.amenities.map((amenity) => ({
+  //       name: amenity.name,
+  //       status: amenity.checked,
+  //     }));
+  //     payloadBody.append("amenities", JSON.stringify(amenities));
+  //     payloadBody.append("hotel_license", values.files[0]);
+
+  //     if (values._id) {
+  //       const { data, statusCode, error, success } = await apiCall(
+  //         `${ENDPOINTS.HOTEL_POLICY}/${hotelID}`,
+  //         "PUT",
+  //         {
+  //           body: payloadBody,
+  //           headers: {
+  //             "Content-Type": "multipart/form-data",
+  //             Authorization: `Bearer ${
+  //               JSON.parse(localStorage.getItem("WEMOVE_TOKEN")).accessToken
+  //             }`,
+  //           },
+  //         }
+  //       );
+  //       if (success) {
+  //         onSubmit(values);
+  //       }
+  //     } else {
+  //       const { data, statusCode, error, success } = await apiCall(
+  //         ENDPOINTS.HOTEL_POLICY,
+  //         "POST",
+  //         {
+  //           body: payloadBody,
+  //           headers: {
+  //             "Content-Type": "multipart/form-data",
+  //             Authorization: `Bearer ${
+  //               JSON.parse(localStorage.getItem("WEMOVE_TOKEN")).accessToken
+  //             }`,
+  //           },
+  //         }
+  //       );
+  //       if (success) {
+  //         localStorage.removeItem("WEMOVE_USER");
+  //         localStorage.removeItem("WEMOVE_HOTELID");
+  //         localStorage.removeItem("WEMOVE_TOKEN");
+  //         onSubmit(values);
+  //       }
+  //     }
+  //   },
+  // });
+
+  // console.log("policy intial state:", formik.values);
 
   const formik = useFormik({
-    initialValues: initialValues,
+    initialValues,
     validationSchema: HotelPolicyValidationSchema,
     onSubmit: async (values) => {
-      const hotelID = localStorage.getItem("WEMOVE_HOTELID") || "";
+      setLoading(true);
 
-      // console.log("Hotel Policy Form submitted.");
-      // console.log("Hotel Policy Form data:", values);
+      try {
+        const hotelID = localStorage.getItem("WEMOVE_HOTELID") || "";
+        const tokenData = localStorage.getItem("WEMOVE_TOKEN");
 
-      const payloadBody = new FormData();
-      payloadBody.append("hotelId", hotelID);
-      payloadBody.append("checkInTime", values.checkingTime);
-      payloadBody.append("checkOutTime", values.checkoutTime);
-      const amenities = values.amenities.map((amenity) => ({
-        name: amenity.name,
-        status: amenity.checked,
-      }));
-      // console.log(
-      //   amenities,
-      //   hotelID,
-      //   values.checkingTime,
-      //   values.checkoutTime,
-      //   values.files[0]
-      // );
-      payloadBody.append("amenities", JSON.stringify(amenities));
-      payloadBody.append("hotel_license", values.files[0]);
-
-      if (values._id) {
-        const { data, statusCode, error, success } = await apiCall(
-          `${ENDPOINTS.HOTEL_POLICY}/${hotelID}`,
-          "PUT",
-          {
-            body: payloadBody,
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${
-                JSON.parse(localStorage.getItem("WEMOVE_TOKEN")).accessToken
-              }`,
-            },
-          }
-        );
-        if (success) {
-          // toast.success('Your application was successfully submitted.')
-          onSubmit(values);
+        if (!hotelID || !tokenData) {
+          throw new Error("Missing authentication details");
         }
-      } else {
-        const { data, statusCode, error, success } = await apiCall(
-          ENDPOINTS.HOTEL_POLICY,
-          "POST",
-          {
-            body: payloadBody,
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${
-                JSON.parse(localStorage.getItem("WEMOVE_TOKEN")).accessToken
-              }`,
-            },
-          }
-        );
-        if (success) {
-          // toast.success('Your application was successfully submitted.')
+
+        const { accessToken } = JSON.parse(tokenData);
+
+        const payloadBody = new FormData();
+        payloadBody.append("hotelId", hotelID);
+        payloadBody.append("checkInTime", values.checkingTime);
+        payloadBody.append("checkOutTime", values.checkoutTime);
+
+        const amenities = values.amenities.map((amenity) => ({
+          name: amenity.name,
+          status: amenity.checked,
+        }));
+
+        payloadBody.append("amenities", JSON.stringify(amenities));
+        payloadBody.append("hotel_license", values.files[0]);
+
+        const url = values._id
+          ? `${ENDPOINTS.HOTEL_POLICY}/${hotelID}`
+          : ENDPOINTS.HOTEL_POLICY;
+
+        const method = values._id ? "PUT" : "POST";
+
+        const { success, error } = await apiCall(url, method, {
+          body: payloadBody,
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
+        if (!success) {
+          throw new Error(error || "Hotel policy request failed");
+        }
+
+        // Clear auth data only on successful CREATE
+        if (!values._id) {
           localStorage.removeItem("WEMOVE_USER");
           localStorage.removeItem("WEMOVE_HOTELID");
           localStorage.removeItem("WEMOVE_TOKEN");
-          onSubmit(values);
         }
+
+        onSubmit(values);
+      } catch (err) {
+        console.error("Hotel policy submit failed:", err);
+
+        formik.setStatus(
+          err instanceof Error ? err.message : "Something went wrong"
+        );
+      } finally {
+        setLoading(false);
       }
-      // onSubmit(values);
     },
   });
 
-  // console.log("policy intial state:", formik.values);
   const [fileComponentsCount, setFileComponentsCount] = useState(3); // Default to 3 components
   const [amenitiesCount, setAmenitiesCount] = useState(9); // Default to 3 components
 
@@ -293,9 +334,22 @@ const HotelPolicyForm = ({ initialValues, onPrev, onSubmit }) => {
       {/* </div> */}
       <div className={styles.formSubmitBtn}>
         <CustomButton
-          buttonText={initialValues._id ? "Update" : "Continue"}
+          // buttonText={initialValues._id ? "Update" : "Continue"}
           type={"submit"}
           buttonSize={"medium"}
+          disabled={loading}
+          buttonText={
+            loading ? (
+              <span className={styles.loadingText}>
+                <span className={styles.spinner} />
+                Please wait
+              </span>
+            ) : initialValues._id ? (
+              "Update"
+            ) : (
+              "Continue"
+            )
+          }
         />
       </div>
     </form>

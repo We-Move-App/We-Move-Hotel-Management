@@ -29,12 +29,9 @@ const HotelLocationValidationSchema = Yup.object().shape({
   landmark: Yup.string()
     .min(2, "Landmark must be at least 2 characters long")
     .max(50, "Landmark cannot exceed 50 characters"),
-  // pincode: Yup.string()
-  //   .required("Pincode is required")
-  //   .matches(/^\d{6}$/, "Pincode must be exactly 6 digits"),
   pincode: Yup.string()
-    .nullable() // ✅ allows null
-    .notRequired() // ✅ optional
+    .nullable()
+    .notRequired()
     .matches(/^\d{6}$/, "Pincode must be exactly 6 digits")
     .transform((value, originalValue) => (originalValue === "" ? null : value)),
 });
@@ -45,7 +42,8 @@ const HotelLocationForm = ({
   onNext,
   setMultipartFormState,
 }) => {
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -53,9 +51,7 @@ const HotelLocationForm = ({
     validationSchema: HotelLocationValidationSchema,
     onSubmit: async (values) => {
       try {
-        // console.log("Hotel Location Form submitted.");
-        // console.log("Hotel Location Form data:", values);
-
+        setIsSubmitting(true);
         const hotelID = localStorage.getItem("WEMOVE_HOTELID") || "";
         const payload = {
           address: values.hotelAddress,
@@ -71,7 +67,6 @@ const HotelLocationForm = ({
         };
 
         if (values._id) {
-          // console.log("hit upload", payload);
           const { data, statusCode, error, success } = await apiCall(
             `${ENDPOINTS.HOTEL_LOCATION}/${hotelID}`,
             "PUT",
@@ -85,11 +80,9 @@ const HotelLocationForm = ({
             }
           );
           if (statusCode === 200 && success) {
-            // console.log(data);
             onNext(values);
           }
         } else {
-          // console.log("hit post", payload);
           const { data, statusCode, error, success } = await apiCall(
             ENDPOINTS.HOTEL_LOCATION,
             "POST",
@@ -110,9 +103,9 @@ const HotelLocationForm = ({
         }
       } catch (err) {
         console.error("Error during API call:", err);
+      } finally {
+        setIsSubmitting(false);
       }
-
-      // onNext: Pass data to parent component
     },
   });
 
@@ -199,9 +192,21 @@ const HotelLocationForm = ({
 
       <div className={styles.formSubmitBtn}>
         <CustomButton
-          buttonText={initialValues._id ? "Update" : "Continue"}
           type={"submit"}
           buttonSize={"medium"}
+          disabled={isSubmitting}
+          buttonText={
+            isSubmitting ? (
+              <span className={styles.loadingText}>
+                <span className={styles.spinner} />
+                Please wait
+              </span>
+            ) : initialValues._id ? (
+              "Update"
+            ) : (
+              "Continue"
+            )
+          }
         />
       </div>
     </form>

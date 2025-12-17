@@ -22,7 +22,7 @@
 .formSubmitBtn {
   width: 100%;
   /* max-width: clamp(11.25rem, 10.8875rem + 1.8125vw, 13.0625rem); */
-  max-width: 120px;
+  max-width: 140px;
   /* display: flex; */
   /* flex-direction: column;
     gap: var(--flex-gap-md); */
@@ -46,6 +46,17 @@
 .mapBox img {
   width: 100%;
   height: 100%;
+}
+
+.formSubmitBtn button {
+  width: 100%;
+}
+
+.loadingText {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
 }
 
 @media (max-width: 768px) {

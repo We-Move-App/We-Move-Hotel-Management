@@ -45,12 +45,23 @@
 .formSubmitBtn {
   width: 100%;
   /* max-width: clamp(11.25rem, 10.8875rem + 1.8125vw, 13.0625rem); */
-  max-width: 120px;
+  max-width: 140px;
   /* display: flex; */
   /* flex-direction: column;
     gap: var(--flex-gap-md); */
   /* align-items: end; */
   align-self: flex-end;
+}
+
+.formSubmitBtn button {
+  width: 100%;
+}
+
+.loadingText {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
 }
 
 /* Drag And Drop */

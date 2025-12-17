@@ -29,7 +29,7 @@ import BranchSelect from "../../Branch-Select/BranchSelect";
 // Validation Schema
 const SignupSchema = Yup.object().shape({
   mobile: Yup.string()
-    .matches(/^[0-9]{10}$/, "Mobile number must be exactly 10 digits")
+    .matches(/^[0-9]{9}$/, "Mobile number must be exactly 9 digits")
     .matches(/^\d+$/, "Mobile number cannot contain special characters")
     .required("Mobile number is required")
     .test(
@@ -44,7 +44,7 @@ const SignupSchema = Yup.object().shape({
       (value) => value?.trim().charAt(0) !== " "
     )
     .test("email", "Invalid email format.", function (value) {
-      const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/; // Regular email pattern
+      const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/; 
       return emailRegex.test(value);
     })
     .required("Email is required."),
@@ -398,20 +398,6 @@ const CreateAccount = () => {
             error={formik.errors.branch}
           />
 
-          {/* <CustomInput
-            label={"Mobile Number"}
-            required={true}
-            name="mobile"
-            type="tel"
-            value={formik.values.mobile}
-            a
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            touched={formik.touched.mobile}
-            error={formik.errors.mobile}
-            verifyStatus={mobileVerifyStatus}
-            handleVerifyStatus={handleVerifyMobileStatus}
-          /> */}
           <CustomInput
             label="Mobile Number"
             required={true}
