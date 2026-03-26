@@ -35,7 +35,6 @@ const Wallet = () => {
     accountHolderName: "",
     bankDetails: null,
   });
-  // const [loading, setLoading] = useState(true);
   // const [transactions, setTransactions] = useState([]);
   const [formattedTransactions, setFormattedTransactions] = useState([]);
   const [pagination, setPagination] = useState({
@@ -56,7 +55,7 @@ const Wallet = () => {
           else {
             console.warn(
               "[fetchTransactions] first arg non-numeric -> treating as search:",
-              page
+              page,
             );
             search = page;
             page = 1;
@@ -85,7 +84,7 @@ const Wallet = () => {
               limit,
               ...(search ? { search } : {}),
             },
-          }
+          },
         );
 
         console.debug("[fetchTransactions] RESPONSE raw ->", res?.data);
@@ -111,7 +110,7 @@ const Wallet = () => {
           });
         } else {
           console.warn(
-            "[fetchTransactions] response missing pagination object"
+            "[fetchTransactions] response missing pagination object",
           );
         }
         const inner = res?.data?.data;
@@ -153,7 +152,7 @@ const Wallet = () => {
         setLoading(false);
       }
     },
-    []
+    [],
   );
 
   useEffect(() => {
@@ -166,7 +165,7 @@ const Wallet = () => {
       "[handlePageChange] clicked page ->",
       p,
       "current search:",
-      searchQuery
+      searchQuery,
     );
     fetchTransactions(p, pagination.limit, searchQuery);
   };
@@ -187,7 +186,7 @@ const Wallet = () => {
       prev.map((tab, index) => ({
         ...tab,
         status: index === indexToActivate,
-      }))
+      })),
     );
   };
   const handleOpenCongratulationModal = () =>
@@ -217,6 +216,7 @@ const Wallet = () => {
     }
 
     try {
+      setLoading(true);
       const res = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/v1/momo/withdraw`,
         {
@@ -227,7 +227,7 @@ const Wallet = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       // console.log("Withdraw success:", res.data);
@@ -239,6 +239,8 @@ const Wallet = () => {
     } catch (err) {
       console.error("❌ Withdraw failed:", err);
       alert("Withdraw failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -267,7 +269,11 @@ const Wallet = () => {
             </div> */}
 
             <div className={styles.btnWrapper}>
-              <CustomButton buttonText={"Withdraw"} buttonSize={"medium"} />
+              <CustomButton
+                buttonText={loading ? "Processing..." : "Withdraw"}
+                buttonSize={"medium"}
+                type="submit"
+              />
             </div>
           </div>
         </form>
@@ -313,7 +319,7 @@ const Wallet = () => {
         // headers: {
         //     Authorization: `Bearer ${token}`
         // }
-      }
+      },
     );
 
     if (success && statusCode === 200) {
