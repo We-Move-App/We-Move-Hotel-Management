@@ -33,6 +33,8 @@ export const ENDPOINTS = {
 
   GET_AMENITIES: "/amenities",
 
+  GET_NOTIFICATIONS: "/global/notification/get",
+
   // FORGOT_PASSWORD: '/hotel-manager/auth/forgot-password',
   // RESET_PASSWORD: '/hotel-manager/auth/reset-password',
   // UPDATE_PROFILE: '/hotel-manager/profile',
