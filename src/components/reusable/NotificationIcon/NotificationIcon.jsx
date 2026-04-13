@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./notification-icon.module.css";
 import { IoNotifications, IoPerson } from "react-icons/io5";
 import apiCall from "../../../hooks/apiCall";
 import { ENDPOINTS } from "../../../utils/apiEndpoints";
+import { Bell } from "lucide-react";
 
 const NotificationIcon = ({ value = 0 }) => {
-  const [count, setCount] = useState(value || 1);
   const [isOpen, setIsOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(false);
+  const unreadCount = notifications.filter((n) => !n.isRead).length;
   const fetchNotifications = async () => {
     try {
       setLoading(true);
@@ -29,6 +30,10 @@ const NotificationIcon = ({ value = 0 }) => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
 
   const handleNotificationClick = () => {
     const nextState = !isOpen;
@@ -56,11 +61,21 @@ const NotificationIcon = ({ value = 0 }) => {
 
   return (
     <div className={styles.notification}>
-      <IoNotifications
-        className={styles.bellIcon}
+      <div
+        className={styles.notificationBlock}
         onClick={handleNotificationClick}
-      />
-      {count > 0 && <span className={styles.notificationCount}>{count}</span>}
+      >
+        <div className={styles.bellWrapper}>
+          <Bell size={35} color="#FFC107" fill="#FFC107" strokeWidth={1.5} />
+
+          {unreadCount > 0 && (
+            <span className={styles.notificationCount}>
+              {unreadCount > 99 ? "99+" : unreadCount}
+            </span>
+          )}
+        </div>
+      </div>
+      {/* {count > 0 && <span className={styles.notificationCount}>{count}</span>} */}
       {/* Dropdown */}
       {isOpen && (
         <div className={styles.dropdown}>
