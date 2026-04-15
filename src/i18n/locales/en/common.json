@@ -51,11 +51,16 @@
     "wallet": "Wallet",
     "customerFeedback": "Customer Feedback"
   },
-    "debitCard": {
+  "debitCard": {
     "title": "Digital Debit Card",
     "hiddenNumber": "**** **** **** ****"
   },
-    "todayEarning": {
+  "todayEarning": {
     "title": "Today's Earning"
-  }
+  },
+  "pagination": {
+    "next": "Next",
+    "prev": "Prev"
+  },
+  "search": "Search"
 }

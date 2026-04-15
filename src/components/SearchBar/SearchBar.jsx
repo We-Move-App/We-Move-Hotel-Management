@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FiSearch } from "react-icons/fi";
 import styles from "./searchbar.module.css";
+import { useTranslation } from "react-i18next";
 
 const SearchBar = ({ onSearch, ...props }) => {
+  const { t } = useTranslation("common");
   const [searchQuery, setSearchQuery] = useState("");
   const debounceRef = useRef(null);
 
@@ -27,7 +29,6 @@ const SearchBar = ({ onSearch, ...props }) => {
     }
   };
 
-
   useEffect(() => {
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
@@ -41,12 +42,12 @@ const SearchBar = ({ onSearch, ...props }) => {
         className={styles.searchInput}
         value={searchQuery}
         onChange={handleInputChange}
-        placeholder="Search"
+        placeholder={t("search")}
         onKeyDown={handleKeyDown}
       />
       <FiSearch className={styles.searchIcon} onClick={handleSearch} />
     </div>
   );
 };
-
+[];
 export default SearchBar;

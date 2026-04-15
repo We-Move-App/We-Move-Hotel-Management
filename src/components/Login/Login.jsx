@@ -147,7 +147,7 @@ const Login = () => {
           />
 
           <div className={styles.forgotPasswordBox}>
-            <Link to={"/reset-password"}>Forgot Password?</Link>
+            <Link to={"/reset-password"}>{t("loginForm.forgotPassword")}</Link>
           </div>
 
           {formik.status && (

@@ -15,6 +15,8 @@ import enBookingManagement from "./locales/en/dashboard/bookingManagement.json";
 import enFeedback from "./locales/en/dashboard/feedback.json";
 import enProfile from "./locales/en/dashboard/profile.json";
 import enWallet from "./locales/en/dashboard/wallet.json";
+import enAddCustomer from "./locales/en/dashboard/addCustomer.json";
+
 // FR
 import frCommon from "./locales/fr/common.json";
 import frLogin from "./locales/fr/auth/login.json";
@@ -27,6 +29,7 @@ import frBookingManagement from "./locales/fr/dashboard/bookingManagement.json";
 import frFeedback from "./locales/fr/dashboard/feedback.json";
 import frProfile from "./locales/fr/dashboard/profile.json";
 import frWallet from "./locales/fr/dashboard/wallet.json";
+import frAddCustomer from "./locales/fr/dashboard/addCustomer.json";
 
 i18n
   .use(LanguageDetector)
@@ -51,6 +54,7 @@ i18n
         feedback: enFeedback,
         profile: enProfile,
         wallet: enWallet,
+        addCustomer: enAddCustomer,
       },
       fr: {
         common: frCommon,
@@ -64,6 +68,7 @@ i18n
         feedback: frFeedback,
         profile: frProfile,
         wallet: frWallet,
+        addCustomer: frAddCustomer,
       },
     },
   });

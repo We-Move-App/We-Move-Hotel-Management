@@ -1,21 +1,13 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styles from "./wallet.module.css";
 import DebitCard from "../../components/DebitCard/DebitCard";
 import CustomTabBar from "../../components/reusable/custom/CTabbar/CustomTabBar";
 import CustomTable from "../../components/Table/CustomTable";
 import SearchBar from "../../components/SearchBar/SearchBar";
-import TableHeader from "../../components/Table/TableHeader";
-import FormHeader from "../../components/reusable/custom/FormHeader/FormHeader";
-import GlobalStyles from "../../utils/GlobalStyles";
 import CustomInput from "../../components/reusable/custom/Form-Fields/CInput/CustomInput";
 import CustomButton from "../../components/reusable/custom/CButton/CustomButton";
-import CustomFileInput from "../../components/reusable/custom/Form-Fields/CFileInput/CustomFileInput";
-import images from "../../assets/images";
-import { LuFileDown } from "react-icons/lu";
 import CustomModal from "../../components/reusable/custom/CModal/CustomModal";
-import CustomLabel from "../../components/reusable/custom/CLabel/CustomLabel";
-import { Weight } from "lucide-react";
-import CustomRadioButton from "../../components/reusable/custom/Form-Fields/CRadioButton/CustomRadioButton";
+import images from "../../assets/images";
 import { ENDPOINTS } from "../../utils/apiEndpoints";
 import apiCall from "../../hooks/apiCall";
 import { tokenFromLocalStorage } from "../../utils/helperFunctions";
@@ -25,11 +17,11 @@ import { useTranslation } from "react-i18next";
 
 const Wallet = () => {
   const { t } = useTranslation("wallet");
+
   const navigate = useNavigate();
-  // const token = tokenFromLocalStorage();
   const [tabBarData, setTabBarData] = useState([
-    { name: "tabs.transactions", status: true },
-    { name: "tabs.withdraw", status: false },
+    { name: "tabs.transactions", status: true, key: "transactions" },
+    { name: "tabs.withdraw", status: false, key: "withdraw" },
   ]);
 
   const [bankDetails, setBankDetails] = useState({
@@ -38,7 +30,7 @@ const Wallet = () => {
     accountHolderName: "",
     bankDetails: null,
   });
-  // const [transactions, setTransactions] = useState([]);
+  
   const [formattedTransactions, setFormattedTransactions] = useState([]);
   const [pagination, setPagination] = useState({
     page: 1,
@@ -317,36 +309,23 @@ const Wallet = () => {
     const { data, statusCode, error, success } = await apiCall(
       ENDPOINTS.HOTEL_BANK_DETAILS,
       "GET",
-      {
-        // headers: {
-        //     Authorization: `Bearer ${token}`
-        // }
-      },
     );
 
-    if (success && statusCode === 200) {
+    if (success && statusCode === 200 && data.data.bank) {
       const { bankName, accountHolderName, accountNumber, _id, bankDocs } =
-        data?.data?.bank;
-      // console.log("bank Data :", data);
+        data.data.bank;
       setBankDetails({
         bankName,
         bankAccountNumber: accountNumber,
         accountHolderName,
         bankDetails: bankDocs,
       });
-      // formik.setValues({
-      //     bankName: bankName || '',
-      //     accountHolderName: accountHolderName || '',
-      //     bankAccountNumber: accountNumber || '',
-      //     bankDocs: null // or fetched file data if available
-      // });
-      // setBankId(_id);
-      // setLoading(false);
     }
   };
 
   useEffect(() => {
-    const withdrawTab = tabBarData.find((tab) => tab.name === "Withdraw");
+    const withdrawTab = tabBarData.find((tab) => tab.key === "withdraw");
+
     if (withdrawTab?.status) {
       setIsModalOpen(true);
     } else {

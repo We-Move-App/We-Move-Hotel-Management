@@ -56,5 +56,10 @@
   },
   "todayEarning": {
     "title": "Revenus d'aujourd'hui"
-  }
+  },
+  "pagination": {
+    "next": "Suivant",
+    "prev": "Précédent"
+  },
+  "search": "Rechercher"
 }

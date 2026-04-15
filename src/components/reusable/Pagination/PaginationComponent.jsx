@@ -1,11 +1,13 @@
 import React from "react";
 import styles from "./pagination.module.css";
+import { useTranslation } from "react-i18next";
 
 const PaginationComponent = ({
   currentPage = 1,
   totalPages = 1,
   onPageChange = () => {},
 }) => {
+  const { t } = useTranslation("common");
   const getPageNumbers = () => {
     const pages = [];
     const totalShownPages = 3;
@@ -66,7 +68,7 @@ const PaginationComponent = ({
           }
           aria-disabled={Number(currentPage) === 1}
         >
-          Prev
+          {t("pagination.prev")}
         </button>
       </li>
 
@@ -105,7 +107,7 @@ const PaginationComponent = ({
           }
           aria-disabled={Number(currentPage) === Number(totalPages)}
         >
-          Next
+          {t("pagination.next")}
         </button>
       </li>
     </ul>

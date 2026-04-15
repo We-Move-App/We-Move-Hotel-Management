@@ -1,0 +1,64 @@
+{
+  "breadcrumb": {
+    "booking": "Booking Management",
+    "addCustomer": "Add New Customer"
+  },
+
+  "guestDetails": {
+    "title": "Guest Details"
+  },
+
+  "form": {
+    "customerName": "Customer Name",
+    "email": "Email Id",
+    "mobile": "Mobile Number",
+    "roomType": "Room Type",
+    "checkIn": "Checkin",
+    "checkOut": "Checkout",
+    "adults": "Adults",
+    "adult": "Adult",
+    "kid": "Kid",
+    "submit": "Book"
+  },
+
+  "idCard": {
+    "title": "Add ID Card"
+  },
+
+  "validation": {
+    "customerName": {
+      "required": "Customer Name is required",
+      "min": "Customer Name must be at least 2 characters",
+      "max": "Customer Name cannot exceed 50 characters",
+      "invalid": "Customer Name should only contain alphabets and spaces"
+    },
+    "email": {
+      "required": "Email is required",
+      "invalid": "Invalid email address"
+    },
+    "mobile": {
+      "required": "Mobile number is required",
+      "invalid": "Enter a valid 10-digit mobile number"
+    },
+    "checkInDate": {
+      "required": "Check-in date is required",
+      "invalid": "Check-in date is invalid",
+      "past": "Check-in date cannot be in the past"
+    },
+    "checkOutDate": {
+      "required": "Check-out date is required",
+      "invalid": "Check-out date is invalid",
+      "min": "Check-out date must be after check-in date"
+    },
+    "isAdult": {
+      "required": "Please select Adult or Kid",
+      "invalid": "Invalid selection"
+    },
+    "files": {
+      "required": "File is required",
+      "min": "At least 1 file is required",
+      "size": "File is too large",
+      "format": "Unsupported file format"
+    }
+  }
+}
