@@ -18,51 +18,54 @@ import CustomFileInput from "../../components/reusable/custom/Form-Fields/CFileI
 import CustomBtn from "../../components/reusable/Custom-Button/CustomBtn";
 import CustomDownloadButton from "../../components/reusable/custom/Custom-Download-Button/CustomDownloadButton";
 import { BadgeCheck } from "lucide-react";
+import { BankDetailsSchema } from "./validation";
+import { useTranslation } from "react-i18next";
 
 const FILE_SIZE = 2 * 1024 * 1024; // 2MB
 const SUPPORTED_FORMATS = ["application/pdf"];
 
-const BankDetailsSchema = Yup.object().shape({
-  bankName: Yup.string()
-    .matches(
-      /^[a-zA-Z\s]*$/,
-      "Bank Name should only contain alphabets and spaces"
-    ) // Only alphabets and spaces
-    .test(
-      "noSpaceAtStart",
-      "The first character cannot be a space",
-      (value) => value?.trim().charAt(0) !== " "
-    ) // No space at the start
-    .required("Bank Name is required"),
+// const BankDetailsSchema = Yup.object().shape({
+//   bankName: Yup.string()
+//     .matches(
+//       /^[a-zA-Z\s]*$/,
+//       "Bank Name should only contain alphabets and spaces"
+//     ) // Only alphabets and spaces
+//     .test(
+//       "noSpaceAtStart",
+//       "The first character cannot be a space",
+//       (value) => value?.trim().charAt(0) !== " "
+//     ) // No space at the start
+//     .required("Bank Name is required"),
 
-  bankAccountNumber: Yup.string()
-    .matches(/^\d+$/, "Bank Account Number should only contain numbers") // Ensure only numbers
-    .required("Bank Account Number is required"),
+//   bankAccountNumber: Yup.string()
+//     .matches(/^\d+$/, "Bank Account Number should only contain numbers") // Ensure only numbers
+//     .required("Bank Account Number is required"),
 
-  accountHolderName: Yup.string()
-    .matches(
-      /^[a-zA-Z\s]*$/,
-      "Account Holder Name should only contain alphabets and spaces"
-    ) // Only alphabets and spaces
-    .test(
-      "noSpaceAtStart",
-      "The first character cannot be a space",
-      (value) => value?.trim().charAt(0) !== " "
-    ) // No space at the start
-    .required("Account Holder Name is required"),
+//   accountHolderName: Yup.string()
+//     .matches(
+//       /^[a-zA-Z\s]*$/,
+//       "Account Holder Name should only contain alphabets and spaces"
+//     ) // Only alphabets and spaces
+//     .test(
+//       "noSpaceAtStart",
+//       "The first character cannot be a space",
+//       (value) => value?.trim().charAt(0) !== " "
+//     ) // No space at the start
+//     .required("Account Holder Name is required"),
 
-  bankAccountDetails: Yup.mixed()
-    .nullable()
-    // .required('A file is required')
-    .test("fileSize", "File is too large", (value) => {
-      return !value || (value && value.size <= FILE_SIZE);
-    })
-    .test("fileFormat", "Unsupported Format", (value) => {
-      return !value || SUPPORTED_FORMATS.includes(value.type);
-    }),
-});
+//   bankAccountDetails: Yup.mixed()
+//     .nullable()
+//     // .required('A file is required')
+//     .test("fileSize", "File is too large", (value) => {
+//       return !value || (value && value.size <= FILE_SIZE);
+//     })
+//     .test("fileFormat", "Unsupported Format", (value) => {
+//       return !value || SUPPORTED_FORMATS.includes(value.type);
+//     }),
+// });
 
 const Profile = () => {
+  const { t } = useTranslation("profile");
   // const token = tokenFromLocalStorage();
   const [loading, setLoading] = useState(true);
   const [isEdit, setIsEdit] = useState(false);
@@ -86,7 +89,7 @@ const Profile = () => {
       bankAccountNumber: "",
       bankDocs: "",
     },
-    validationSchema: BankDetailsSchema,
+    validationSchema: BankDetailsSchema(t),
     onSubmit: async (values) => {
       // if bankId then update else add a bank
       console.log("Formik values:", values);
@@ -110,7 +113,7 @@ const Profile = () => {
             // headers: {
             //     Authorization: `Bearer ${token}`
             // }
-          }
+          },
         );
 
         if (success && statusCode === 200) {
@@ -127,7 +130,7 @@ const Profile = () => {
             // headers: {
             //     Authorization: `Bearer ${token}`
             // }
-          }
+          },
         );
 
         if (success && statusCode === 201) {
@@ -173,7 +176,7 @@ const Profile = () => {
         // headers: {
         //     Authorization: `Bearer ${token}`
         // }
-      }
+      },
     );
 
     if (success && statusCode === 200) {
@@ -217,13 +220,13 @@ const Profile = () => {
         // headers: {
         //     Authorization: `Bearer ${token}`
         // }
-      }
+      },
     );
 
     if (success && statusCode === 200) {
       const { bankName, accountHolderName, accountNumber, _id, bankDocs } =
         data?.data?.bank;
-      console.log("bank Data :", data);
+      // console.log("bank Data :", data);
       formik.setValues({
         bankName: bankName || "",
         accountHolderName: accountHolderName || "",
@@ -246,7 +249,7 @@ const Profile = () => {
 
   return (
     <div className={styles.profileContainer}>
-      <h1>Profile</h1>
+      <h1>{t("bankDetails.heading")}</h1>
 
       <div className={styles.contentContainer}>
         <div className={styles.personalDetailsContainer}>
@@ -258,12 +261,18 @@ const Profile = () => {
             />
           </div>
           <div className={styles.detailsBoxWrapper}>
-            <p className={styles.detailsHeading}>Personal Details</p>
+            <p className={styles.detailsHeading}>
+              {t("bankDetails.personalDetails")}
+            </p>
             <div className={styles.detailsBox}>
               <span className={styles.nameBlock}>
                 <p>{user?.userName}</p>
                 {user?.batchVerified && (
-                  <BadgeCheck size={18} color="#4CAF50" title="Verified" />
+                  <BadgeCheck
+                    size={18}
+                    color="#4CAF50"
+                    title={t("bankDetails.verified")}
+                  />
                 )}
               </span>
               <p>{user?.mobile}</p>
@@ -272,7 +281,9 @@ const Profile = () => {
           </div>
 
           <div className={styles.detailsBoxWrapper}>
-            <p className={styles.detailsHeading}>Company Details</p>
+            <p className={styles.detailsHeading}>
+              {t("bankDetails.companyDetails")}
+            </p>
             <div className={styles.detailsBox}>
               <p>{user?.companyName}</p>
               <p>{user?.companyAddress}</p>
@@ -281,7 +292,7 @@ const Profile = () => {
         </div>
 
         <div className={styles.bankSection}>
-          <h2>Saved Bank</h2>
+          <h2>{t("bankDetails.bankSection.heading")}</h2>
           {loading ? (
             <div>
               <Loader />
@@ -293,7 +304,7 @@ const Profile = () => {
                   <div className={styles.formFieldsContainer}>
                     <div className={styles.doubleFormFieldBox}>
                       <CustomInput
-                        label={"Bank Name"}
+                        label={t("bankDetails.bankSection.form.bankName")}
                         name={"bankName"}
                         value={formik.values.bankName}
                         type="text"
@@ -304,7 +315,9 @@ const Profile = () => {
                         isDisabled={!isEdit}
                       />
                       <CustomInput
-                        label={"Bank Account Number"}
+                        label={t(
+                          "bankDetails.bankSection.form.bankAccountNumber",
+                        )}
                         name={"bankAccountNumber"}
                         type="number"
                         value={formik.values.bankAccountNumber}
@@ -317,7 +330,9 @@ const Profile = () => {
                     </div>
                     <div className={styles.doubleFormFieldBox}>
                       <CustomInput
-                        label={"Account Holder Name"}
+                        label={t(
+                          "bankDetails.bankSection.form.accountHolderName",
+                        )}
                         name={"accountHolderName"}
                         value={formik.values.accountHolderName}
                         onChange={formik.handleChange}
@@ -331,20 +346,22 @@ const Profile = () => {
 
                       {!isEdit && formik.values?.bankDocs ? (
                         <CustomDownloadButton
-                          label={"Bank Details"}
+                          label={t("bankDetails.bankSection.form.bankDetails")}
                           icon={<LuFileDown />}
-                          buttonText={"View file"}
+                          buttonText={t("bankDetails.bankSection.form.viewFile")}
                           downloadLink={formik.values.bankDocs}
                         />
                       ) : (
                         <CustomFileInput
-                          label={"Bank Details"}
+                          label={t("bankDetails.bankSection.form.bankDetails")}
                           required={true}
                           icon={<LuFileDown />}
                           name={"bankDocs"}
                           value={formik.values?.bankDocs}
                           onChange={handleFileChange}
-                          placeholder={"View file"}
+                          placeholder={t(
+                            "bankDetails.bankSection.form.viewFile",
+                          )}
                           accept={".pdf, .png, .jpeg, .jpg"}
                         />
                       )}
@@ -363,13 +380,17 @@ const Profile = () => {
                 <div className={styles.formSubmitBtn}>
                   {!isEdit && (
                     <CustomBtn
-                      label={"Edit"}
+                      label={t("bankDetails.bankSection.form.edit")}
                       onClick={() => setIsEdit(!isEdit)}
                     />
                   )}
                   {isEdit && (
                     <CustomBtn
-                      label={bankId ? "Update" : "Add Bank"}
+                      label={
+                        bankId
+                          ? t("bankDetails.bankSection.form.update")
+                          : t("bankDetails.bankSection.form.addBank")
+                      }
                       type={"submit"}
                     />
                   )}

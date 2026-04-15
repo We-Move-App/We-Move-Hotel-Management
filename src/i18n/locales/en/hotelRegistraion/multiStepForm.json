@@ -1,0 +1,147 @@
+{
+  "header": "Hotel Registration",
+  "hotelDetails": {
+    "heading": "hotel Details",
+    "subHeading": "Add your hotel details.",
+    "validation": {
+      "hotelNameRequired": "Hotel name is required",
+      "hotelNameMin": "Hotel name must be at least 2 characters",
+      "hotelNameMax": "Hotel name cannot exceed 50 characters",
+      "hotelNamePattern": "Hotel name can only contain letters, spaces, and limited punctuation (.,-' )",
+
+      "businessLicenseRequired": "Business license is required",
+
+      "totalRoomsRequired": "Total number of rooms is required",
+      "totalRoomsPositive": "Total rooms must be greater than zero",
+      "totalRoomsInteger": "Total rooms must be an integer",
+
+      "fileRequired": "A file is required",
+      "fileInvalid": "Invalid file",
+      "fileMin": "At least 3 files required",
+
+      "termsRequired": "You must accept the terms and conditions"
+    },
+    "form": {
+      "hotelName": "Hotel Name",
+      "businessLicense": "Business License",
+      "totalRooms": "Total Rooms",
+
+      "uploadLabel": "Upload Hotel Photo (min: 3 images)",
+
+      "terms": "I accept all terms and conditions",
+
+      "warningRooms": "Please also update Standard and Luxury room counts to match Total Rooms.",
+
+      "pleaseWait": "Please wait",
+      "update": "Update",
+      "continue": "Continue"
+    }
+  },
+  "hotelLocation": {
+    "heading": "location",
+    "subHeading": "Add your hotel location.",
+    "form": {
+      "addLocation": "Add Location",
+      "city": "City",
+      "locality": "Locality",
+      "landmark": "Landmark",
+      "pincode": "Pincode",
+
+      "continue": "Continue",
+      "update": "Update",
+      "pleaseWait": "Please wait"
+    },
+    "validation": {
+      "addressRequired": "Hotel address is required",
+      "addressMin": "Hotel address must be at least 5 characters long",
+      "addressMax": "Hotel address cannot exceed 500 characters",
+
+      "cityRequired": "City is required",
+      "cityMin": "City must be at least 2 characters long",
+      "cityMax": "City cannot exceed 50 characters",
+
+      "localityRequired": "Locality is required",
+      "localityMin": "Locality must be at least 2 characters long",
+      "localityMax": "Locality cannot exceed 50 characters",
+
+      "landmarkMin": "Landmark must be at least 2 characters long",
+      "landmarkMax": "Landmark cannot exceed 50 characters",
+
+      "pincodeInvalid": "Pincode must be exactly 6 digits"
+    }
+  },
+  "hotelRooms&Amenities": {
+    "heading": "rooms & Amenities",
+    "subHeading": "Add your room details.",
+
+    "standardRoom": {
+      "form": {
+        "roomPrice": "Room Price",
+        "numberOfRooms": "Number of Rooms",
+        "selectAmenities": "Select Amenities",
+        "uploadPhotos": "Upload Room Photo (min: 3 images)",
+
+        "addMore": "Add more",
+        "continue": "Continue",
+        "update": "Update"
+      }
+    },
+    "luxuryRoom": {
+      "form": {
+        "roomPrice": "Room Price",
+        "numberOfRooms": "Number of Rooms",
+        "selectAmenities": "Select Amenities",
+        "uploadPhotos": "Upload Room Photo (min: 3 images)",
+
+        "addMore": "Add more",
+        "pleaseWait": "Please wait",
+        "continue": "Continue",
+        "update": "Update"
+      }
+    },
+    "tabBarData": {
+      "standard": "Standard room",
+      "luxury": "Luxury room"
+    },
+    "validation": {
+      "roomPriceRequired": "Room price is required",
+      "numberOfRoomsRequired": "Number of rooms is required",
+
+      "fileRequired": "A file is required",
+      "fileInvalid": "Invalid file",
+      "fileMinCount": "At least 3 files required",
+      "fileMin": "At least one file is required",
+
+      "amenitiesRequired": "At least one amenity must be selected"
+    }
+  },
+  "hotelPolicy": {
+    "heading": "policy",
+    "subHeading": "Add your hotel details.",
+    "form": {
+      "checkingTime": "Checking Time",
+      "checkoutTime": "Checkout Time",
+      "selectAmenities": "Select Amenities",
+      "uploadPolicyDocument": "Upload Policy Document",
+
+      "continue": "Continue",
+      "update": "Update",
+      "pleaseWait": "Please wait"
+    },
+    "validation": {
+      "checkinRequired": "Checking time is required",
+      "checkoutRequired": "Checkout time is required",
+      "invalidTime": "Invalid time format",
+
+      "amenitiesRequired": "At least one amenity must be selected",
+
+      "fileRequired": "A file is required",
+      "fileInvalid": "Invalid file",
+      "fileMax": "You can only upload one file"
+    }
+  },
+  "verificationSuccess": {
+    "heading": "Congratulations! You have successfully verified as an Admin",
+    "subHeading": "We are excited to warmly welcome both new and returning members!"
+  }
+}

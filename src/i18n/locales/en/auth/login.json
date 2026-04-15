@@ -1,0 +1,25 @@
+{
+  "headerForm": {
+    "heading": "Login",
+    "subHeading": "Welcome to We Move All! Please login to your account."
+  },
+  "loginForm": {
+    "email": "Email / Phone Number",
+    "password": "Password",
+    "forgotPassword": "Forgot Password?",
+    "loginBtn": "Login",
+    "signupLink": "Don't have an account? Sign up here",
+    "question": " Don't have an account?",
+    "signUpLink": "Sign up",
+    "here": "here"
+  },
+  "validation": {
+    "noSpaceStart": "The first character cannot be a space",
+    "invalidEmailPhone": "Please enter a valid email or phone number",
+    "requiredEmailPhone": "Email or phone number is required",
+    "requiredPassword": "Password is required",
+    "passwordMin": "Password must be at least 6 characters long",
+    "passwordMax": "Password must be at most 20 characters long",
+    "passwordPattern": "Password must contain at least one letter, one number, and one special character"
+  }
+}

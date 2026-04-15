@@ -19,48 +19,52 @@ import { FileUpload } from "../../../../reusable/custom/Form-Fields/CDragAndDrop
 import apiCall from "../../../../../hooks/apiCall";
 import { ENDPOINTS } from "../../../../../utils/apiEndpoints";
 import { daDK } from "@mui/x-date-pickers/locales";
+import { roomValidationSchema } from "./validation";
+import { useTranslation } from "react-i18next";
 
-const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png"]; // Supported file types
-const FILE_SIZE_LIMIT = 5 * 1024 * 1024; // 5MB size limit
+// const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png"]; // Supported file types
+// const FILE_SIZE_LIMIT = 5 * 1024 * 1024; // 5MB size limit
 
-const roomValidationSchema = Yup.object().shape({
-  roomPrice: Yup.number().required("Room price is required"),
-  // .positive('Room price must be greater than zero'),
-  numberOfRooms: Yup.number().required("Number of rooms is required"),
-  // .positive('Number of rooms must be greater than zero')
-  // .integer('Number of rooms must be an integer'),
-  files: Yup.array()
-    .of(
-      Yup.mixed()
-        .required("A file is required")
-        .test("file-check", "Invalid file", (value) => {
-          // Only validate if it's a local file (File object)
-          if (value instanceof File) {
-            const validSize = value.size <= FILE_SIZE_LIMIT;
-            const validFormat = SUPPORTED_FORMATS.includes(value.type);
-            return validSize && validFormat;
-          }
-          return true; // Skip validation for mapped backend files (e.g. image URLs or meta objects)
-        })
-    )
-    .test("file-count", "At least 3 files required", function (value) {
-      // Only run this test if no existing or local files
-      const count = value?.length || 0;
-      return count >= 3;
-    })
-    .min(1, "At least one file is required"),
-  amenities: Yup.array()
-    .of(Yup.mixed())
-    .min(1, "At least one amenity must be selected"),
-});
+// const roomValidationSchema = Yup.object().shape({
+//   roomPrice: Yup.number().required("Room price is required"),
+//   // .positive('Room price must be greater than zero'),
+//   numberOfRooms: Yup.number().required("Number of rooms is required"),
+//   // .positive('Number of rooms must be greater than zero')
+//   // .integer('Number of rooms must be an integer'),
+//   files: Yup.array()
+//     .of(
+//       Yup.mixed()
+//         .required("A file is required")
+//         .test("file-check", "Invalid file", (value) => {
+//           // Only validate if it's a local file (File object)
+//           if (value instanceof File) {
+//             const validSize = value.size <= FILE_SIZE_LIMIT;
+//             const validFormat = SUPPORTED_FORMATS.includes(value.type);
+//             return validSize && validFormat;
+//           }
+//           return true; // Skip validation for mapped backend files (e.g. image URLs or meta objects)
+//         })
+//     )
+//     .test("file-count", "At least 3 files required", function (value) {
+//       // Only run this test if no existing or local files
+//       const count = value?.length || 0;
+//       return count >= 3;
+//     })
+//     .min(1, "At least one file is required"),
+//   amenities: Yup.array()
+//     .of(Yup.mixed())
+//     .min(1, "At least one amenity must be selected"),
+// });
 
-const HotelRoomsValidationSchema = Yup.object().shape({
-  standardRoom: roomValidationSchema,
-  luxuryRoom: roomValidationSchema,
-});
+const HotelRoomsValidationSchema = (t) =>
+  Yup.object().shape({
+    standardRoom: roomValidationSchema(t),
+    luxuryRoom: roomValidationSchema(t),
+  });
 
 const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
   // const [loading, setLoading] = useState(false);
+  const { t } = useTranslation("hotelRegistration");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formError, setFormError] = useState({
     standardError: "",
@@ -76,7 +80,7 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
 
   const formik = useFormik({
     initialValues: initialValues,
-    validationSchema: HotelRoomsValidationSchema,
+    validationSchema: HotelRoomsValidationSchema(t),
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: async (values) => {
@@ -111,7 +115,7 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
                 status: checked,
               };
               return modifyedAmenity;
-            }
+            },
           );
           // standardRoomsForm.append('hotelId', hotelID);
           // standardRoomsForm.append('roomType', 'standard');
@@ -119,7 +123,7 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
           standardRoomsForm.append("roomPrice", standard_roomPrice);
           standardRoomsForm.append(
             "amenities",
-            JSON.stringify(structuredStandardAmenites)
+            JSON.stringify(structuredStandardAmenites),
           );
           standardRoomsForm.append("luxuryRoomCount", luxury_numberOfRooms);
           standardRoomsForm.append("standardRoomCount", standard_numberOfRooms);
@@ -142,7 +146,7 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
           luxuryRoomsForm.append("roomPrice", luxury_roomPrice);
           luxuryRoomsForm.append(
             "amenities",
-            JSON.stringify(structuredLuxuryAmenites)
+            JSON.stringify(structuredLuxuryAmenites),
           );
           luxuryRoomsForm.append("luxuryRoomCount", luxury_numberOfRooms);
           luxuryRoomsForm.append("standardRoomCount", standard_numberOfRooms);
@@ -168,7 +172,7 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
               "PUT",
               {
                 body: standardRoomsForm,
-              }
+              },
             );
 
             const {
@@ -181,7 +185,7 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
               "PUT",
               {
                 body: luxuryRoomsForm,
-              }
+              },
             );
 
             if (
@@ -239,7 +243,7 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
               "POST",
               {
                 body: standardRoomsForm,
-              }
+              },
             );
 
             const {
@@ -252,7 +256,7 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
               "POST",
               {
                 body: luxuryRoomsForm,
-              }
+              },
             );
 
             if (
@@ -306,11 +310,11 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
   const [amenitiesCount, setAmenitiesCount] = useState(9); // Default to 3 components
 
   const [tabBarData, setTabBarData] = useState([
-    { name: "Standard room", status: true },
-    { name: "Luxury room", status: false },
+    { name: t("hotelRooms&Amenities.tabBarData.standard"), status: true },
+    { name: t("hotelRooms&Amenities.tabBarData.luxury"), status: false },
   ]);
   const [activeTabBar, setActiveTabBar] = useState(
-    tabBarData[0].status ? "standardRoom" : "luxuryRoom"
+    tabBarData[0].status ? "standardRoom" : "luxuryRoom",
   );
   const [externalActiveTab, setExternalActiveTab] = useState(0);
 
@@ -367,8 +371,8 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
   const handleRoomTypeChange = () => {
     // window.focus();
     setTabBarData([
-      { name: "Standard room", status: false },
-      { name: "Luxury room", status: true },
+      { name: t("hotelRooms&Amenities.tabBarData.standard"), status: true },
+      { name: t("hotelRooms&Amenities.tabBarData.luxury"), status: false },
     ]);
     setExternalActiveTab(1);
     if (formTopRef.current) {
@@ -402,7 +406,7 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
                 required={true}
                 // name={activeTabBar['roomPrice']}
                 name={"standardRoom.roomPrice"}
-                label="Room Price"
+                label={t("hotelRooms&Amenities.standardRoom.form.roomPrice")}
                 floatNumber={true}
                 type="number"
                 value={formik.values.standardRoom?.roomPrice}
@@ -415,7 +419,9 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
               <CustomInput
                 required={true}
                 name={"standardRoom.numberOfRooms"}
-                label="Number of rooms"
+                label={t(
+                  "hotelRooms&Amenities.standardRoom.form.numberOfRooms",
+                )}
                 type="number"
                 value={formik.values.standardRoom?.numberOfRooms}
                 onChange={formik.handleChange}
@@ -430,7 +436,9 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
             <div className={styles.amenitiesContainer}>
               <div className={styles.dragDropLabelBox}>
                 <CustomLabel
-                  labelText={"Select Amenities"}
+                  labelText={t(
+                    "hotelRooms&Amenities.standardRoom.form.selectAmenities",
+                  )}
                   htmlFor="label"
                   required={true}
                 />
@@ -448,7 +456,7 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
                         onChange={(e) =>
                           formik.setFieldValue(
                             `standardRoom.amenities[${index}].checked`,
-                            e.target.checked
+                            e.target.checked,
                           )
                         }
                         name={`standardRoom.amenities[${index}].checked`}
@@ -457,7 +465,7 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
                         variant="grey"
                       />
                     </div>
-                  )
+                  ),
                 )}
               </div>
             </div>
@@ -466,7 +474,9 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
             <div className={styles.dragDropWrapper}>
               <div className={styles.dragDropLabelBox}>
                 <CustomLabel
-                  labelText={"Upload Room Photo (min: 3 img)"}
+                  labelText={t(
+                    "hotelRooms&Amenities.standardRoom.form.uploadPhotos",
+                  )}
                   required={true}
                   htmlFor={"dragDropBox"}
                 />
@@ -490,7 +500,9 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
               <CustomButton
                 type={"button"}
                 buttonText={
-                  formik.values.standardRoom._id ? "Update" : "Continue"
+                  formik.values.standardRoom._id
+                    ? t("hotelRooms&Amenities.standardRoom.form.update")
+                    : t("hotelRooms&Amenities.standardRoom.form.continue")
                 }
                 buttonSize={"small"}
                 onClick={handleRoomTypeChange}
@@ -505,7 +517,7 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
                 required={true}
                 // name={activeTabBar['roomPrice']}
                 name={"luxuryRoom.roomPrice"}
-                label="Room Price"
+                label={t("hotelRooms&Amenities.luxuryRoom.form.roomPrice")}
                 floatNumber={true}
                 type="number"
                 value={formik.values?.luxuryRoom?.roomPrice}
@@ -519,7 +531,7 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
                 required={true}
                 // name={activeTabBar["numberOfRooms"]}
                 name={"luxuryRoom.numberOfRooms"}
-                label="Number of rooms"
+                label={t("hotelRooms&Amenities.luxuryRoom.form.numberOfRooms")}
                 type="number"
                 value={formik.values?.luxuryRoom?.numberOfRooms}
                 onChange={formik.handleChange}
@@ -534,7 +546,9 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
             <div className={styles.amenitiesContainer}>
               <div className={styles.dragDropLabelBox}>
                 <CustomLabel
-                  labelText={"Select Amenities"}
+                  labelText={t(
+                    "hotelRooms&Amenities.luxuryRoom.form.selectAmenities",
+                  )}
                   htmlFor="label"
                   required={true}
                 />
@@ -551,7 +565,7 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
                       onChange={(e) =>
                         formik.setFieldValue(
                           `luxuryRoom.amenities[${index}].checked`,
-                          e.target.checked
+                          e.target.checked,
                         )
                       }
                       name={`luxuryRoom.amenities[${index}].checked`}
@@ -568,7 +582,9 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
             <div className={styles.dragDropWrapper}>
               <div className={styles.dragDropLabelBox}>
                 <CustomLabel
-                  labelText={"Upload Room Photo (min: 3 img)"}
+                  labelText={t(
+                    "hotelRooms&Amenities.luxuryRoom.form.uploadPhotos",
+                  )}
                   required={true}
                   htmlFor={"dragDropBox"}
                 />
@@ -633,12 +649,12 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
               isSubmitting ? (
                 <span className={styles.loadingText}>
                   <span className={styles.spinner} />
-                  Please wait
+                  {t("hotelRooms&Amenities.luxuryRoom.form.pleaseWait")}
                 </span>
               ) : formik.values.luxuryRoom._id ? (
-                "Update"
+                t("hotelRooms&Amenities.luxuryRoom.form.update")
               ) : (
-                "Continue"
+                t("hotelRooms&Amenities.luxuryRoom.form.continue")
               )
             }
           />

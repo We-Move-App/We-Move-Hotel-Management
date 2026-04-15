@@ -21,14 +21,17 @@ import apiCall from "../../hooks/apiCall";
 import { tokenFromLocalStorage } from "../../utils/helperFunctions";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Wallet = () => {
+  const { t } = useTranslation("wallet");
   const navigate = useNavigate();
   // const token = tokenFromLocalStorage();
   const [tabBarData, setTabBarData] = useState([
-    { name: "Transaction History", status: true },
-    { name: "Withdraw", status: false },
+    { name: "tabs.transactions", status: true },
+    { name: "tabs.withdraw", status: false },
   ]);
+
   const [bankDetails, setBankDetails] = useState({
     bankName: "",
     bankAccountNumber: "",
@@ -67,12 +70,12 @@ const Wallet = () => {
 
         setLoading(true);
         const token = tokenFromLocalStorage();
-        console.debug("[fetchTransactions] REQUEST params:", {
-          entity: "hotelManager",
-          page,
-          limit,
-          search: search || null,
-        });
+        // console.debug("[fetchTransactions] REQUEST params:", {
+        //   entity: "hotelManager",
+        //   page,
+        //   limit,
+        //   search: search || null,
+        // });
 
         const res = await axios.get(
           `${import.meta.env.VITE_BASE_URL}/api/v1/wallet/transactions`,
@@ -87,7 +90,7 @@ const Wallet = () => {
           },
         );
 
-        console.debug("[fetchTransactions] RESPONSE raw ->", res?.data);
+        // console.debug("[fetchTransactions] RESPONSE raw ->", res?.data);
         const paginationData = res?.data?.data?.pagination;
         if (paginationData) {
           const pagesNum = Number(paginationData.pages) || 1;
@@ -95,12 +98,12 @@ const Wallet = () => {
           const totalNum = Number(paginationData.total) || 0;
           const limitNum = Number(paginationData.limit) || limit;
 
-          console.debug("[fetchTransactions] server pagination ->", {
-            page: pageNum,
-            pages: pagesNum,
-            total: totalNum,
-            limit: limitNum,
-          });
+          // console.debug("[fetchTransactions] server pagination ->", {
+          //   page: pageNum,
+          //   pages: pagesNum,
+          //   total: totalNum,
+          //   limit: limitNum,
+          // });
 
           setPagination({
             page: pageNum,
@@ -237,7 +240,7 @@ const Wallet = () => {
       handleOpenCongratulationModal();
       fetchTransactions();
     } catch (err) {
-      console.error("❌ Withdraw failed:", err);
+      // console.error("❌ Withdraw failed:", err);
       alert("Withdraw failed. Please try again.");
     } finally {
       setLoading(false);
@@ -251,7 +254,7 @@ const Wallet = () => {
         <form className={styles.withdrawModal} onSubmit={handleSubmit}>
           <div className={styles.formContent}>
             <CustomInput
-              label={"Withdraw Amount"}
+              label={t("withdrawModal.amount")}
               required={true}
               type="number"
               value={amount}
@@ -270,7 +273,11 @@ const Wallet = () => {
 
             <div className={styles.btnWrapper}>
               <CustomButton
-                buttonText={loading ? "Processing..." : "Withdraw"}
+                buttonText={
+                  loading
+                    ? t("withdrawModal.processing")
+                    : t("withdrawModal.withdraw")
+                }
                 buttonSize={"medium"}
                 type="submit"
               />
@@ -297,13 +304,8 @@ const Wallet = () => {
               />
             </div>
             <div className={styles.modalBody}>
-              <p className={styles.modalBoldText}>
-                Congratulations! Successfully done.
-              </p>
-              <p>
-                We are thrilled to extend a warm welcome to all newcomers and
-                returning members alike.
-              </p>
+              <p className={styles.modalBoldText}>{t("successModal.title")}</p>
+              <p>{t("successModal.description")}</p>
             </div>
           </div>
         </div>
@@ -325,7 +327,7 @@ const Wallet = () => {
     if (success && statusCode === 200) {
       const { bankName, accountHolderName, accountNumber, _id, bankDocs } =
         data?.data?.bank;
-      console.log("bank Data :", data);
+      // console.log("bank Data :", data);
       setBankDetails({
         bankName,
         bankAccountNumber: accountNumber,
@@ -354,7 +356,7 @@ const Wallet = () => {
 
   return (
     <div className={styles.wallet}>
-      <h1>Wallet</h1>
+      <h1>{t("heading")}</h1>
       <div className={styles.digitalWalletWrapper}>
         <DebitCard showAmount={true} />
       </div>
@@ -363,6 +365,7 @@ const Wallet = () => {
           tabBarData={tabBarData}
           setTabBarData={setTabBarData}
           activeTabIndex={tabBarData.findIndex((tab) => tab.status)}
+          t={t}
         />
 
         {tabBarData[0].status && (
@@ -372,12 +375,12 @@ const Wallet = () => {
             </div>
             <CustomTable
               columns={[
-                { Header: "Transaction ID", accessor: "transactionId" },
+                { Header: t("table.transactionId"), accessor: "transactionId" },
                 // { Header: "User Name", accessor: "userName" },
-                { Header: "Date", accessor: "date" },
-                { Header: "Time", accessor: "time" },
-                { Header: "Amount", accessor: "amount" },
-                { Header: "Status", accessor: "status" },
+                { Header: t("table.date"), accessor: "date" },
+                { Header: t("table.time"), accessor: "time" },
+                { Header: t("table.amount"), accessor: "amount" },
+                { Header: t("table.status"), accessor: "status" },
               ]}
               data={formattedTransactions}
               customRowClass="customRow"

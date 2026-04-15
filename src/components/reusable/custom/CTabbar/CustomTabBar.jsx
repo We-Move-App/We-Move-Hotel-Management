@@ -9,6 +9,7 @@ const CustomTabBar = ({
   externalActiveTab,
   setExternalActiveTab,
   onTabChange,
+  t,
 }) => {
   const [activeTab, setActiveTab] = useState(intialActiveTab);
 
@@ -57,7 +58,9 @@ const CustomTabBar = ({
               ${variant === "underline" ? styles.underlineTab : ""}
             `}
         >
-          {tab?.name}
+          {t ? t(tab?.name) : tab?.name}
+
+          {/* {t(tab?.name)} */}
         </div>
       ))}
     </div>

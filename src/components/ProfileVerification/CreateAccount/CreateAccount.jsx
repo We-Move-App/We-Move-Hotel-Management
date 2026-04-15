@@ -25,53 +25,56 @@ import { ENDPOINTS } from "../../../utils/apiEndpoints";
 import { tokenDecode } from "../../../utils/helperFunctions";
 import { toast } from "react-toastify";
 import BranchSelect from "../../Branch-Select/BranchSelect";
-
+import { useTranslation } from "react-i18next";
+import { SignupSchema } from "./validation";
 // Validation Schema
-const SignupSchema = Yup.object().shape({
-  mobile: Yup.string()
-    .matches(/^[0-9]{9}$/, "Mobile number must be exactly 9 digits")
-    .matches(/^\d+$/, "Mobile number cannot contain special characters")
-    .required("Mobile number is required")
-    .test(
-      "no-leading-space",
-      "Mobile number cannot start with a space",
-      (value) => value && value[0] !== " "
-    ),
-  email: Yup.string()
-    .test(
-      "noSpaceAtStart",
-      "The first character cannot be a space",
-      (value) => value?.trim().charAt(0) !== " "
-    )
-    .test("email", "Invalid email format.", function (value) {
-      const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/; 
-      return emailRegex.test(value);
-    })
-    .required("Email is required."),
-  password: Yup.string()
-    .min(8, "Password must be at least 8 characters")
-    .required("Password is required")
-    .test(
-      "no-leading-space",
-      "Password cannot start with a space",
-      (value) => value && value[0] !== " "
-    )
-    .matches(
-      /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>]).*$/,
-      "Password must contain at least one letter, one number, and one special character"
-    ),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password"), null], "Passwords must match")
-    .required("Confirm password is required")
-    .test(
-      "no-leading-space",
-      "Confirm password cannot start with a space",
-      (value) => value && value[0] !== " "
-    ),
-  branch: Yup.string().required("Branch is required"),
-});
+// const SignupSchema = Yup.object().shape({
+//   mobile: Yup.string()
+//     .matches(/^[0-9]{9}$/, "Mobile number must be exactly 9 digits")
+//     .matches(/^\d+$/, "Mobile number cannot contain special characters")
+//     .required("Mobile number is required")
+//     .test(
+//       "no-leading-space",
+//       "Mobile number cannot start with a space",
+//       (value) => value && value[0] !== " "
+//     ),
+//   email: Yup.string()
+//     .test(
+//       "noSpaceAtStart",
+//       "The first character cannot be a space",
+//       (value) => value?.trim().charAt(0) !== " "
+//     )
+//     .test("email", "Invalid email format.", function (value) {
+//       const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+//       return emailRegex.test(value);
+//     })
+//     .required("Email is required."),
+//   password: Yup.string()
+//     .min(8, "Password must be at least 8 characters")
+//     .required("Password is required")
+//     .test(
+//       "no-leading-space",
+//       "Password cannot start with a space",
+//       (value) => value && value[0] !== " "
+//     )
+//     .matches(
+//       /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>]).*$/,
+//       "Password must contain at least one letter, one number, and one special character"
+//     ),
+//   confirmPassword: Yup.string()
+//     .oneOf([Yup.ref("password"), null], "Passwords must match")
+//     .required("Confirm password is required")
+//     .test(
+//       "no-leading-space",
+//       "Confirm password cannot start with a space",
+//       (value) => value && value[0] !== " "
+//     ),
+//   branch: Yup.string().required("Branch is required"),
+// });
 
 const CreateAccount = () => {
+  const { t } = useTranslation("register");
+  const schema = SignupSchema(t);
   const { goTo } = useNavigation();
   const navigate = useNavigate();
   const [errorObj, setErrorObj] = useState({
@@ -87,7 +90,7 @@ const CreateAccount = () => {
       confirmPassword: "",
       branch: "",
     },
-    validationSchema: SignupSchema,
+    validationSchema: schema,
 
     onSubmit: async (values, { setErrors, setStatus }) => {
       // console.log("Form submitted");
@@ -109,19 +112,19 @@ const CreateAccount = () => {
         if (!mobileVerifyStatus || !emailVerifyStatus) {
           // toast.info('Please verify your mobile and email first.');
           setErrors({
-            email: "Please verify you email.",
-            mobile: "Please verify your mobile.",
+            email: t("signup.form.verifyEmail"),
+            mobile: t("signup.form.verifyMobile"),
           });
 
           !mobileVerifyStatus &&
             setErrorObj((prev) => ({
               ...prev,
-              mobileError: "Please verify your mobile",
+              mobileError: t("signup.form.verifyMobile"),
             }));
           !emailVerifyStatus &&
             setErrorObj((prev) => ({
               ...prev,
-              emailError: "Please verify your email",
+              emailError: t("signup.form.verifyEmail"),
             }));
           return;
         }
@@ -129,7 +132,7 @@ const CreateAccount = () => {
         const { data, statusCode, error, success } = await apiCall(
           ENDPOINTS.REGISTER,
           "POST",
-          { body: payloadBody }
+          { body: payloadBody },
         );
         if (error) {
           setStatus(error.message);
@@ -193,7 +196,7 @@ const CreateAccount = () => {
         const { data, statusCode, error, success } = await apiCall(
           ENDPOINTS.SEND_OTP_MOBILE_EMAIL,
           "POST",
-          { body: payload }
+          { body: payload },
         );
 
         // console.log("OTP sent:", data);
@@ -227,7 +230,7 @@ const CreateAccount = () => {
         const { data, statusCode, error, success } = await apiCall(
           ENDPOINTS.SEND_OTP_MOBILE_EMAIL,
           "POST",
-          { body: payload }
+          { body: payload },
         );
         // console.log(data, statusCode,success)
         if (statusCode === 200 && success) {
@@ -258,7 +261,7 @@ const CreateAccount = () => {
       const { data, statusCode, error } = await apiCall(
         ENDPOINTS.VERIFY_OTP_MOBILE,
         "PUT",
-        { body: payload }
+        { body: payload },
       );
       if (statusCode === 200) {
         setMobileVerifyStatus(true);
@@ -286,7 +289,7 @@ const CreateAccount = () => {
       const { data, statusCode, error, success } = await apiCall(
         ENDPOINTS.VERIFY_OTP_EMAIL,
         "PUT",
-        { body: payload }
+        { body: payload },
       );
 
       if (statusCode === 200 && success) {
@@ -346,15 +349,15 @@ const CreateAccount = () => {
         verifyEmailModal && emailVerificationModal()
       }
       <FormHeader
-        heading={"Create Account"}
-        subheading={"Welcome to We Move All! Please create your account here."}
+        heading={t("signup.header.heading")}
+        subheading={t("signup.header.subHeading")}
       />
 
       <form onSubmit={formik.handleSubmit} className={styles.form}>
         {/* Add your form fields here */}
         <div className={styles.formFieldsContainer}>
           <CustomInput
-            label={"Full Name"}
+            label={t("signup.form.fullName")}
             required={true}
             name="fullName"
             type="text"
@@ -365,7 +368,7 @@ const CreateAccount = () => {
             error={formik.errors.fullName}
           />
           <CustomInput
-            label={"Company Name"}
+            label={t("signup.form.companyName")}
             required={true}
             name="companyName"
             type="text"
@@ -376,7 +379,7 @@ const CreateAccount = () => {
             error={formik.errors.companyName}
           />
           <CustomInput
-            label={"Company Address"}
+            label={t("signup.form.companyAddress")}
             required={true}
             name="companyAddress"
             type="textarea"
@@ -388,7 +391,7 @@ const CreateAccount = () => {
           />
 
           <BranchSelect
-            label="Choose Branch"
+            label={t("signup.form.branch")}
             required={true}
             name="branch"
             value={formik.values.branch}
@@ -399,7 +402,7 @@ const CreateAccount = () => {
           />
 
           <CustomInput
-            label="Mobile Number"
+            label={t("signup.form.mobile")}
             required={true}
             name="mobile"
             type="tel"
@@ -416,7 +419,7 @@ const CreateAccount = () => {
           />
 
           <CustomInput
-            label={"E-mail Id"}
+            label={t("signup.form.email")}
             required={true}
             name="email"
             takeSpecialChar={true}
@@ -431,7 +434,7 @@ const CreateAccount = () => {
             // error={formik.touched.email && formik.errors.email}
           />
           <CustomInput
-            label={"Password"}
+            label={t("signup.form.password")}
             required={true}
             name="password"
             type="password"
@@ -444,7 +447,7 @@ const CreateAccount = () => {
             // error={formik.touched.password && formik.errors.password}
           />
           <CustomInput
-            label={"Confirm Password"}
+            label={t("signup.form.confirmPassword")}
             required={true}
             name="confirmPassword"
             type="password"
@@ -463,17 +466,17 @@ const CreateAccount = () => {
           {/* Submit Button */}
           <CustomButton
             // disabled={!mobileVerifyStatus || !emailVerifyStatus}
-            buttonText={"Sign Up"}
+            buttonText={t("signup.form.submit")}
             type={"submit"}
             buttonSize={"large"}
             // style={{ height: '70px', }}
           />
           <div className={styles.formBottomNoteText}>
-            Already have an account?{" "}
+            {t("signup.form.question")}
             <span>
-              <Link to="/login">Log in</Link>
+              <Link to="/login">{t("signup.form.loginLink")}</Link>
             </span>{" "}
-            here
+            {t("signup.form.here")}
           </div>
         </div>
       </form>

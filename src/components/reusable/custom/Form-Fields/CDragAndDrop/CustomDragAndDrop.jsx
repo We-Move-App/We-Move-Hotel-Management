@@ -1,7 +1,10 @@
 import React, { useState, useCallback } from "react";
 import styles from "./custom-drag-drop.module.css";
 import { FiUpload } from "react-icons/fi";
+import { useTranslation } from "react-i18next";
+
 export function FileUpload({ onFilesChange, accept }) {
+  const { t } = useTranslation("common");
   const [isDragging, setIsDragging] = useState(false);
 
   const handleDragOver = useCallback((e) => {
@@ -24,7 +27,7 @@ export function FileUpload({ onFilesChange, accept }) {
         onFilesChange(droppedFiles);
       }
     },
-    [onFilesChange]
+    [onFilesChange],
   );
 
   const handleFileInput = useCallback(
@@ -34,7 +37,7 @@ export function FileUpload({ onFilesChange, accept }) {
         onFilesChange(selectedFiles);
       }
     },
-    [onFilesChange]
+    [onFilesChange],
   );
 
   return (
@@ -56,12 +59,12 @@ export function FileUpload({ onFilesChange, accept }) {
         <div className={styles.uploadPrompt}>
           <FiUpload className={styles.uploadIcon} />
           {/* <div className={styles.uploadIcon}>↑</div> */}
-          <p>Upload your files here</p>
+          <p>{t("uploadFiles.heading")}</p>
           <p className={styles.uploadSubtitle}>
-            or click to select multiple files
+            {t("uploadFiles.selectFromDevice")}
           </p>
           <p className={styles.uploadSubtitle}>
-            Recommnded formats are {accept}
+            {t("uploadFiles.recommendedFormatText")} {accept}
           </p>
         </div>
       </div>

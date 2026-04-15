@@ -1,0 +1,151 @@
+{
+  "header": "Enregistrement de l'hôtel",
+  "hotelDetails": {
+    "heading": "Détails de l'hôtel",
+    "subHeading": "Ajoutez les détails de votre hôtel.",
+    "validation": {
+      "hotelNameRequired": "Le nom de l'hôtel est requis",
+      "hotelNameMin": "Le nom de l'hôtel doit contenir au moins 2 caractères",
+      "hotelNameMax": "Le nom de l'hôtel ne peut pas dépasser 50 caractères",
+      "hotelNamePattern": "Le nom de l'hôtel ne peut contenir que des lettres, des espaces et une ponctuation limitée (.,-' )",
+
+      "businessLicenseRequired": "La licence commerciale est requise",
+
+      "totalRoomsRequired": "Le nombre total de chambres est requis",
+      "totalRoomsPositive": "Le nombre de chambres doit être supérieur à zéro",
+      "totalRoomsInteger": "Le nombre de chambres doit être un entier",
+
+      "fileRequired": "Un fichier est requis",
+      "fileInvalid": "Fichier invalide",
+      "fileMin": "Au moins 3 fichiers sont requis",
+
+      "termsRequired": "Vous devez accepter les conditions générales"
+    },
+    "form": {
+      "hotelName": "Nom de l'hôtel",
+      "businessLicense": "Licence commerciale",
+      "totalRooms": "Nombre total de chambres",
+
+      "uploadLabel": "Télécharger des photos de l'hôtel (min : 3 images)",
+
+      "terms": "J'accepte toutes les conditions générales",
+
+      "warningRooms": "Veuillez également mettre à jour le nombre de chambres Standard et Luxe pour correspondre au nombre total de chambres.",
+
+      "pleaseWait": "Veuillez patienter",
+      "update": "Mettre à jour",
+      "continue": "Continuer"
+    }
+  },
+  "hotelLocation": {
+    "heading": "Emplacement",
+    "subHeading": "Ajoutez l'emplacement de votre hôtel.",
+    "form": {
+      "addLocation": "Ajouter un emplacement",
+      "city": "Ville",
+      "locality": "Localité",
+      "landmark": "Point de repère",
+      "pincode": "Code postal",
+
+      "continue": "Continuer",
+      "update": "Mettre à jour",
+      "pleaseWait": "Veuillez patienter"
+    },
+    "validation": {
+      "addressRequired": "L'adresse de l'hôtel est requise",
+      "addressMin": "L'adresse de l'hôtel doit contenir au moins 5 caractères",
+      "addressMax": "L'adresse de l'hôtel ne peut pas dépasser 500 caractères",
+
+      "cityRequired": "La ville est requise",
+      "cityMin": "La ville doit contenir au moins 2 caractères",
+      "cityMax": "La ville ne peut pas dépasser 50 caractères",
+
+      "localityRequired": "La localité est requise",
+      "localityMin": "La localité doit contenir au moins 2 caractères",
+      "localityMax": "La localité ne peut pas dépasser 50 caractères",
+
+      "landmarkMin": "Le point de repère doit contenir au moins 2 caractères",
+      "landmarkMax": "Le point de repère ne peut pas dépasser 50 caractères",
+
+      "pincodeInvalid": "Le code postal doit contenir exactement 6 chiffres"
+    }
+  },
+  "hotelRooms&Amenities": {
+    "heading": "Chambres et équipements",
+    "subHeading": "Ajoutez les détails de vos chambres.",
+
+    "standardRoom": {
+      "form": {
+        "roomPrice": "Prix de la chambre",
+        "numberOfRooms": "Nombre de chambres",
+        "selectAmenities": "Sélectionner les équipements",
+        "uploadPhotos": "Télécharger des photos de la chambre (min : 3 images)",
+
+        "addMore": "Ajouter",
+        "continue": "Continuer",
+        "update": "Mettre à jour"
+      }
+    },
+
+    "luxuryRoom": {
+      "form": {
+        "roomPrice": "Prix de la chambre",
+        "numberOfRooms": "Nombre de chambres",
+        "selectAmenities": "Sélectionner les équipements",
+        "uploadPhotos": "Télécharger des photos de la chambre (min : 3 images)",
+
+        "addMore": "Ajouter",
+        "pleaseWait": "Veuillez patienter",
+        "continue": "Continuer",
+        "update": "Mettre à jour"
+      }
+    },
+
+    "tabBarData": {
+      "standard": "Chambre standard",
+      "luxury": "Chambre de luxe"
+    },
+
+    "validation": {
+      "roomPriceRequired": "Le prix de la chambre est requis",
+      "numberOfRoomsRequired": "Le nombre de chambres est requis",
+
+      "fileRequired": "Un fichier est requis",
+      "fileInvalid": "Fichier invalide",
+      "fileMinCount": "Au moins 3 fichiers sont requis",
+      "fileMin": "Au moins un fichier est requis",
+
+      "amenitiesRequired": "Au moins un équipement doit être sélectionné"
+    }
+  },
+
+  "hotelPolicy": {
+    "heading": "Politique",
+    "subHeading": "Ajoutez les détails de votre hôtel.",
+
+    "form": {
+      "checkingTime": "Heure d'arrivée",
+      "checkoutTime": "Heure de départ",
+      "selectAmenities": "Sélectionner les équipements",
+      "uploadPolicyDocument": "Télécharger le document de politique",
+
+      "continue": "Continuer",
+      "update": "Mettre à jour",
+      "pleaseWait": "Veuillez patienter"
+    },
+
+    "validation": {
+      "checkinRequired": "L'heure d'arrivée est requise",
+      "checkoutRequired": "L'heure de départ est requise",
+      "invalidTime": "Format d'heure invalide",
+      "amenitiesRequired": "Au moins un équipement doit être sélectionné",
+      "fileRequired": "Un fichier est requis",
+      "fileInvalid": "Fichier invalide",
+      "fileMax": "Vous ne pouvez télécharger qu'un seul fichier"
+    }
+  },
+  "verificationSuccess": {
+    "heading": "Félicitations ! Vous avez été vérifié avec succès en tant qu'administrateur",
+    "subHeading": "Nous sommes ravis d'accueillir chaleureusement les nouveaux membres ainsi que les membres de retour !"
+  }
+}

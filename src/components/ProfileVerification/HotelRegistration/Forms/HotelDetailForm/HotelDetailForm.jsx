@@ -13,6 +13,8 @@ import { formatFileSize } from "../../../../../utils/helperFunctions";
 import apiCall from "../../../../../hooks/apiCall";
 import { ENDPOINTS } from "../../../../../utils/apiEndpoints";
 import SnackbarNotification from "../../../../reusable/Snackbar-Notification/SnackbarNotification";
+import { useTranslation } from "react-i18next";
+import {HotelDetailsValidationSchema} from "./validation"
 
 const SUPPORTED_FORMATS = [
   "image/jpg",
@@ -22,61 +24,54 @@ const SUPPORTED_FORMATS = [
 ]; // Supported file types
 const FILE_SIZE_LIMIT = 5 * 1024 * 1024; // 5MB size limit
 
-const HotelDetailsValidationSchema = Yup.object().shape({
-  hotelName: Yup.string()
-    .required("Hotel Name is required")
-    .min(2, "Hotel Name must be at least 2 characters")
-    .max(50, "Hotel Name cannot exceed 50 characters")
-    .matches(
-      /^[A-Za-z\s\.\,\-']+$/,
-      "Hotel Name can only contain letters, spaces, and limited punctuation (.,-' )"
-    ),
-  bussinessLicense: Yup.string().required("Business License is required"),
-  totalRooms: Yup.number()
-    .required("Total number of rooms is required")
-    .positive("Total rooms must be greater than zero")
-    .integer("Total rooms must be an integer"),
-  files: Yup.array()
-    .of(
-      Yup.mixed()
-        .required("A file is required")
-        .test("file-check", "Invalid file", (value) => {
-          // Only validate if it's a local file (File object)
-          if (value instanceof File) {
-            const validSize = value.size <= FILE_SIZE_LIMIT;
-            const validFormat = SUPPORTED_FORMATS.includes(value.type);
-            return validSize && validFormat;
-          }
-          return true; // Skip validation for mapped backend files (e.g. image URLs or meta objects)
-        })
-    )
-    // .test(
-    //     'fileSize',
-    //     ({ value, path }) => `${path} is too large, must be less than 5MB`,
-    //     value => value && value.size <= FILE_SIZE_LIMIT
-    // )
-    // .test(
-    //     'fileFormat',
-    //     ({ value, path }) => `${path} has unsupported format, only JPG, PNG, and PDF are allowed`,
-    //     value => value && SUPPORTED_FORMATS.includes(value.type)
-    // )
+// const HotelDetailsValidationSchema = Yup.object().shape({
+//   hotelName: Yup.string()
+//     .required("Hotel Name is required")
+//     .min(2, "Hotel Name must be at least 2 characters")
+//     .max(50, "Hotel Name cannot exceed 50 characters")
+//     .matches(
+//       /^[A-Za-z\s\.\,\-']+$/,
+//       "Hotel Name can only contain letters, spaces, and limited punctuation (.,-' )",
+//     ),
+//   bussinessLicense: Yup.string().required("Business License is required"),
+//   totalRooms: Yup.number()
+//     .required("Total number of rooms is required")
+//     .positive("Total rooms must be greater than zero")
+//     .integer("Total rooms must be an integer"),
+//   files: Yup.array()
+//     .of(
+//       Yup.mixed()
+//         .required("A file is required")
+//         .test("file-check", "Invalid file", (value) => {
+//           // Only validate if it's a local file (File object)
+//           if (value instanceof File) {
+//             const validSize = value.size <= FILE_SIZE_LIMIT;
+//             const validFormat = SUPPORTED_FORMATS.includes(value.type);
+//             return validSize && validFormat;
+//           }
+//           return true; // Skip validation for mapped backend files (e.g. image URLs or meta objects)
+//         }),
+//     )
 
-    .test("file-count", "At least 3 files required", function (value) {
-      // Only run this test if no existing or local files
-      const count = value?.length || 0;
-      return count >= 3;
-    }),
-  // .min(3, 'At least 3 file is required'),
-  termsAndConditions: Yup.boolean()
-    .required("You must accept the terms and conditions")
-    .oneOf([true], "You must accept the terms and conditions"),
-});
+//     .test("file-count", "At least 3 files required", function (value) {
+//       // Only run this test if no existing or local files
+//       const count = value?.length || 0;
+//       return count >= 3;
+//     }),
+//   termsAndConditions: Yup.boolean()
+//     .required("You must accept the terms and conditions")
+//     .oneOf([true], "You must accept the terms and conditions"),
+// });
+
 const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
+  const {t} = useTranslation("hotelRegistration");
+  // const schema = HotelDetailsValidationSchema(t);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorObj, setErrorObj] = useState({});
   const [fileProgress, setFileProgress] = useState({});
   const [hotelId, setHotelId] = useState(
-    localStorage.getItem("WEMOVE_HOTELID") || ""
+    localStorage.getItem("WEMOVE_HOTELID") || "",
   );
   const [deletedImageIds, setDeletedImageIds] = useState([]);
   const [snackbar, setSnackbar] = useState({
@@ -91,100 +86,7 @@ const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
 
   const formik = useFormik({
     initialValues: initialValues,
-    validationSchema: HotelDetailsValidationSchema,
-    // onSubmit: async (values, { setErrors, setStatus }) => {
-    //   try {
-    //     const payloadBody = new FormData();
-    //     payloadBody.append("hotelName", values.hotelName);
-    //     payloadBody.append("businessLicense", values.bussinessLicense);
-    //     payloadBody.append("totalRoom", values.totalRooms);
-
-    //     const existingImageIds = [];
-    //     const newUploads = [];
-
-    //     for (const image of values.files) {
-    //       if (image instanceof File) {
-    //         newUploads.push(image);
-    //       } else if (typeof image === "object" && image._id) {
-    //         existingImageIds.push(image._id);
-    //       }
-    //     }
-
-    //     // Append new files if any
-    //     if (newUploads.length > 0) {
-    //       newUploads.forEach((file) => payloadBody.append("hotelImages", file));
-    //     } else {
-    //       payloadBody.append("hotelImages", null);
-    //     }
-
-    //     const finalImageIds =
-    //       deletedImageIds.length > 0 ? deletedImageIds : [""];
-
-    //     payloadBody.append("imageId", JSON.stringify(finalImageIds));
-
-    //     payloadBody.append("termsAndConditions", values.termsAndConditions);
-
-    //     window.scrollTo({ top: 0, behavior: "smooth" });
-
-    //     if (values._id) {
-    //       const { data, statusCode, error, success } = await apiCall(
-    //         `${ENDPOINTS.HOTEL_BY_ID}/${values._id}`,
-    //         "PUT",
-    //         {
-    //           body: payloadBody,
-    //           headers: {
-    //             "Content-Type": "multipart/form-data",
-    //             Authorization: `Bearer ${
-    //               JSON.parse(localStorage.getItem("WEMOVE_TOKEN")).accessToken
-    //             }`,
-    //           },
-    //         }
-    //       );
-
-    //       if (error) {
-    //         const { errors, message } = error;
-    //         message && setStatus(message);
-    //         return;
-    //       }
-    //       if (statusCode === 200 && success) {
-    //       }
-    //     } else {
-    //       const { data, statusCode, error, success } = await apiCall(
-    //         ENDPOINTS.HOTEL_DETAILS,
-    //         "POST",
-    //         {
-    //           body: payloadBody,
-    //           headers: {
-    //             "Content-Type": "multipart/form-data",
-    //             Authorization: `Bearer ${
-    //               JSON.parse(localStorage.getItem("WEMOVE_TOKEN")).accessToken
-    //             }`,
-    //           },
-    //         }
-    //       );
-
-    //       if (error) {
-    //         const { errors, message } = error;
-    //         message && setStatus(message);
-    //         setErrorObj((prev) => ({
-    //           ...prev,
-    //           message: error?.message,
-    //         }));
-    //         return;
-    //       }
-
-    //       if (statusCode === 201 && success) {
-    //         localStorage.setItem("WEMOVE_HOTELID", data.data._id);
-    //         setHotelId(data.data._id);
-    //         formik.setFieldValue("_id", data.data._id);
-    //       }
-    //     }
-
-    //     onNext(values);
-    //   } catch (err) {
-    //     console.error("Error during API call:", err);
-    //   }
-    // },
+    validationSchema: HotelDetailsValidationSchema(t),
     onSubmit: async (values, { setErrors, setStatus }) => {
       try {
         setIsSubmitting(true);
@@ -213,7 +115,7 @@ const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
 
         payloadBody.append(
           "imageId",
-          JSON.stringify(deletedImageIds.length > 0 ? deletedImageIds : [""])
+          JSON.stringify(deletedImageIds.length > 0 ? deletedImageIds : [""]),
         );
 
         payloadBody.append("termsAndConditions", values.termsAndConditions);
@@ -234,7 +136,7 @@ const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
                   JSON.parse(localStorage.getItem("WEMOVE_TOKEN")).accessToken
                 }`,
               },
-            }
+            },
           );
         } else {
           response = await apiCall(ENDPOINTS.HOTEL_DETAILS, "POST", {
@@ -329,7 +231,7 @@ const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
           type="text"
           required={true}
           name="hotelName"
-          label="Hotel Name"
+          label={t("hotelDetails.form.hotelName")}
           value={formik.values.hotelName}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -339,7 +241,7 @@ const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
         <CustomInput
           required={true}
           name="bussinessLicense"
-          label="Business License"
+          label={t("hotelDetails.form.businessLicense")}
           alphaNumeric={true}
           value={formik.values.bussinessLicense}
           onChange={formik.handleChange}
@@ -350,7 +252,7 @@ const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
         <CustomInput
           required={true}
           name="totalRooms"
-          label="Total Rooms"
+          label={t("hotelDetails.form.totalRooms")}
           type="number"
           value={formik.values.totalRooms}
           onChange={(e) => {
@@ -358,8 +260,7 @@ const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
             setSnackbar({
               open: true,
               severity: "warning",
-              message:
-                "Please also update Standard and Luxury room counts to match Total Rooms.",
+              message: t("hotelDetails.form.warningRooms"),
             });
           }}
           onBlur={formik.handleBlur}
@@ -375,7 +276,7 @@ const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
         <div className={styles.dragDropWrapper}>
           <div className={styles.dragDropLabelBox}>
             <CustomLabel
-              labelText={"Upload Hotel Photo (min: 3 img)"}
+              labelText={t("hotelDetails.form.uploadLabel")}
               required={true}
             />
           </div>
@@ -396,7 +297,7 @@ const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
         </div>
 
         <CustomCheckBox
-          label={"I accept all terms and conditions"}
+          label={t("hotelDetails.form.terms")}
           error={formik.errors?.termsAndConditions}
           onChange={(e) =>
             formik.setFieldValue("termsAndConditions", e.target.checked)
@@ -418,12 +319,12 @@ const HotelDetailForm = ({ initialValues, onPrev, onNext }) => {
             isSubmitting ? (
               <span className={styles.loadingText}>
                 <span className={styles.spinner} />
-                Please wait
+                {t("hotelDetails.form.pleaseWait")}
               </span>
             ) : initialValues._id ? (
-              "Update"
+              t("hotelDetails.form.update")
             ) : (
-              "Continue"
+              t("hotelDetails.form.continue")
             )
           }
         />

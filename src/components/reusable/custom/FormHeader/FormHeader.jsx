@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './form-header.module.css'
 
 const FormHeader = ({ children, heading, subheading, ...props }) => {

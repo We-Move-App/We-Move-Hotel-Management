@@ -17,8 +17,10 @@ import { toast } from "react-toastify";
 import { useFormattedDate } from "../../hooks/formatISODate";
 import ContentHeading from "../../components/reusable/Content-Heading/ContentHeading";
 import Pagination from "../../components/reusable/PaginationNew/Pagination";
+import { useTranslation } from "react-i18next";
 
 const RoomManagement = () => {
+  const { t } = useTranslation("roomManagement");
   const formatDate = useFormattedDate();
   const hotelID = localStorage.getItem("WEMOVE_HOTELID") || "";
   const [tabPages, setTabPages] = useState({
@@ -31,9 +33,9 @@ const RoomManagement = () => {
   const [date, setDate] = useState();
 
   const [tabBarData, setTabBarData] = useState([
-    { name: "All Room", status: true },
-    { name: "Available Rooms", status: false },
-    { name: "Reserved Rooms", status: false },
+    { name: "rooms.all", status: true },
+    { name: "rooms.available", status: false },
+    { name: "rooms.reserved", status: false },
   ]);
 
   const [rooms, setRooms] = useState([]);
@@ -89,7 +91,7 @@ const RoomManagement = () => {
     try {
       const { data, success, error } = await apiCall(
         `${ENDPOINTS.HOTEL_BOOKINGS}?bookingId=${room.bookingReference}`,
-        "GET"
+        "GET",
       );
 
       if (error || !success || !data?.data?.bookings?.[0]) {
@@ -143,7 +145,7 @@ const RoomManagement = () => {
     const { data, statusCode, error, success } = await apiCall(
       `${ENDPOINTS.ALLOT_ROOM}?roomId=${selectedRoom}&bookingId=${bookingId}`,
       "PUT",
-      { body: {} }
+      { body: {} },
     );
 
     if (error) {
@@ -154,7 +156,7 @@ const RoomManagement = () => {
 
     if (success) {
       setBookingId("");
-      console.log("ALLOTED ROOM :", data);
+      // console.log("ALLOTED ROOM :", data);
       setIsModalOne(false);
       // alert("Room has been successfully assigned.");
       toast.success("Room has been successfully assigned.");
@@ -165,22 +167,47 @@ const RoomManagement = () => {
     }
   };
 
+  // const getAllRooms = async () => {
+  //   const activeTab = tabBarData.find((tab) => tab.status)?.name;
+  //   let status = "all";
+  //   if (activeTab === "Available Rooms") status = "available";
+  //   else if (activeTab === "Reserved Rooms") status = "booked";
+
+  //   const currentPage = tabPages[status];
+
+  //   const { data, statusCode, error, success } = await apiCall(
+  //     `${ENDPOINTS.GET_ALL_ROOMS}?hotelId=${hotelID}&status=${status}&page=${currentPage}&limit=${limit}`,
+  //     "GET",
+  //   );
+
+  //   if (success && statusCode === 200) {
+  //     console.log("HOTEL ROOMS:", data);
+
+  //     const rooms = data?.data?.rooms || [];
+  //     const total = data?.data?.totalRooms || 0;
+
+  //     setRooms(rooms);
+  //     setTotalPages(Math.ceil(total / limit));
+  //     setLoading(false);
+  //   }
+  // };
+
   const getAllRooms = async () => {
     const activeTab = tabBarData.find((tab) => tab.status)?.name;
+
     let status = "all";
-    if (activeTab === "Available Rooms") status = "available";
-    else if (activeTab === "Reserved Rooms") status = "booked";
+
+    if (activeTab === "rooms.available") status = "available";
+    else if (activeTab === "rooms.reserved") status = "booked";
 
     const currentPage = tabPages[status];
 
     const { data, statusCode, error, success } = await apiCall(
       `${ENDPOINTS.GET_ALL_ROOMS}?hotelId=${hotelID}&status=${status}&page=${currentPage}&limit=${limit}`,
-      "GET"
+      "GET",
     );
 
     if (success && statusCode === 200) {
-      console.log("HOTEL ROOMS:", data);
-
       const rooms = data?.data?.rooms || [];
       const total = data?.data?.totalRooms || 0;
 
@@ -225,7 +252,7 @@ const RoomManagement = () => {
   // };
 
   const handleCheckout = async () => {
-    console.log("checkout here");
+    // console.log("checkout here");
 
     const payload = {
       status: "vacant",
@@ -234,7 +261,7 @@ const RoomManagement = () => {
     };
 
     // log payload before sending
-    console.log("Checkout Payload:", JSON.stringify(payload, null, 2));
+    // console.log("Checkout Payload:", JSON.stringify(payload, null, 2));
 
     const { data, statusCode, success, error } = await apiCall(
       `${ENDPOINTS.UPDATE_ROOM_STATUS}?roomId=${selectedRoom}`,
@@ -247,7 +274,7 @@ const RoomManagement = () => {
             JSON.parse(localStorage.getItem("WEMOVE_TOKEN")).accessToken
           }`,
         },
-      }
+      },
     );
 
     if (error) {
@@ -280,14 +307,14 @@ const RoomManagement = () => {
     <div className={styles.roomManagement}>
       <div className={styles.headerBox}>
         {/* <h1>Room Management</h1> */}
-        <ContentHeading heading="Room Management" />
+        <ContentHeading heading={t("heading")} />
       </div>
       {isModalOne && (
         <CustomModal isOpen={isModalOne} onClose={closeModalOne}>
           <div className={styles.modalContentBox}>
             <div className={styles.modalOneBox}>
               <CustomInput
-                label={"Booking Id"}
+                label={t("form.bookingId")}
                 type="text"
                 alphaNumeric={true}
                 required={true}
@@ -296,7 +323,7 @@ const RoomManagement = () => {
                 boxStyle={{ width: "100%" }}
               />
               <CustomButton
-                buttonText={"Assign Room"}
+                buttonText={t("form.assignRoom")}
                 type={"button"}
                 style={{ height: "60px", width: "256px" }}
                 onClick={bookRoom}
@@ -311,18 +338,18 @@ const RoomManagement = () => {
       {isModalTwo && (
         <CustomModal isOpen={isModalTwo} onClose={closeModalTwo}>
           <div className={styles.modalTwoBox}>
-            <p>Booking Details</p>
+            <p>{t("bookingDetails.heading")}</p>
             <div className={styles.tableWrapper}>
               <CustomTable
                 columns={[
-                  { Header: "Booking Id", accessor: "bookingId" },
-                  { Header: "Room Type", accessor: "roomType" },
-                  { Header: "Guest Name", accessor: "guestName" },
-                  { Header: "Mobile Number", accessor: "mobileNumber" },
-                  { Header: "Checkin Date", accessor: "checkinDate" },
-                  { Header: "Checkout Date", accessor: "checkoutDate" },
-                  { Header: "Adult", accessor: "adult" },
-                  { Header: "Child", accessor: "child" },
+                  { Header: t("table.bookingId"), accessor: "bookingId" },
+                  { Header: t("table.roomType"), accessor: "roomType" },
+                  { Header: t("table.guestName"), accessor: "guestName" },
+                  { Header: t("table.mobileNumber"), accessor: "mobileNumber" },
+                  { Header: t("table.checkinDate"), accessor: "checkinDate" },
+                  { Header: t("table.checkoutDate"), accessor: "checkoutDate" },
+                  { Header: t("table.adult"), accessor: "adult" },
+                  { Header: t("table.child"), accessor: "child" },
                 ]}
                 data={[
                   bookingTableData
@@ -346,7 +373,7 @@ const RoomManagement = () => {
             <div className={styles.checkoutButton}>
               <CustomButton
                 buttonSize={"small"}
-                buttonText={"Checkout"}
+                buttonText={t("checkout")}
                 onClick={handleCheckout}
               />
             </div>
@@ -354,12 +381,13 @@ const RoomManagement = () => {
         </CustomModal>
       )}
       <div className={styles.roomDetailsBox}>
-        <p>Room Details</p>
+        <p>{t("roomDetails.heading")}</p>
         <div className={styles.roomDetailsHeader}>
           <CustomTabBar
             tabBarData={tabBarData}
             setTabBarData={setTabBarData}
             onTabChange={handleTabChange}
+            t={t}
           />
           <div className={styles.datePickerWrapper}>
             {/* <CustomInput type='datetime-local' /> */}
@@ -375,23 +403,25 @@ const RoomManagement = () => {
         <div className={styles.gridBoxWrapper}>
           <div className={styles.topRow}>
             <div className={styles.statusLabels}>
-              {tabBarData[0].status && <p>Total Rooms</p>}
-              {tabBarData[1].status && <p>Available Rooms</p>}
-              {tabBarData[2].status && <p>Reserved Rooms</p>}
+              {tabBarData[0].status && <p>{t("status.total")}</p>}
+              {tabBarData[1].status && <p>{t("status.available")}</p>}
+              {tabBarData[2].status && <p>{t("status.reserved")}</p>}
             </div>
 
             <div className={styles.typeIdentifierBox}>
               <div className={styles.reserved}>
-                <span></span>Reserved
+                <span></span>
+                {t("legend.reserved")}
               </div>
               <div className={styles.available}>
-                <span></span>Available
+                <span></span>
+                {t("legend.available")}
               </div>
               <div>
-                <span>G-Series:</span> Standard
+                <span>{t("legend.standardPrefix")}</span> {t("legend.standard")}
               </div>
               <div>
-                <span>T-Series:</span> Luxury
+                <span>{t("legend.luxuryPrefix")}</span> {t("legend.luxury")}
               </div>
             </div>
           </div>
@@ -399,7 +429,7 @@ const RoomManagement = () => {
           <div className={styles.roomGridWrapper}>
             <div className={styles.roomGridWrapper}>
               {rooms.length === 0 ? (
-                <div>No Data Found</div>
+                <div>{t("common.noData")}</div>
               ) : (
                 <div className={styles.roomGrid}>
                   {rooms?.map((room) => (

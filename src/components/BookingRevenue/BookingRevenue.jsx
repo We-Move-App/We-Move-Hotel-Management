@@ -12,6 +12,7 @@ import {
 } from "chart.js";
 import CustomSelect from "../reusable/custom/CSelect/CustomSelect";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 ChartJS.register(
   CategoryScale,
@@ -19,28 +20,16 @@ ChartJS.register(
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 );
 
 const BookingRevenue = () => {
   const BASE_URL = import.meta.env.VITE_BASE_URL;
+  const { t } = useTranslation("dashboard");
 
   const [dateFilter, setDateFilter] = useState("Monthly");
 
-  const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "June",
-    "July",
-    "Aug",
-    "Sept",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
+  const months = t("bookingRevenue.months", { returnObjects: true });
 
   const options = {
     responsive: true,
@@ -205,40 +194,40 @@ const BookingRevenue = () => {
         // Monthly
         const monthlyRes = await axios.get(
           `${BASE_URL}/api/v1/wallet/analytics?entity=hotelManager&filter=monthly`,
-          { headers }
+          { headers },
         );
         const monthlyAnalytics = monthlyRes.data.data.analytics;
         setMonthlyData(
           monthlyAnalytics.map((item) => ({
             label: item.month,
             value: item.profit,
-          }))
+          })),
         );
 
         // Yearly
         const yearlyRes = await axios.get(
           `${BASE_URL}/api/v1/wallet/analytics?entity=hotelManager&filter=yearly`,
-          { headers }
+          { headers },
         );
         const yearlyAnalytics = yearlyRes.data.data.analytics;
         setYearlyData(
           yearlyAnalytics.map((item) => ({
             label: item.year.toString(),
             value: item.profit,
-          }))
+          })),
         );
 
         // Weekly
         const weeklyRes = await axios.get(
           `${BASE_URL}/api/v1/wallet/analytics?entity=hotelManager&filter=weekly`,
-          { headers }
+          { headers },
         );
         const weeklyAnalytics = weeklyRes.data.data.analytics;
         setWeeklyData(
           weeklyAnalytics.map((item) => ({
             label: item.week,
             value: item.profit,
-          }))
+          })),
         );
       } catch (error) {
         console.error("Error fetching analytics data", error);
@@ -252,16 +241,16 @@ const BookingRevenue = () => {
     <div className={styles["booking-revenue"]}>
       <div className={styles.header}>
         <div className={styles["title-section"]}>
-          <p className={styles.title}>Booking Revenue</p>
+          <p className={styles.title}>{t("bookingRevenue.title")}</p>
         </div>
         <select
           className={styles["date-selector"]}
           value={dateFilter}
           onChange={(e) => setDateFilter(e.target.value)}
         >
-          <option value="Monthly">Monthly</option>
-          <option value="Weekly">Weekly</option>
-          <option value="Yearly">Yearly</option>
+          <option value="Monthly"> {t("bookingRevenue.filters.monthly")}</option>
+          <option value="Weekly"> {t("bookingRevenue.filters.weekly")}</option>
+          <option value="Yearly">{t("bookingRevenue.filters.yearly")}</option>
         </select>
       </div>
       <div className={styles["chart-container"]}>

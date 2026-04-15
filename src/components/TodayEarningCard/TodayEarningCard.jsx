@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./today-earning-card.module.css";
 import images from "../../assets/images";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const TodayEarningCard = () => {
+  const { t } = useTranslation("common");
   const [dailyIncome, setDailyIncome] = useState(null);
   useEffect(() => {
     const fetchWalletAmount = async () => {
@@ -24,7 +26,7 @@ const TodayEarningCard = () => {
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },
-          }
+          },
         );
 
         const apiAmount = res.data?.data || 0;
@@ -45,7 +47,7 @@ const TodayEarningCard = () => {
       style={{ backgroundImage: `url(${images.earningCardBackgroundImage})` }}
     >
       <div className={styles.earningDetails}>
-        <p className={styles.title}>Today's earning</p>
+        <p className={styles.title}>{t("todayEarning.title")}</p>
         <p className={styles.price}>{todayProfit.toLocaleString()}</p>
       </div>
     </div>

@@ -1,0 +1,34 @@
+{
+  "heading": "Hotel Management",
+  "editBtnText":"Edit Hotel Details",
+  "hotelDetails": {
+    "heading": "Hotel Details",
+    "fields": {
+      "hotelName": "Hotel Name",
+      "businessLicense": "Business License",
+      "totalRooms": "Total Rooms"
+    }
+  },
+  "location": {
+    "heading": "Location",
+    "fields": {
+      "address": "Address",
+      "city": "City",
+      "locality": "Locality",
+      "landmark": "Landmark",
+      "pincode": "Pincode"
+    }
+  },
+  "roomDetails": {
+    "heading": "Room Details",
+    "fields": {
+      "standardRooms": "Standard Rooms",
+      "luxuryRooms": "Luxury Rooms",
+      "bookedRooms": "Booked Rooms",
+      "vacantRooms": "Vacant Rooms"
+    }
+  },
+  "amenities":{
+    "heading":"Amenities"
+  }
+}

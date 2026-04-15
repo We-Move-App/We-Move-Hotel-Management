@@ -1,0 +1,50 @@
+{
+  "heading": "Tableau de bord",
+
+  "reports": "Rapports",
+
+  "bookingHistory": "Historique des réservations",
+
+  "table": {
+    "transactionId": "ID de transaction",
+    "date": "Date",
+    "time": "Heure",
+    "amount": "Montant",
+    "status": "Statut"
+  },
+  "roomOccupancy": {
+    "title": "Occupation des chambres",
+
+    "filters": {
+      "today": "Aujourd'hui",
+      "yesterday": "Hier",
+      "lastWeek": "La semaine dernière"
+    },
+
+    "availableRooms": "Chambres disponibles",
+    "bookedRooms": "Chambres réservées"
+  },
+  "bookingRevenue": {
+    "title": "Revenus des réservations",
+
+    "filters": {
+      "monthly": "Mensuel",
+      "weekly": "Hebdomadaire",
+      "yearly": "Annuel"
+    },
+    "months": [
+      "Janv",
+      "Févr",
+      "Mars",
+      "Avr",
+      "Mai",
+      "Juin",
+      "Juil",
+      "Août",
+      "Sept",
+      "Oct",
+      "Nov",
+      "Déc"
+    ]
+  }
+}

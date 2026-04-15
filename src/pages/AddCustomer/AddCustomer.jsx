@@ -46,7 +46,7 @@ const customerValidationSchema = Yup.object().shape({
     .typeError("Check-out date is invalid")
     .min(
       Yup.ref("checkInDate"),
-      "Check-out date cannot be before check-in date"
+      "Check-out date cannot be before check-in date",
     ),
   isAdult: Yup.string().required("Number of adults is required"),
   files: Yup.array()
@@ -60,7 +60,7 @@ const customerValidationSchema = Yup.object().shape({
             return validSize && validFormat;
           }
           return true;
-        })
+        }),
     )
     .test("file-count", "At least 1 file is required", function (value) {
       const count = value?.length || 0;
@@ -181,7 +181,7 @@ const AddCustomer = () => {
       try {
         const roomResponse = await apiCall(
           `/hotel-room/?hotelId=${hotelId}&roomType=${values.roomType}`,
-          "GET"
+          "GET",
         );
 
         const sampleRoom = roomResponse?.data?.data?.sampleRoom;
@@ -194,7 +194,7 @@ const AddCustomer = () => {
             "Room type not found";
           console.error(
             "sampleRoom not found in API response",
-            roomResponse?.data
+            roomResponse?.data,
           );
           setSnackbar({ open: true, message: msg, severity: "error" });
           return;

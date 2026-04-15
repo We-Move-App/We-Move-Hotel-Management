@@ -1,0 +1,34 @@
+{
+  "heading": "Gestion de l'hôtel",
+  "editBtnText": "Modifier l'hôtel",
+  "hotelDetails": {
+    "heading": "Détails de l'hôtel",
+    "fields": {
+      "hotelName": "Nom de l'hôtel",
+      "businessLicense": "Licence commerciale",
+      "totalRooms": "Nombre total de chambres"
+    }
+  },
+  "location": {
+    "heading": "Emplacement",
+    "fields": {
+      "address": "Adresse",
+      "city": "Ville",
+      "locality": "Localité",
+      "landmark": "Point de repère",
+      "pincode": "Code postal"
+    }
+  },
+  "roomDetails": {
+    "heading": "Détails des chambres",
+    "fields": {
+      "standardRooms": "Chambres standard",
+      "luxuryRooms": "Chambres de luxe",
+      "bookedRooms": "Chambres réservées",
+      "vacantRooms": "Chambres disponibles"
+    }
+  },
+  "amenities": {
+    "heading": "Équipements"
+  }
+}

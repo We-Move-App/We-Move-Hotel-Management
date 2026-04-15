@@ -1,0 +1,52 @@
+{
+  "rooms": {
+    "all": "All Rooms",
+    "available": "Available Rooms",
+    "reserved": "Reserved Rooms"
+  },
+  "heading": "Room Management",
+
+  "form": {
+    "bookingId": "Booking Id",
+    "assignRoom": "Assign Room"
+  },
+
+  "bookingDetails": {
+    "heading": "Booking Details"
+  },
+
+  "table": {
+    "bookingId": "Booking Id",
+    "roomType": "Room Type",
+    "guestName": "Guest Name",
+    "mobileNumber": "Mobile Number",
+    "checkinDate": "Check-in Date",
+    "checkoutDate": "Checkout Date",
+    "adult": "Adult",
+    "child": "Child"
+  },
+
+  "checkout": "Checkout",
+
+  "roomDetails": {
+    "heading": "Room Details"
+  },
+
+  "status": {
+    "total": "Total Rooms",
+    "available": "Available Rooms",
+    "reserved": "Reserved Rooms"
+  },
+
+  "legend": {
+    "reserved": "Reserved",
+    "available": "Available",
+    "standardPrefix": "G-Series:",
+    "standard": "Standard",
+    "luxuryPrefix": "T-Series:",
+    "luxury": "Luxury"
+  },
+  "common": {
+    "noData": "No Data Found"
+  }
+}

@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./login.module.css";
+import { useTranslation } from "react-i18next";
 
 // Formik:[For form Validation]
 import { useFormik } from "formik";
@@ -15,42 +16,46 @@ import apiCall from "../../hooks/apiCall";
 import { ENDPOINTS } from "../../utils/apiEndpoints";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { loginSchema } from "./loginSchema";
 
-const loginSchema = Yup.object().shape({
-  emailOrPhone: Yup.string()
-    .test(
-      "noSpaceAtStart",
-      "The first character cannot be a space",
-      (value) => value?.trim().charAt(0) !== " "
-    )
-    .test(
-      "emailOrPhone",
-      "Please enter a valid email or phone number",
-      function (value) {
-        const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-        const phoneRegex = /^\d{10}$/;
-        return emailRegex.test(value) || phoneRegex.test(value);
-      }
-    )
-    .required("Email or phone number is required"),
+// const loginSchema = Yup.object().shape({
+//   emailOrPhone: Yup.string()
+//     .test(
+//       "noSpaceAtStart",
+//       t(""),
+//       (value) => value?.trim().charAt(0) !== " ",
+//     )
+//     .test(
+//       "emailOrPhone",
+//       "Please enter a valid email or phone number",
+//       function (value) {
+//         const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+//         const phoneRegex = /^\d{10}$/;
+//         return emailRegex.test(value) || phoneRegex.test(value);
+//       },
+//     )
+//     .required("Email or phone number is required"),
 
-  password: Yup.string()
-    .test(
-      "noSpaceAtStart",
-      "The first character cannot be a space",
-      (value) => value?.trim().charAt(0) !== " "
-    )
-    .required("Password is required")
-    .min(6, "Password must be at least 6 characters long")
-    .max(20, "Password must be at most 20 characters long")
-    .matches(
-      /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>]).*$/,
-      "Password must contain at least one letter, one number, and one special character"
-    ),
-});
+//   password: Yup.string()
+//     .test(
+//       "noSpaceAtStart",
+//       "The first character cannot be a space",
+//       (value) => value?.trim().charAt(0) !== " ",
+//     )
+//     .required("Password is required")
+//     .min(6, "Password must be at least 6 characters long")
+//     .max(20, "Password must be at most 20 characters long")
+//     .matches(
+//       /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>]).*$/,
+//       "Password must contain at least one letter, one number, and one special character",
+//     ),
+// });
 
 const BASEURL = `${import.meta.env.VITE_BASE_URL}/api/v1`;
 const Login = () => {
+  const { t } = useTranslation("login");
+  const schema = loginSchema(t);
+
   const { login } = useAuth();
   const { goTo } = useNavigation();
 
@@ -59,7 +64,7 @@ const Login = () => {
       emailOrPhone: "",
       password: "",
     },
-    validationSchema: loginSchema,
+    validationSchema: schema,
 
     onSubmit: async (values, { setErrors, setStatus }) => {
       const emailOrPhone = values.emailOrPhone.split("").includes("@")
@@ -87,9 +92,10 @@ const Login = () => {
                 const hotelId = res?.data?.data?.hotel?._id;
                 if (res.success && hotelId) {
                   localStorage.setItem("WEMOVE_HOTELID", hotelId);
-                } else {
-                  console.warn("HotelId not found in response");
                 }
+                // else {
+                //   console.warn("HotelId not found in response");
+                // }
               })
               .catch((err) => {
                 console.error("Failed to fetch hotelId after login", err);
@@ -110,14 +116,14 @@ const Login = () => {
   return (
     <div className={styles.formContainer}>
       <FormHeader
-        heading={"Login"}
-        subheading={"Welcome to We Move All! Please login your account."}
+        heading={t("headerForm.heading")}
+        subheading={t("headerForm.subHeading")}
       />
 
       <form onSubmit={formik.handleSubmit} className={styles.form}>
         <div className={styles.formFieldsContainer}>
           <CustomInput
-            label={"Email/Phone Number"}
+            label={t("loginForm.email")}
             required={true}
             name="emailOrPhone"
             takeSpecialChar={true}
@@ -151,16 +157,16 @@ const Login = () => {
 
         <div className={styles.formSubmitBtn}>
           <CustomButton
-            buttonText={"Log In"}
+            buttonText={t("loginForm.loginBtn")}
             type={"submit"}
             style={{ height: "70px" }}
           />
           <div className={styles.formBottomNoteText}>
-            Don't have an account?{" "}
+            {t("loginForm.question")}
             <span>
-              <Link to="/signup">Sign up</Link>
+              <Link to="/signup">{t("loginForm.signUpLink")}</Link>
             </span>{" "}
-            here
+            {t("loginForm.here")}
           </div>
         </div>
       </form>
