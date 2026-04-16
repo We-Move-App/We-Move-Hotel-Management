@@ -6,10 +6,12 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import styles from "./room-occupancy.module.css";
 import apiCall from "../../hooks/apiCall";
 import { ENDPOINTS } from "../../utils/apiEndpoints";
+import { useTranslation } from "react-i18next";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 function RoomOccupancy() {
+  const {t} = useTranslation("dashboard");
   const [dateFilter, setDateFilter] = useState("Today");
   const [availableRooms, setAvailableRooms] = useState(0);
   const [bookedRooms, setBookedRooms] = useState(0);
@@ -22,17 +24,16 @@ function RoomOccupancy() {
       const res = await apiCall(
         `${ENDPOINTS.HOTEL_ALL_ROOMS}?hotelId=${hotelId}`,
         "GET",
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: { Authorization: `Bearer ${token}` } },
       );
 
       const roomData = res?.data?.data;
-      console.log(roomData);
       if (roomData) {
         setAvailableRooms(roomData.hotelAvailableRooms || 0);
         setBookedRooms(roomData.hotelBookedRooms || 0);
       }
     } catch (error) {
-      console.error("Error fetching room data:", error);
+      throw new Error(error?.message || error);
     } finally {
       setLoading(false);
     }
@@ -78,15 +79,21 @@ function RoomOccupancy() {
   return (
     <div className={styles.roomOccupancy}>
       <div className={styles.header}>
-        <p className={styles.title}>Room Occupancy</p>
+        <p className={styles.title}>{t("roomOccupancy.title")}</p>
         <select
           className={styles.dateSelector}
           value={dateFilter}
           onChange={(e) => setDateFilter(e.target.value)}
         >
-          <option value="Today">Today</option>
-          <option value="Yesterday">Yesterday</option>
-          <option value="Last Week">Last Week</option>
+          <option value={t("roomOccupancy.filters.today")}>
+            {t("roomOccupancy.filters.today")}
+          </option>
+          <option value={t("roomOccupancy.filters.yesterday")}>
+            {t("roomOccupancy.filters.yesterday")}
+          </option>
+          <option value={t("roomOccupancy.filters.lastWeek")}>
+            {t("roomOccupancy.filters.lastWeek")}
+          </option>
         </select>
       </div>
 
@@ -103,7 +110,7 @@ function RoomOccupancy() {
           <div className={styles.legendItem}>
             <div className={`${styles.legendColor} ${styles.available}`}></div>
             <span>
-              Available Rooms:{" "}
+              {t("roomOccupancy.availableRooms")}:{" "}
               {loading ? (
                 <Skeleton width={30} />
               ) : (
@@ -114,7 +121,7 @@ function RoomOccupancy() {
           <div className={styles.legendItem}>
             <div className={`${styles.legendColor} ${styles.booked}`}></div>
             <span>
-              Booked Rooms:{" "}
+              {t("roomOccupancy.bookedRooms")}:{" "}
               {loading ? (
                 <Skeleton width={30} />
               ) : (

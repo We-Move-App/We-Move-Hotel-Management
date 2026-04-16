@@ -1,0 +1,50 @@
+{
+  "heading": "Dashboard",
+
+  "reports": "Reports",
+
+  "bookingHistory": "Booking History",
+
+  "table": {
+    "transactionId": "Transaction ID",
+    "date": "Date",
+    "time": "Time",
+    "amount": "Amount",
+    "status": "Status"
+  },
+  "roomOccupancy": {
+    "title": "Room Occupancy",
+
+    "filters": {
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "lastWeek": "Last Week"
+    },
+
+    "availableRooms": "Available Rooms",
+    "bookedRooms": "Booked Rooms"
+  },
+  "bookingRevenue": {
+    "title": "Booking Revenue",
+
+    "filters": {
+      "monthly": "Monthly",
+      "weekly": "Weekly",
+      "yearly": "Yearly"
+    },
+    "months": [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ]
+  }
+}

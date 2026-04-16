@@ -1,16 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
-import ProfileVerificationLayout from "../../../layouts/ProfileVerificationLayout/ProfileVerificationLayout";
-
+import { useEffect, useRef, useState } from "react";
 import styles from "./hotel-registration.module.css";
 import FormHeader from "../../reusable/custom/FormHeader/FormHeader";
 import HotelDetailForm from "./Forms/HotelDetailForm/HotelDetailForm";
-import { useFormik } from "formik";
-import * as Yup from "yup";
+
 import HotelLocationForm from "./Forms/HotelLocationForm/HotelLocationForm";
 import HotelRoomsForm from "./Forms/HotelRoomsForm/HotelRoomsForm";
 import HotelPolicyForm from "./Forms/HotelPolicyForm/HotelPolicyForm";
 import useNavigation from "../../../hooks/useNavigation";
-import callApi from "../../../hooks/callApi";
 import { ENDPOINTS } from "../../../utils/apiEndpoints";
 import {
   getAmenities,
@@ -19,23 +15,26 @@ import {
 } from "../../../utils/helperFunctions";
 import apiCall from "../../../hooks/apiCall";
 import Loader from "../../reusable/Loader/Loader";
+import { useTranslation } from "react-i18next";
 
-const amenitiesList = [
-  { id: 1, name: "Free Wi-Fi" },
-  { id: 2, name: "Air Conditioning" },
-  { id: 3, name: "Flat-screen TV" },
-  { id: 4, name: "Mini Bar" },
-  { id: 5, name: "Room Service" },
-  { id: 6, name: "Coffee/Tea Maker" },
-  { id: 7, name: "Private Bathroom" },
-  { id: 8, name: "Safety Deposit Box" },
-  { id: 9, name: "Laundry Service" },
-];
+// const amenitiesList = [
+//   { id: 1, name: "Free Wi-Fi" },
+//   { id: 2, name: "Air Conditioning" },
+//   { id: 3, name: "Flat-screen TV" },
+//   { id: 4, name: "Mini Bar" },
+//   { id: 5, name: "Room Service" },
+//   { id: 6, name: "Coffee/Tea Maker" },
+//   { id: 7, name: "Private Bathroom" },
+//   { id: 8, name: "Safety Deposit Box" },
+//   { id: 9, name: "Laundry Service" },
+// ];
 
 const HotelRegistration = () => {
+  const { t } = useTranslation("hotelRegistration");
+
   const formTopRef = useRef(null);
   const [activeTab, setActiveTab] = useState(0);
-  const [subheading, setSubheading] = useState("Add your hotel details.");
+  const [subheading, setSubheading] = useState();
   const [amenities, setAmenities] = useState([]);
   const token = tokenFromLocalStorage();
   const user = getDataFromLocalStorage("WEMOVE_USER") || {};
@@ -83,17 +82,25 @@ const HotelRegistration = () => {
 
   const [multistepTabs, setMultistepTabs] = useState([
     {
-      name: "hotel Details",
+      name: t("hotelDetails.heading"),
       status: false,
-      subheading: "Add your hotel details.",
+      subheading: t("hotelDetails.subHeading"),
     },
-    { name: "location", status: false, subheading: "Add your hotel location." },
     {
-      name: "rooms & Amenities",
+      name: t("hotelLocation.heading"),
       status: false,
-      subheading: "Add your room details.",
+      subheading: t("hotelLocation.subHeading"),
     },
-    { name: "policy", status: false, subheading: "Add your hotel details." },
+    {
+      name: t("hotelRooms&Amenities.heading"),
+      status: false,
+      subheading: t("hotelRooms&Amenities.heading"),
+    },
+    {
+      name: t("hotelPolicy.heading"),
+      status: false,
+      subheading: t("hotelPolicy.heading"),
+    },
   ]);
 
   const updateCentralizedState = (step, values) => {
@@ -106,7 +113,6 @@ const HotelRegistration = () => {
   const { goTo } = useNavigation();
 
   const handleFinalSubmit = () => {
-    console.log("Final Form Data: ", multipartFormState);
     goTo("/profile-verified");
   };
 
@@ -120,7 +126,7 @@ const HotelRegistration = () => {
       const { data, statusCode, error, success } = await apiCall(
         ENDPOINTS.HOTEL_BY_TOKEN,
         "GET",
-        {}
+        {},
       );
       if (success) {
         localStorage.setItem("WEMOVE_HOTELID", data.data.hotel._id);
@@ -147,7 +153,7 @@ const HotelRegistration = () => {
         // headers: {
         //   Authorization: `Bearer ${token}`
         // }
-      }
+      },
     );
     if (success) {
       // console.log("HOTEL DETAILS FUN", data);
@@ -164,9 +170,7 @@ const HotelRegistration = () => {
         images: files,
       } = data.data;
 
-      // console.log("HotelImages (files):", files);
       const imageIds = files.map((img) => img._id);
-      // console.log("Hotel Image IDs:", imageIds);
 
       localStorage.setItem("WEMOVE_HOTEL_IMAGE_IDS", JSON.stringify(imageIds));
 
@@ -197,7 +201,7 @@ const HotelRegistration = () => {
     const { data, statusCode, error, success } = await apiCall(
       `${ENDPOINTS.HOTEL_LOCATION}/${id}`,
       "GET",
-      {}
+      {},
     );
     if (success) {
       // console.log("HOTEL LOCATION FUN", data);
@@ -224,13 +228,13 @@ const HotelRegistration = () => {
     const { data: standardRoomData } = await apiCall(
       `${ENDPOINTS.HOTEL_ROOM}?hotelId=${id}&roomType=standard`,
       "GET",
-      {}
+      {},
     );
 
     const { data: luxuryRoomData } = await apiCall(
       `${ENDPOINTS.HOTEL_ROOM}?hotelId=${id}&roomType=luxury`,
       "GET",
-      {}
+      {},
     );
 
     // Handle Standard Room
@@ -311,7 +315,7 @@ const HotelRegistration = () => {
         // headers: {
         //   Authorization: `Bearer ${token}`
         // }
-      }
+      },
     );
     if (success && !error) {
       // console.log('HOTEL POLICY FUN', data)
@@ -347,7 +351,7 @@ const HotelRegistration = () => {
     const { data, success } = await apiCall(
       `${ENDPOINTS.GET_AMENITIES}`,
       "GET",
-      {}
+      {},
     );
     if (success) {
       // Filter for hotel amenities only
@@ -488,7 +492,7 @@ const HotelRegistration = () => {
       ref={formTopRef}
     >
       <FormHeader
-        heading={"Hotel Registration"}
+        heading={t("header")}
         subheading={subheading}
         headingStyle={{ fontSize: "32px" }}
       >

@@ -16,46 +16,49 @@ import CustomCheckBox from "../../../../reusable/custom/Form-Fields/CCheckBoxInp
 import apiCall from "../../../../../hooks/apiCall";
 import { ENDPOINTS } from "../../../../../utils/apiEndpoints";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
+import { HotelPolicyValidationSchema } from "./validation";
 
-const SUPPORTED_FORMATS = ["application/pdf"];
-const FILE_SIZE_LIMIT = 5 * 1024 * 1024;
+// const SUPPORTED_FORMATS = ["application/pdf"];
+// const FILE_SIZE_LIMIT = 5 * 1024 * 1024;
 
-const HotelPolicyValidationSchema = Yup.object().shape({
-  checkingTime: Yup.string()
-    .required("Checking time is required")
-    .matches(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid checking time"),
-  checkoutTime: Yup.string()
-    .required("Checkout time is required")
-    .matches(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid checkout time"),
-  amenities: Yup.array()
-    .of(
-      Yup.object().shape({
-        name: Yup.string().required(),
-        checked: Yup.boolean(),
-      })
-    )
-    .test(
-      "at-least-one-checked",
-      "At least one amenity must be checked",
-      (amenities) => amenities.some((amenity) => amenity.checked)
-    ),
-  files: Yup.array()
-    .of(
-      Yup.mixed()
-        .required("A file is required")
-        .test("file-check", "Invalid file", (value) => {
-          if (value instanceof File) {
-            const validSize = value.size <= FILE_SIZE_LIMIT;
-            const validFormat = SUPPORTED_FORMATS.includes(value.type);
-            return validSize && validFormat;
-          }
-          return true;
-        })
-    )
-    .max(1, "You can only upload one file"),
-});
+// const HotelPolicyValidationSchema = Yup.object().shape({
+//   checkingTime: Yup.string()
+//     .required("Checking time is required")
+//     .matches(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid checking time"),
+//   checkoutTime: Yup.string()
+//     .required("Checkout time is required")
+//     .matches(/^([01]\d|2[0-3]):([0-5]\d)$/, "Invalid checkout time"),
+//   amenities: Yup.array()
+//     .of(
+//       Yup.object().shape({
+//         name: Yup.string().required(),
+//         checked: Yup.boolean(),
+//       })
+//     )
+//     .test(
+//       "at-least-one-checked",
+//       "At least one amenity must be checked",
+//       (amenities) => amenities.some((amenity) => amenity.checked)
+//     ),
+//   files: Yup.array()
+//     .of(
+//       Yup.mixed()
+//         .required("A file is required")
+//         .test("file-check", "Invalid file", (value) => {
+//           if (value instanceof File) {
+//             const validSize = value.size <= FILE_SIZE_LIMIT;
+//             const validFormat = SUPPORTED_FORMATS.includes(value.type);
+//             return validSize && validFormat;
+//           }
+//           return true;
+//         })
+//     )
+//     .max(1, "You can only upload one file"),
+// });
 
 const HotelPolicyForm = ({ initialValues, onPrev, onSubmit }) => {
+  const {t} = useTranslation("hotelRegistration");
   const [fileProgress, setFileProgress] = useState({});
   const [loading, setLoading] = useState(false);
   // const formik = useFormik({
@@ -120,7 +123,7 @@ const HotelPolicyForm = ({ initialValues, onPrev, onSubmit }) => {
 
   const formik = useFormik({
     initialValues,
-    validationSchema: HotelPolicyValidationSchema,
+    validationSchema: HotelPolicyValidationSchema(t) ,
     onSubmit: async (values) => {
       setLoading(true);
 
@@ -224,7 +227,7 @@ const HotelPolicyForm = ({ initialValues, onPrev, onSubmit }) => {
       setFileProgress((prev) => ({
         ...prev,
         [file.name]: Math.min(progress, 100),
-      }));
+      }))
     }, 200);
   };
 
@@ -251,7 +254,7 @@ const HotelPolicyForm = ({ initialValues, onPrev, onSubmit }) => {
             required={true}
             id={"checkingTime"}
             name="checkingTime"
-            label="Checking Time"
+            label={t("hotelPolicy.form.checkingTime")}
             value={formik.values.checkingTime}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -264,7 +267,7 @@ const HotelPolicyForm = ({ initialValues, onPrev, onSubmit }) => {
             required={true}
             id={"checkoutTime"}
             name="checkoutTime"
-            label="Checkout Time"
+            label={t("hotelPolicy.form.checkoutTime")}
             value={formik.values.checkoutTime}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -277,7 +280,7 @@ const HotelPolicyForm = ({ initialValues, onPrev, onSubmit }) => {
         <div className={styles.amenitiesContainer}>
           <div className={styles.dragDropLabelBox}>
             <CustomLabel
-              labelText={"Select Amenities"}
+              labelText={t("hotelPolicy.form.selectAmenities")}
               htmlFor="label"
               required={true}
             />
@@ -310,7 +313,7 @@ const HotelPolicyForm = ({ initialValues, onPrev, onSubmit }) => {
         <div className={styles.dragDropWrapper}>
           <div className={styles.dragDropLabelBox}>
             {/* <label htmlFor="customdragDrop"><p>Upload Policy Document</p></label> */}
-            <CustomLabel labelText={"Upload Policy Document"} required={true} />
+            <CustomLabel labelText={t("hotelPolicy.form.uploadPolicyDocument")} required={true} />
           </div>
 
           <FileUpload onFilesChange={handleFilesChange} accept={".pdf"} />
@@ -342,12 +345,12 @@ const HotelPolicyForm = ({ initialValues, onPrev, onSubmit }) => {
             loading ? (
               <span className={styles.loadingText}>
                 <span className={styles.spinner} />
-                Please wait
+                { t("hotelPolicy.form.pleaseWait")}
               </span>
             ) : initialValues._id ? (
-              "Update"
+               t("hotelPolicy.form.update")
             ) : (
-              "Continue"
+             t("hotelPolicy.form.continue")
             )
           }
         />

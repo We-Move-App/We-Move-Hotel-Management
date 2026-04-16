@@ -1,0 +1,65 @@
+{
+  "verificationModel": {
+    "heading": "Vérification OTP",
+    "subHeading": "Entrez le code OTP envoyé à",
+    "isOTPRecieved": "Vous n'avez pas reçu le code OTP ?",
+    "resendCode": "Renvoyer le code",
+    "verify": "Vérifier et continuer"
+  },
+  "verify": "Vérifier maintenant",
+  "verified": "Vérifié",
+  "resetPassword": {
+    "heading": "Réinitialiser le mot de passe",
+    "email": "E-mail / Numéro de téléphone",
+    "submit": "Envoyer OTP",
+    "newPass": "Nouveau mot de passe",
+    "confirmPass": "Confirmer le mot de passe",
+    "confirm": "Confirmer",
+    "validation": {
+      "noSpaceStart": "Le premier caractère ne peut pas être un espace",
+      "invalidEmailPhone": "Veuillez entrer un e-mail ou un numéro de téléphone valide",
+      "requiredEmailPhone": "L'e-mail ou le numéro de téléphone est requis",
+
+      "passwordRequired": "Le mot de passe est requis",
+      "passwordMin": "Le mot de passe doit contenir au moins 8 caractères",
+      "passwordPattern": "Le mot de passe doit contenir au moins une lettre, un chiffre et un caractère spécial",
+      "passwordNoSpace": "Le mot de passe ne peut pas commencer par un espace",
+
+      "confirmPasswordRequired": "La confirmation du mot de passe est requise",
+      "confirmPasswordMatch": "Les mots de passe doivent correspondre",
+      "confirmPasswordNoSpace": "Le mot de passe de confirmation ne peut pas commencer par un espace"
+    }
+  },
+  "uploadFiles": {
+    "heading": "Téléchargez vos fichiers ici",
+    "selectFromDevice": "ou cliquez pour sélectionner plusieurs fichiers",
+    "recommendedFormatText": "Les formats recommandés sont",
+    "selectAtLeast": "Sélectionnez au moins {{count}} fichiers."
+  },
+  "navbar": {
+    "appName": "WeMove All",
+    "profile": "Profil",
+    "logout": "Se déconnecter",
+    "verified": "Vérifié"
+  },
+  "sidebar": {
+    "dashboard": "Tableau de bord",
+    "hotelManagement": "Gestion des hôtels",
+    "roomManagement": "Gestion des chambres",
+    "bookingManagement": "Gestion des réservations",
+    "wallet": "Portefeuille",
+    "customerFeedback": "Avis des clients"
+  },
+  "debitCard": {
+    "title": "Carte de débit numérique",
+    "hiddenNumber": "**** **** **** ****"
+  },
+  "todayEarning": {
+    "title": "Revenus d'aujourd'hui"
+  },
+  "pagination": {
+    "next": "Suivant",
+    "prev": "Précédent"
+  },
+  "search": "Rechercher"
+}

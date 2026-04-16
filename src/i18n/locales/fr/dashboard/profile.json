@@ -1,0 +1,40 @@
+{
+  "bankDetails": {
+    "heading": "Profil",
+
+    "personalDetails": "Détails personnels",
+    "companyDetails": "Détails de l'entreprise",
+
+    "verified": "Vérifié",
+
+    "bankSection": {
+      "heading": "Banque enregistrée",
+
+      "form": {
+        "bankName": "Nom de la banque",
+        "bankAccountNumber": "Numéro de compte bancaire",
+        "accountHolderName": "Nom du titulaire",
+        "bankDetails": "Détails bancaires",
+        "viewFile": "Voir le fichier",
+
+        "edit": "Modifier",
+        "update": "Mettre à jour",
+        "addBank": "Ajouter une banque"
+      }
+    },
+    "validation": {
+      "bankNameRequired": "Le nom de la banque est requis",
+      "bankNamePattern": "Le nom de la banque ne doit contenir que des lettres et des espaces",
+      "noSpaceStart": "Le premier caractère ne peut pas être un espace",
+
+      "accountNumberRequired": "Le numéro de compte bancaire est requis",
+      "accountNumberDigits": "Le numéro de compte bancaire ne doit contenir que des chiffres",
+
+      "accountHolderRequired": "Le nom du titulaire du compte est requis",
+      "accountHolderPattern": "Le nom du titulaire ne doit contenir que des lettres et des espaces",
+
+      "fileSize": "Le fichier est trop volumineux",
+      "fileFormat": "Format non pris en charge"
+    }
+  }
+}

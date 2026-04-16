@@ -15,8 +15,10 @@ import useNavigation from "../hooks/useNavigation";
 import ContentHeading from "../components/reusable/Content-Heading/ContentHeading";
 import { tokenFromLocalStorage } from "../utils/helperFunctions";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const Dashboard = () => {
+  const { t } = useTranslation("dashboard");
   const { goTo } = useNavigation();
   const [transactions, setTransactions] = useState([]);
   const [formattedTransactions, setFormattedTransactions] = useState([]);
@@ -37,7 +39,7 @@ const Dashboard = () => {
           else {
             console.warn(
               "[fetchTransactions] first arg non-numeric -> treating as search:",
-              page
+              page,
             );
             search = page;
             page = 1;
@@ -66,7 +68,7 @@ const Dashboard = () => {
               limit,
               ...(search ? { search } : {}),
             },
-          }
+          },
         );
 
         console.debug("[fetchTransactions] RESPONSE raw ->", res?.data);
@@ -92,7 +94,7 @@ const Dashboard = () => {
           });
         } else {
           console.warn(
-            "[fetchTransactions] response missing pagination object"
+            "[fetchTransactions] response missing pagination object",
           );
         }
         const inner = res?.data?.data;
@@ -134,7 +136,7 @@ const Dashboard = () => {
         setLoading(false);
       }
     },
-    []
+    [],
   );
 
   useEffect(() => {
@@ -147,7 +149,7 @@ const Dashboard = () => {
       "[handlePageChange] clicked page ->",
       p,
       "current search:",
-      searchQuery
+      searchQuery,
     );
     fetchTransactions(p, pagination.limit, searchQuery);
   };
@@ -160,21 +162,11 @@ const Dashboard = () => {
   return (
     <>
       <div className={styles.headerBox}>
-        <ContentHeading heading="Dashboard" />
-        {/* <div>
-          <CustomButton
-            buttonText={"Export"}
-            style={{ width: "100%" }}
-            // buttonSize={'medium'}
-            icon={<SquareArrowOutUpRight style={{ color: "white" }} />}
-            // onClick={()=> goTo('/dashboard/profile')}
-            // icon={<img src={images.exportIcon}  alt="export" />}
-          />
-        </div> */}
+        <ContentHeading heading={t("heading")} />
       </div>
 
       <div className={styles.reportContianer}>
-        <p className={styles.sectionHeading}>Reports</p>
+        <p className={styles.sectionHeading}>{t("reports")}</p>
         <div className={styles.reportsBox}>
           <div className={styles.highAnalyticsBox}>
             <div className={styles.debitAndEarningCardContainer}>
@@ -204,19 +196,19 @@ const Dashboard = () => {
 
         <div className={styles.bookingHistory}>
           <div className={styles.bookingHistoryHeader}>
-            <p className={styles.title}>Booking History</p>
+            <p className={styles.title}>{t("bookingHistory")}</p>
             <span className={styles.searchField}>
               <SearchBar onSearch={(q) => fetchTransactions(q)} />
             </span>
           </div>
           <CustomTable
             columns={[
-              { Header: "Transaction ID", accessor: "transactionId" },
+              { Header: t("table.transactionId"), accessor: "transactionId" },
               // { Header: "User Name", accessor: "userName" },
-              { Header: "Date", accessor: "date" },
-              { Header: "Time", accessor: "time" },
-              { Header: "Amount", accessor: "amount" },
-              { Header: "Status", accessor: "status" },
+              { Header: t("table.date"), accessor: "date" },
+              { Header: t("table.time"), accessor: "time" },
+              { Header: t("table.amount"), accessor: "amount" },
+              { Header: t("table.status"), accessor: "status" },
             ]}
             data={formattedTransactions}
             customRowClass="customRow"
@@ -231,41 +223,4 @@ const Dashboard = () => {
   );
 };
 
-const backgroundColors1 = [20, 80].map((value) =>
-  value > 75 ? "rgba(255, 184, 90, 1)" : "rgba(45, 106, 79, 1)"
-);
-// Dummy data and options for the chart
-const dummyData = {
-  labels: ["Rooms Avalaible", "Booked Rooms"],
-  datasets: [
-    {
-      label: "Dataset 1",
-      data: [80, 20],
-      fill: false,
-      backgroundColor: ["rgba(45, 106, 79, 1)", "rgba(255, 184, 90, 1)"],
-      borderColor: ["rgba(45, 106, 79, 1)", "rgba(255, 184, 90, 1)"],
-      tension: 0.1,
-    },
-    // {
-    //     label: 'Dataset 2',
-    //     data: [28, 48, 40, 19, 86, 27, 90],
-    //     fill: false,
-    //     borderColor: 'rgb(54, 162, 235)',
-    //     tension: 0.1,
-    // },
-  ],
-};
-
-const dummyOptions = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: "right",
-    },
-    title: {
-      display: false,
-      text: "Dummy Chart Title",
-    },
-  },
-};
 export default Dashboard;

@@ -2,42 +2,44 @@ import React, { useEffect, useState } from "react";
 import styles from "./sidebar.module.css";
 import images from "../../assets/images";
 import { Link, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const mainSidebarLinks = [
   {
-    title: "Dashboard",
+    title: "sidebar.dashboard",
     link: "/dashboard",
     icon: images.dashboardIcon,
   },
   {
-    title: "Hotel Management",
+    title: "sidebar.hotelManagement",
     link: "/dashboard/hotel-management",
     icon: images.hotelManagementIcon,
   },
   {
-    title: "Room Management",
+    title: "sidebar.roomManagement",
     link: "/dashboard/room-management",
     icon: images.roomManagementIcon,
   },
   {
-    title: "Booking Management",
+    title: "sidebar.bookingManagement",
     link: "/dashboard/booking-management",
     icon: images.bookingManagementIcon,
   },
   {
-    title: "Wallet",
+    title: "sidebar.wallet",
     link: "/dashboard/wallet",
     icon: images.walletIcon,
   },
 ];
 
 const feedbackLink = {
-  title: "Customer Feedback",
+  title: "sidebar.customerFeedback",
   link: "/dashboard/customer-feedback",
   icon: images.customerFeedbackIcon,
 };
 
 const Sidebar = ({ isOpen, toggleSidebar, isMobile }) => {
+  const {t} = useTranslation("common");
   const location = useLocation();
   const [active, setActive] = useState(0);
 
@@ -46,16 +48,16 @@ const Sidebar = ({ isOpen, toggleSidebar, isMobile }) => {
     const allLinks = [...mainSidebarLinks, feedbackLink];
 
     const sortedLinks = [...allLinks].sort(
-      (a, b) => b.link.length - a.link.length
+      (a, b) => b.link.length - a.link.length,
     );
 
     const activeIndex = sortedLinks.findIndex((link) =>
-      currentPath.startsWith(link.link)
+      currentPath.startsWith(link.link),
     );
 
     if (activeIndex !== -1) {
       const originalIndex = allLinks.findIndex(
-        (link) => link.link === sortedLinks[activeIndex].link
+        (link) => link.link === sortedLinks[activeIndex].link,
       );
       setActive(originalIndex);
     }
@@ -89,7 +91,7 @@ const Sidebar = ({ isOpen, toggleSidebar, isMobile }) => {
                   }`}
                 >
                   {link.icon && <img src={link.icon} alt={link.title} />}
-                  <span>{link.title}</span>
+                  <span>{t(link.title)}</span>
                 </div>
               </Link>
             </li>
@@ -110,7 +112,7 @@ const Sidebar = ({ isOpen, toggleSidebar, isMobile }) => {
                 {feedbackLink.icon && (
                   <img src={feedbackLink.icon} alt={feedbackLink.title} />
                 )}
-                <span>{feedbackLink.title}</span>
+                <span>{t(feedbackLink.title)}</span>
               </div>
             </Link>
           </li>

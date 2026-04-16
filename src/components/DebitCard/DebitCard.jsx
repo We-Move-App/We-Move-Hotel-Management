@@ -3,8 +3,10 @@ import styles from "./debit-card.module.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // For eye icon (you can use any icon library)
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const DebitCard = ({ showAmount = false, amount }) => {
+  const {t} = useTranslation("common");
   const [showCardNumber, setShowCardNumber] = useState(false);
   const toggleShowCardNumber = () => setShowCardNumber(!showCardNumber);
   const [walletAmount, setWalletAmount] = useState(null);
@@ -28,14 +30,14 @@ const DebitCard = ({ showAmount = false, amount }) => {
             headers: {
               Authorization: `Bearer ${accessToken}`,
             },
-          }
+          },
         );
 
         const apiAmount = res.data?.data || 0;
         // console.log("💳 Wallet API Response:", res.data);
         setWalletAmount(apiAmount);
       } catch (err) {
-        console.error("Failed to fetch wallet amount", err);
+        throw new Error(err?.message || err);
       }
     };
 
@@ -45,7 +47,7 @@ const DebitCard = ({ showAmount = false, amount }) => {
   return (
     <div className={styles.debitCard}>
       <div className={styles.cardDetails}>
-        <p className={styles.text}>Digital Debit Card</p>
+        <p className={styles.text}>{t("debitCard.title")}</p>
         <p className={styles.text}>
           <span style={{ fontFamily: "monospace", letterSpacing: "0.5px" }}>
             {showCardNumber ? "1234 5678 9012 3456" : "**** **** **** ****"}

@@ -1,0 +1,87 @@
+{
+  "signup": {
+    "header": {
+      "heading": "Create Account",
+      "subHeading": "Welcome to We Move All! Please create your account here."
+    },
+
+    "form": {
+      "fullName": "Full Name",
+      "companyName": "Company Name",
+      "companyAddress": "Company Address",
+      "branch": "Choose Branch",
+      "mobile": "Mobile Number",
+      "email": "E-mail Id",
+      "password": "Password",
+      "verify": "Verify Now",
+      "verifyEmail": "Please verify you email.",
+      "verifyMobile": "Please verify your mobile.",
+      "confirmPassword": "Confirm Password",
+
+      "submit": "Sign Up",
+
+      "loginText": "Already have an account? <link>Log in</link> here",
+      "question": "Already have an account?",
+      "loginLink": "Login",
+      "here": "here"
+    },
+
+    "validation": {
+      "mobileRequired": "Mobile number is required",
+      "mobileDigits": "Mobile number must be exactly 9 digits",
+      "mobileInvalid": "Mobile number cannot contain special characters",
+      "mobileNoSpace": "Mobile number cannot start with a space",
+
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email format",
+      "noSpaceStart": "The first character cannot be a space",
+
+      "passwordRequired": "Password is required",
+      "passwordMin": "Password must be at least 8 characters",
+      "passwordPattern": "Password must contain at least one letter, one number, and one special character",
+      "passwordNoSpace": "Password cannot start with a space",
+
+      "confirmPasswordRequired": "Confirm password is required",
+      "confirmPasswordMatch": "Passwords must match",
+      "confirmPasswordNoSpace": "Confirm password cannot start with a space",
+
+      "branchRequired": "Branch is required"
+    }
+  },
+
+  "bankDetails": {
+    "heading": "Add Bank Details",
+    "subHeading": "Welcome to We Move All! Please login to your account.",
+    "form": {
+      "bankName": "Bank Name",
+      "accountNumber": "Bank Account Number",
+      "accountHolderName": "Account Holder Name",
+      "bankDetailsFile": "Bank Account Details",
+      "uploadPlaceholder": "Upload file",
+
+      "continue": "Continue",
+      "or": "OR",
+      "skip": "Skip"
+    },
+    "validation": {
+      "bankNameRequired": "Bank name is required",
+      "bankNamePattern": "Bank name should only contain alphabets and spaces",
+      "noSpaceStart": "The first character cannot be a space",
+
+      "accountNumberRequired": "Bank account number is required",
+      "accountNumberDigits": "Bank account number should only contain numbers",
+      "accountNumberMin": "Bank account number must be at least 11 digits",
+
+      "accountHolderRequired": "Account holder name is required",
+      "accountHolderPattern": "Account holder name should only contain alphabets and spaces",
+
+      "fileSize": "File is too large",
+      "fileFormat": "Unsupported format"
+    },
+    "verificationModal": {
+      "infoText": "Bank details cannot be updated until approved by the admin.",
+      "cancelBtn": "Cancel",
+      "continue": "Continue"
+    }
+  }
+}

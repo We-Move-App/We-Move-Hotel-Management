@@ -1,0 +1,53 @@
+{
+  "rooms": {
+    "all": "Toutes les chambres",
+    "available": "Chambres disponibles",
+    "reserved": "Chambres réservées"
+  },
+  "heading": "Gestion des chambres",
+
+  "form": {
+    "bookingId": "ID de réservation",
+    "assignRoom": "Attribuer une chambre"
+  },
+
+  "bookingDetails": {
+    "heading": "Détails de la réservation"
+  },
+
+  "table": {
+    "bookingId": "ID de réservation",
+    "roomType": "Type de chambre",
+    "guestName": "Nom du client",
+    "mobileNumber": "Numéro de téléphone",
+    "checkinDate": "Date d'arrivée",
+    "checkoutDate": "Date de départ",
+    "adult": "Adulte",
+    "child": "Enfant"
+  },
+
+  "checkout": "Libérer la chambre",
+
+  "roomDetails": {
+    "heading": "Détails des chambres"
+  },
+
+  "status": {
+    "total": "Nombre total de chambres",
+    "available": "Chambres disponibles",
+    "reserved": "Chambres réservées"
+  },
+
+  "legend": {
+    "reserved": "Réservé",
+    "available": "Disponible",
+    "standardPrefix": "Série G :",
+    "standard": "Standard",
+    "luxuryPrefix": "Série T :",
+    "luxury": "Luxe"
+  },
+
+  "common": {
+    "noData": "Aucune donnée trouvée"
+  }
+}

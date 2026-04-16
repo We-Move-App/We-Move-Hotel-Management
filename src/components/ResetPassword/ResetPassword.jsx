@@ -11,50 +11,57 @@ import CustomModal from "../reusable/custom/CModal/CustomModal";
 import VerificationModal from "../ProfileVerification/VerificationModal/VerificationModal";
 import useNavigation from "../../hooks/useNavigation";
 import SnackbarNotification from "../reusable/Snackbar-Notification/SnackbarNotification";
+import { useTranslation } from "react-i18next";
+import { emailSchema } from "./validation";
+import { resetPasswordSchema } from "./validation";
 
-const emailSchema = Yup.object().shape({
-  emailOrPhone: Yup.string()
-    .test(
-      "noSpaceAtStart",
-      "The first character cannot be a space",
-      (value) => value?.trim().charAt(0) !== " "
-    )
-    .test(
-      "emailOrPhone",
-      "Please enter a valid email or phone number",
-      function (value) {
-        const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-        const phoneRegex = /^\d{10}$/;
-        return emailRegex.test(value) || phoneRegex.test(value);
-      }
-    )
-    .required("Email or phone number is required"),
-});
+// const emailSchema = Yup.object().shape({
+//   emailOrPhone: Yup.string()
+//     .test(
+//       "noSpaceAtStart",
+//       "The first character cannot be a space",
+//       (value) => value?.trim().charAt(0) !== " "
+//     )
+//     .test(
+//       "emailOrPhone",
+//       "Please enter a valid email or phone number",
+//       function (value) {
+//         const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+//         const phoneRegex = /^\d{10}$/;
+//         return emailRegex.test(value) || phoneRegex.test(value);
+//       }
+//     )
+//     .required("Email or phone number is required"),
+// });
 
-const resetPasswordSchema = Yup.object().shape({
-  password: Yup.string()
-    .min(8, "Password must be at least 8 characters")
-    .required("Password is required")
-    .test(
-      "no-leading-space",
-      "Password cannot start with a space",
-      (value) => value && value[0] !== " "
-    )
-    .matches(
-      /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>]).*$/,
-      "Password must contain at least one letter, one number, and one special character"
-    ),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password"), null], "Passwords must match")
-    .required("Confirm password is required")
-    .test(
-      "no-leading-space",
-      "Confirm password cannot start with a space",
-      (value) => value && value[0] !== " "
-    ),
-});
+// const resetPasswordSchema = Yup.object().shape({
+//   password: Yup.string()
+//     .min(8, "Password must be at least 8 characters")
+//     .required("Password is required")
+//     .test(
+//       "no-leading-space",
+//       "Password cannot start with a space",
+//       (value) => value && value[0] !== " "
+//     )
+//     .matches(
+//       /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>]).*$/,
+//       "Password must contain at least one letter, one number, and one special character"
+//     ),
+//   confirmPassword: Yup.string()
+//     .oneOf([Yup.ref("password"), null], "Passwords must match")
+//     .required("Confirm password is required")
+//     .test(
+//       "no-leading-space",
+//       "Confirm password cannot start with a space",
+//       (value) => value && value[0] !== " "
+//     ),
+// });
 
 const ResetPassword = () => {
+  const {t} = useTranslation("common");
+  const eSchema = emailSchema(t);
+  const rPassSchema = resetPasswordSchema(t);
+
   const [otp, setOtp] = useState("");
   const [open, setOpen] = useState(false);
   const [verified, setVerified] = useState(false);
@@ -103,7 +110,7 @@ const ResetPassword = () => {
       const { data, error, statusCode, success } = await apiCall(
         `${ENDPOINTS.VERIFY_OTP_WITHOUT_TOKEN}`,
         "POST",
-        { body: payload }
+        { body: payload },
       );
       console.log(data, error);
       if (error) {
@@ -137,7 +144,7 @@ const ResetPassword = () => {
       const { data, statusCode, success, error } = await apiCall(
         `${ENDPOINTS.GET_OTP_WITHOUT_TOKEN}`,
         "POST",
-        { body: payload }
+        { body: payload },
       );
       // console.log(data, error);
       setOpen(true);
@@ -157,23 +164,23 @@ const ResetPassword = () => {
       const { data, success, error } = await apiCall(
         `${ENDPOINTS.RESET_PASSWORD_WITHOUT_TOKEN}`,
         "PUT",
-        { body: payload }
+        { body: payload },
       );
 
       if (success) {
-        // ✅ Show success snackbar
+        // Show success snackbar
         setSnackbar({
           open: true,
           message: "Password updated successfully",
           severity: "success",
         });
 
-        // ✅ Navigate after short delay
+        // Navigate after short delay
         setTimeout(() => {
           goTo("/login");
         }, 1500);
       } else {
-        // ❌ Show error snackbar
+        // Show error snackbar
         setSnackbar({
           open: true,
           message: error || "Something went wrong. Please try again.",
@@ -207,20 +214,20 @@ const ResetPassword = () => {
       {open && renderVerificationModal()}
 
       <FormHeader
-        heading="Reset Password"
+        heading={t("resetPassword.heading")}
         headingStyle={{ textAlign: "left" }}
       />
       {!verified ? (
         <Formik
           initialValues={{ emailOrPhone: "" }}
-          validationSchema={emailSchema}
+          validationSchema={eSchema}
           onSubmit={sendOtp}
         >
           {(formik) => (
             <Form className={styles.form}>
               <div className={styles.formFieldsContainer}>
                 <CustomInput
-                  label="Email/Phone Number"
+                  label={t("resetPassword.email")}
                   required
                   name="emailOrPhone"
                   takeSpecialChar
@@ -236,7 +243,7 @@ const ResetPassword = () => {
                 <CustomButton
                   type="submit"
                   buttonSize="medium"
-                  buttonText="Send OTP"
+                  buttonText={t("resetPassword.submit")}
                 />
               </div>
               {error && <div className={styles.error}>{error}</div>}
@@ -246,7 +253,7 @@ const ResetPassword = () => {
       ) : (
         <Formik
           initialValues={{ password: "", confirmPassword: "" }}
-          validationSchema={resetPasswordSchema}
+          validationSchema={rPassSchema}
           onSubmit={(values) => {
             // console.log(values);
             handleResetPassword(values);
@@ -257,7 +264,7 @@ const ResetPassword = () => {
             <Form className={styles.form}>
               <div className={styles.formFieldsContainer}>
                 <CustomInput
-                  label="New Password"
+                  label={t("resetPassword.newPass")}
                   required
                   name="password"
                   type="password"
@@ -269,7 +276,7 @@ const ResetPassword = () => {
                   error={resetFormik.errors.password}
                 />
                 <CustomInput
-                  label="Confirm Password"
+                  label={t("resetPassword.confirmPass")}
                   required
                   name="confirmPassword"
                   type="password"
@@ -285,7 +292,7 @@ const ResetPassword = () => {
                 <CustomButton
                   type="submit"
                   buttonSize="medium"
-                  buttonText="Confirm"
+                  buttonText={t("resetPassword.confirm")}
                 />
               </div>
             </Form>

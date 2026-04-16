@@ -1,0 +1,66 @@
+{
+  "verificationModel": {
+    "heading": "OTP Verification",
+    "subHeading": "Enter OTP code sent to",
+    "isOTPRecieved": "Don't recieve OTP code",
+    "resendCode": "Resend Code",
+    "verify": "Verify & Proceed"
+  },
+  "verify": "Verify Now",
+  "verified": "Verified",
+  "resetPassword": {
+    "heading": "Reset Password",
+    "email": "Email/Phone Number",
+    "submit": "Send OTP",
+    "newPass": "New Password",
+    "confirmPass": "Confirm Password",
+    "confirm": "Confirm",
+    "validation": {
+      "noSpaceStart": "The first character cannot be a space",
+      "invalidEmailPhone": "Please enter a valid email or phone number",
+      "requiredEmailPhone": "Email or phone number is required",
+
+      "passwordRequired": "Password is required",
+      "passwordMin": "Password must be at least 8 characters",
+      "passwordPattern": "Password must contain at least one letter, one number, and one special character",
+      "passwordNoSpace": "Password cannot start with a space",
+
+      "confirmPasswordRequired": "Confirm password is required",
+      "confirmPasswordMatch": "Passwords must match",
+      "confirmPasswordNoSpace": "Confirm password cannot start with a space"
+    }
+  },
+  "uploadFiles": {
+    "heading": "Upload your files here",
+    "selectFromDevice": "or click to select multiple files",
+    "recommendedFormatText": "  Recommnded formats are",
+    "selectAtLeast": "Select at least {{count}} files."
+  },
+  "navbar": {
+    "appName": "WeMove All",
+
+    "profile": "Profile",
+    "logout": "Logout",
+    "verified": "Verified"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "hotelManagement": "Hotel Management",
+    "roomManagement": "Room Management",
+    "bookingManagement": "Booking Management",
+    "wallet": "Wallet",
+    "customerFeedback": "Customer Feedback"
+  },
+  "debitCard": {
+    "title": "Digital Debit Card",
+    "hiddenNumber": "**** **** **** ****"
+  },
+  "todayEarning": {
+    "title": "Today's Earning"
+  },
+  "pagination": {
+    "next": "Next",
+    "prev": "Prev"
+  },
+  "search": "Search"
+}

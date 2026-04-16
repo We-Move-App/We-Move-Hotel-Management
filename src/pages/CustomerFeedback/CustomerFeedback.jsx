@@ -7,8 +7,10 @@ import { ENDPOINTS } from "../../utils/apiEndpoints";
 import { tokenFromLocalStorage } from "../../utils/helperFunctions";
 import ContentHeading from "../../components/reusable/Content-Heading/ContentHeading";
 import Pagination from "../../components/reusable/PaginationNew/Pagination";
+import { useTranslation } from "react-i18next";
 
 const CustomerFeedback = () => {
+  const { t } = useTranslation("feedback");
   // const token = tokenFromLocalStorage();
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -35,7 +37,7 @@ const CustomerFeedback = () => {
         // headers: {
         //     Authorization: `Bearer ${token}`
         // }
-      }
+      },
     );
     if (success) {
       const { feedbacks, page } = data?.data;
@@ -55,11 +57,11 @@ const CustomerFeedback = () => {
     <>
       <div className={styles.headerBox}>
         {/* <h1>Customer Feedback</h1> */}
-        <ContentHeading heading="Customer Feedback" />
+        <ContentHeading heading={t("heading")} />
       </div>
 
       <div className={styles.contentBoxWrapper}>
-        <p>Customer Feedback</p>
+        <p>{t("subheading")}</p>
 
         <div className={styles.customerFeedbackBox}>
           <div className={styles.feedbackGrid}>

@@ -1,0 +1,25 @@
+{
+  "headerForm": {
+    "heading": "Connexion",
+    "subHeading": "Bienvenue sur We Move All ! Veuillez vous connecter à votre compte."
+  },
+  "loginForm": {
+    "email": "E-mail / Numéro de téléphone",
+    "password": "Mot de passe",
+    "forgotPassword": "Mot de passe oublié ?",
+    "loginBtn": "Se connecter",
+    "signupLink": "Vous n'avez pas de compte ? Inscrivez-vous ici",
+    "question": "Vous n'avez pas de compte ?",
+    "signUpLink": "Inscrivez-vous",
+    "here": "ici"
+  },
+  "validation": {
+    "noSpaceStart": "Le premier caractère ne peut pas être un espace",
+    "invalidEmailPhone": "Veuillez entrer un e-mail ou un numéro de téléphone valide",
+    "requiredEmailPhone": "L'e-mail ou le numéro de téléphone est requis",
+    "requiredPassword": "Le mot de passe est requis",
+    "passwordMin": "Le mot de passe doit contenir au moins 6 caractères",
+    "passwordMax": "Le mot de passe doit contenir au maximum 20 caractères",
+    "passwordPattern": "Le mot de passe doit contenir au moins une lettre, un chiffre et un caractère spécial"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "heading": "Wallet",
+
+  "tabs": {
+    "transactions": "Transactions",
+    "withdraw": "Withdraw"
+  },
+
+  "withdrawModal": {
+    "heading": "Withdraw Amount",
+    "amount": "Withdraw Amount",
+    "processing": "Processing...",
+    "withdraw": "Withdraw"
+  },
+
+  "successModal": {
+    "title": "Congratulations! Successfully done.",
+    "description": "We are thrilled to extend a warm welcome to all newcomers and returning members alike."
+  },
+
+  "table": {
+    "transactionId": "Transaction ID",
+    "date": "Date",
+    "time": "Time",
+    "amount": "Amount",
+    "status": "Status"
+  },
+
+  "profile": {
+    "heading": "Profile",
+
+    "personalDetails": "Personal Details",
+    "companyDetails": "Company Details",
+
+    "bank": {
+      "heading": "Saved Bank",
+      "bankName": "Bank Name",
+      "bankAccountNumber": "Bank Account Number",
+      "accountHolderName": "Account Holder Name",
+      "bankDetails": "Bank Details",
+      "viewFile": "View file",
+      "edit": "Edit",
+      "update": "Update",
+      "addBank": "Add Bank"
+    }
+  }
+}

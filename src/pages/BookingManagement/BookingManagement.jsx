@@ -15,8 +15,10 @@ import { tokenFromLocalStorage } from "../../utils/helperFunctions";
 import { useFormattedDate } from "../../hooks/formatISODate";
 import ContentHeading from "../../components/reusable/Content-Heading/ContentHeading";
 import Pagination from "../../components/reusable/PaginationNew/Pagination";
+import { useTranslation } from "react-i18next";
 
 const BookingManagement = () => {
+  const { t } = useTranslation("bookingManagement");
   const formatDate = useFormattedDate();
   // const token = tokenFromLocalStorage();
   const hotelID = localStorage.getItem("WEMOVE_HOTELID") || "";
@@ -82,7 +84,7 @@ const BookingManagement = () => {
       if (isManagerBooking) {
         const { data: pData, success: pSuccess } = await apiCall(
           `${ENDPOINTS.PROFILE}`,
-          "GET"
+          "GET",
         );
         if (pSuccess) managerProfile = pData.data.user;
       }
@@ -135,7 +137,7 @@ const BookingManagement = () => {
     <div className={styles.bookingManagement}>
       <div className={styles.headerBox}>
         {/* <h1>Booking Management</h1> */}
-        <ContentHeading heading="Booking Management" />
+        <ContentHeading heading={t("heading")} />
         {/* <div>
           <CustomButton
             buttonText={"Export"}
@@ -148,7 +150,7 @@ const BookingManagement = () => {
 
       <div className={styles.headerBoxActionsContainer}>
         <div className={styles.headerBoxHeadingAndSearchWrapper}>
-          <p className={styles.subheading}>Guest Booking Details</p>
+          <p className={styles.subheading}>{t("subheading")}</p>
           {/* <SearchBar styles={{ width: '400px' }} /> */}
         </div>
 
@@ -186,7 +188,7 @@ const BookingManagement = () => {
 
             <div className={`${styles.actionBtn} ${styles.addGuest}`}>
               <CustomButton
-                buttonText={"Add New Guest"}
+                buttonText={t("actions.addGuest")}
                 type={"button"}
                 buttonSize={"small"}
                 style={{
@@ -267,22 +269,22 @@ const BookingManagement = () => {
         {bookings.length > 0 ? (
           <CustomTable
             columns={[
-              { Header: "Booking ID", accessor: "bookingId" },
-              { Header: "Room Type", accessor: "roomType" },
-              { Header: "Guest Name", accessor: "guestName" },
-              { Header: "Mobile Number", accessor: "mobileNumber" },
-              { Header: "Checkin Date", accessor: "checkIn" },
-              { Header: "Checkout Date", accessor: "checkOut" },
-              { Header: "Adult", accessor: "adult" },
-              { Header: "Child", accessor: "child" },
-              { Header: "Booked By", accessor: "bookedBy" },
+              { Header: t("table.bookingId"), accessor: "bookingId" },
+              { Header: t("table.roomType"), accessor: "roomType" },
+              { Header: t("table.guestName"), accessor: "guestName" },
+              { Header: t("table.mobileNumber"), accessor: "mobileNumber" },
+              { Header: t("table.checkinDate"), accessor: "checkIn" },
+              { Header: t("table.checkoutDate"), accessor: "checkOut" },
+              { Header: t("table.adult"), accessor: "adult" },
+              { Header: t("table.child"), accessor: "child" },
+              { Header: t("table.bookedBy"), accessor: "bookedBy" },
             ]}
             data={bookings}
             customRowClass="customRow"
             customCellClass="customCell"
           />
         ) : (
-          <p className={styles.dataNotFound}>Data not available</p>
+          <p className={styles.dataNotFound}>{t("noData")}</p>
         )}
 
         {totalPage > 1 && (

@@ -15,6 +15,8 @@ import apiCall from "../../hooks/apiCall";
 import { ENDPOINTS } from "../../utils/apiEndpoints";
 import { useNavigate } from "react-router-dom";
 import SnackbarNotification from "../../components/reusable/Snackbar-Notification/SnackbarNotification";
+import { useTranslation } from "react-i18next";
+import { customerValidationSchema } from "./validation";
 
 // Constants (reuse your supported formats & size limit)
 const FILE_SIZE_LIMIT = 5 * 1024 * 1024; // 5 MB
@@ -25,49 +27,50 @@ const SUPPORTED_FORMATS = [
   "application/pdf",
 ];
 
-const customerValidationSchema = Yup.object().shape({
-  customerName: Yup.string()
-    .required("Customer Name is required")
-    .min(2, "Customer Name must be at least 2 characters")
-    .max(50, "Customer Name cannot exceed 50 characters"),
-  email: Yup.string()
-    .email("Invalid email address")
-    .required("Email is required"),
-  mobile: Yup.string()
-    .required("Mobile number is required")
-    .matches(/^[0-9]{10}$/, "Mobile number must be exactly 10 digits"),
+// const customerValidationSchema = Yup.object().shape({
+//   customerName: Yup.string()
+//     .required("Customer Name is required")
+//     .min(2, "Customer Name must be at least 2 characters")
+//     .max(50, "Customer Name cannot exceed 50 characters"),
+//   email: Yup.string()
+//     .email("Invalid email address")
+//     .required("Email is required"),
+//   mobile: Yup.string()
+//     .required("Mobile number is required")
+//     .matches(/^[0-9]{10}$/, "Mobile number must be exactly 10 digits"),
 
-  checkInDate: Yup.date()
-    .required("Check-in date is required")
-    .typeError("Check-in date is invalid"),
+//   checkInDate: Yup.date()
+//     .required("Check-in date is required")
+//     .typeError("Check-in date is invalid"),
 
-  checkOutDate: Yup.date()
-    .required("Check-out date is required")
-    .typeError("Check-out date is invalid")
-    .min(
-      Yup.ref("checkInDate"),
-      "Check-out date cannot be before check-in date"
-    ),
-  isAdult: Yup.string().required("Number of adults is required"),
-  files: Yup.array()
-    .of(
-      Yup.mixed()
-        .required("A file is required")
-        .test("file-check", "Invalid file", (value) => {
-          if (value instanceof File) {
-            const validSize = value.size <= FILE_SIZE_LIMIT;
-            const validFormat = SUPPORTED_FORMATS.includes(value.type);
-            return validSize && validFormat;
-          }
-          return true;
-        })
-    )
-    .test("file-count", "At least 1 file is required", function (value) {
-      const count = value?.length || 0;
-      return count >= 1;
-    }),
-});
+//   checkOutDate: Yup.date()
+//     .required("Check-out date is required")
+//     .typeError("Check-out date is invalid")
+//     .min(
+//       Yup.ref("checkInDate"),
+//       "Check-out date cannot be before check-in date",
+//     ),
+//   isAdult: Yup.string().required("Number of adults is required"),
+//   files: Yup.array()
+//     .of(
+//       Yup.mixed()
+//         .required("A file is required")
+//         .test("file-check", "Invalid file", (value) => {
+//           if (value instanceof File) {
+//             const validSize = value.size <= FILE_SIZE_LIMIT;
+//             const validFormat = SUPPORTED_FORMATS.includes(value.type);
+//             return validSize && validFormat;
+//           }
+//           return true;
+//         }),
+//     )
+//     .test("file-count", "At least 1 file is required", function (value) {
+//       const count = value?.length || 0;
+//       return count >= 1;
+//     }),
+// });
 const AddCustomer = () => {
+  const { t } = useTranslation("addCustomer");
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
@@ -80,7 +83,7 @@ const AddCustomer = () => {
       roomType: "",
       files: [],
     },
-    validationSchema: customerValidationSchema,
+    validationSchema: customerValidationSchema(t),
     // onSubmit: async (values) => {
     //   const hotelId = localStorage.getItem("WEMOVE_HOTELID");
     //   if (!hotelId) {
@@ -181,7 +184,7 @@ const AddCustomer = () => {
       try {
         const roomResponse = await apiCall(
           `/hotel-room/?hotelId=${hotelId}&roomType=${values.roomType}`,
-          "GET"
+          "GET",
         );
 
         const sampleRoom = roomResponse?.data?.data?.sampleRoom;
@@ -194,7 +197,7 @@ const AddCustomer = () => {
             "Room type not found";
           console.error(
             "sampleRoom not found in API response",
-            roomResponse?.data
+            roomResponse?.data,
           );
           setSnackbar({ open: true, message: msg, severity: "error" });
           return;
@@ -293,8 +296,8 @@ const AddCustomer = () => {
   };
 
   const [options, setOptions] = useState([
-    { label: "Adult", value: true },
-    { label: "Kid", value: false },
+    { label: "form.adult", value: true },
+    { label: "form.kid", value: false },
   ]);
 
   const handleFilesChange = (newFiles) => {
@@ -347,20 +350,22 @@ const AddCustomer = () => {
   return (
     <div className={styles.addCustomer}>
       <p className={styles.breadcrumb}>
-        Booking Management {">"}{" "}
-        <span className={styles.lightText}>Add New Customer</span>{" "}
+        {t("breadcrumb.booking")} {">"}{" "}
+        <span className={styles.lightText}>
+          {t("breadcrumb.addCustomer")}
+        </span>{" "}
       </p>
 
       <form className={styles.form} onSubmit={formik.handleSubmit}>
         <div className={styles.formFieldsContainerWrapper}>
-          <p className={styles.title}>Guest Details</p>
+          <p className={styles.title}>{t("guestDetails.title")}</p>
 
           <div className={styles.formFieldsContainer}>
             <div className={styles.formLeftBox}>
               <CustomInput
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
-                label="Customer Name"
+                label={t("form.customerName")}
                 type="text"
                 name="customerName"
                 required
@@ -368,7 +373,7 @@ const AddCustomer = () => {
                 touched={formik.touched?.customerName}
               />
               <CustomInput
-                label="Email Id"
+                label={t("form.email")}
                 type="email"
                 takeSpecialChar={true}
                 name="email"
@@ -379,7 +384,7 @@ const AddCustomer = () => {
                 touched={formik.touched?.email}
               />
               <CustomInput
-                label="Mobile Number"
+                label={t("form.mobile")}
                 type="number"
                 name="mobile"
                 onBlur={formik.handleBlur}
@@ -389,7 +394,7 @@ const AddCustomer = () => {
                 touched={formik.touched?.mobile}
               />
               <CustomInput
-                label="Room Type"
+                label={t("form.roomType")}
                 type="text"
                 name="roomType"
                 onBlur={formik.handleBlur}
@@ -403,7 +408,7 @@ const AddCustomer = () => {
 
                 <div className={styles.multipleInputsContainer}>
                   <div className={styles.multiInputs}>
-                    <CustomLabel labelText={"Checkin"} />
+                    <CustomLabel labelText={t("form.checkIn")} />
                     <div className={styles.customDatePickerBox}>
                       <CustomDatePicker
                         value={formik.values.checkInDate}
@@ -413,7 +418,7 @@ const AddCustomer = () => {
                   </div>
 
                   <div className={styles.multiInputs}>
-                    <CustomLabel labelText={"Checkout"} />
+                    <CustomLabel labelText={t("form.checkOut")} />
                     <div className={styles.customDatePickerBox}>
                       <CustomDatePicker
                         value={formik.values.checkOutDate}
@@ -426,7 +431,10 @@ const AddCustomer = () => {
                     <div className={styles.customDatePickerBox}>
                       {/* <CustomDatePicker /> */}
                       <SelectInput
-                        options={options}
+                        options={options.map((opt) => ({
+                          ...opt,
+                          label: t(opt.label),
+                        }))}
                         value={formik?.values.isAdult}
                         onChange={handelSelect}
                       />
@@ -449,7 +457,7 @@ const AddCustomer = () => {
               </div>
             </div>
             <div className={styles.formRightBox}>
-              <p className={styles.title}>Add ID Card</p>
+              <p className={styles.title}>{t("idCard.title")}</p>
               <FileUpload
                 onFilesChange={handleFilesChange}
                 accept={".png, .jpg, .JPEG"}
@@ -469,7 +477,7 @@ const AddCustomer = () => {
           <CustomButton
             type={"submit"}
             buttonSize={"medium"}
-            buttonText={"Book"}
+            buttonText={t("form.submit")}
           />
         </div>
         <SnackbarNotification

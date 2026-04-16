@@ -15,6 +15,7 @@ import { ENDPOINTS } from "../../utils/apiEndpoints";
 import ContentHeading from "../../components/reusable/Content-Heading/ContentHeading";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { useTranslation } from "react-i18next";
 
 const Amenities = [
   {
@@ -36,6 +37,7 @@ const Amenities = [
 ];
 
 const HotelManagement = () => {
+  const { t } = useTranslation("hotelManagement");
   const [showForm, setShowForm] = useState(false);
   const toggleForm = () => setShowForm(!showForm);
   const { goTo } = useNavigation();
@@ -55,35 +57,111 @@ const HotelManagement = () => {
     images.img5,
   ]);
 
+  // const [detailsData, setDetailsData] = useState([
+  //   {
+  //     type: "hotelDetails",
+  //     heading: "hotelDetails.heading",
+  //     details: [
+  //       {
+  //         name: "hotelDetails.fields.hotelName",
+  //         value: "ABC Hotel",
+  //       },
+  //       {
+  //         name: "hotelDetails.fields.businessLicense",
+  //         value: "123123123",
+  //       },
+  //       {
+  //         name: "hotelDetails.fields.totalRooms",
+  //         value: "200",
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     heading: "location.heading",
+  //     details: [
+  //       { name: "location.fields.address", value: "address" },
+  //       { name: "location.fields.city", value: "Delhi" },
+  //       { name: "location.fields.locality", value: "xyz" },
+  //       { name: "location.fields.landmark", value: "xyz" },
+  //       { name: "location.fields.pincode", value: "121212" },
+  //     ],
+  //   },
+  //   {
+  //     heading: "roomDetails.heading",
+  //     details: [
+  //       { name: "roomDetails.fields.standardRooms", value: "" },
+  //       { name: "roomDetails.fields.luxuryRooms", value: "" },
+  //       { name: "roomDetails.fields.bookedRooms", value: "" },
+  //       { name: "roomDetails.fields.vacantRooms", value: "" },
+  //     ],
+  //   },
+  // ]);
+
   const [detailsData, setDetailsData] = useState([
     {
-      heading: "Hotel Details",
+      type: "hotelDetails",
+      heading: "hotelManagement.hotelDetails.heading",
       details: [
-        { name: "Hotel Name", value: "ABC Hotel" },
-        { name: "Business License", value: "123123123" },
-        { name: "Total Rooms", value: "200" },
+        {
+          name: "hotelManagement.hotelDetails.fields.hotelName",
+          value: "ABC Hotel",
+        },
+        {
+          name: "hotelManagement.hotelDetails.fields.businessLicense",
+          value: "123123123",
+        },
+        {
+          name: "hotelManagement.hotelDetails.fields.totalRooms",
+          value: "200",
+        },
       ],
     },
     {
-      heading: "Location",
+      type: "location",
+      heading: "hotelManagement.location.heading",
       details: [
-        { name: "Addresse", value: "address" },
-        { name: "City", value: "Delhi" },
-        { name: "Locality", value: "xyz" },
-        { name: "Landmark", value: "xyz" },
-        { name: "Pincode", value: "121212" },
+        {
+          name: "hotelManagement.location.fields.address",
+          value: "address",
+        },
+        {
+          name: "hotelManagement.location.fields.city",
+          value: "Delhi",
+        },
+        {
+          name: "hotelManagement.location.fields.locality",
+          value: "xyz",
+        },
+        {
+          name: "hotelManagement.location.fields.landmark",
+          value: "xyz",
+        },
+        {
+          name: "hotelManagement.location.fields.pincode",
+          value: "121212",
+        },
       ],
     },
     {
-      heading: "Room Details",
+      type: "roomDetails",
+      heading: "hotelManagement.roomDetails.heading",
       details: [
-        // { name: "Total Rooms", value: "200" },
-        { name: "Standard Rooms", value: "" },
-        { name: "Luxury Rooms", value: "" },
-        { name: "Booked Rooms", value: "" },
-        { name: "Vacant Rooms", value: "" },
-        // { name: "Room Rates", value: "$200" },
-        // { name: "Currency", value: "USD" },
+        {
+          name: "hotelManagement.roomDetails.fields.standardRooms",
+          value: "",
+        },
+        {
+          name: "hotelManagement.roomDetails.fields.luxuryRooms",
+          value: "",
+        },
+        {
+          name: "hotelManagement.roomDetails.fields.bookedRooms",
+          value: "",
+        },
+        {
+          name: "hotelManagement.roomDetails.fields.vacantRooms",
+          value: "",
+        },
       ],
     },
   ]);
@@ -103,7 +181,7 @@ const HotelManagement = () => {
           // headers: {
           //     Authorization: `Bearer ${token}`
           // }
-        }
+        },
       );
       // console.log(data.data)
       if (success) {
@@ -125,222 +203,176 @@ const HotelManagement = () => {
   };
 
   const getHotelDetails = async (id) => {
-    // Fetch hotel details
-    const { data, statusCode, error, success } = await apiCall(
+    const { data, success } = await apiCall(
       `${ENDPOINTS.HOTEL_BY_ID}/${id}`,
       "GET",
-      {
-        // headers: {
-        //     Authorization: `Bearer ${token}`
-        // }
-      }
     );
+
     if (success) {
-      // console.log("HOTEL DETAILS FUN", data);
-      // const { hotelName, businessLicense, totalRoom, termsAndConditions, _id } =
-      //   data.data.hotel;
-      // const { images: files } = data.data?.images[0];
       const {
         hotelName,
         businessLicense,
         totalRoom,
-        termsAndConditions,
-        _id,
         images: files,
       } = data.data;
 
-      // console.log("HotelImages", files);
       setGridImages(files);
 
       setDetailsData((prev) =>
         prev.map((section) => {
-          if (section?.heading == "Hotel Details") {
+          if (section?.type === "hotelDetails") {
             return {
-              heading: "Hotel Details",
+              ...section, // ✅ preserve structure
+              heading: "hotelDetails.heading",
               details: [
-                { name: "Hotel Name", value: hotelName || "ABC Hotel" },
                 {
-                  name: "Business License",
-                  value: businessLicense || "123123123",
+                  name: "hotelDetails.fields.hotelName",
+                  value: hotelName || "-",
                 },
-                { name: "Total Rooms", value: totalRoom || "200" },
+                {
+                  name: "hotelDetails.fields.businessLicense",
+                  value: businessLicense || "-",
+                },
+                {
+                  name: "hotelDetails.fields.totalRooms",
+                  value: totalRoom || "-",
+                },
               ],
             };
-          } else {
-            return section;
           }
-        })
-      );
 
-      // return { hotelName, businessLicense, totalRoom, termsAndConditions, files }
+          return section;
+        }),
+      );
     }
   };
 
   const getHotelLocation = async (id) => {
-    const { data, statusCode, error, success } = await apiCall(
+    const { data, success } = await apiCall(
       `${ENDPOINTS.HOTEL_LOCATION}/${id}`,
       "GET",
-      {
-        // headers: {
-        //     Authorization: `Bearer ${token}`
-        // }
-      }
     );
+
     if (success) {
-      // console.log("HOTEL LOCATION FUN", data);
       const hotelAddress = data?.data;
+
+      if (!hotelAddress) return;
+
       const { landmark, pincode, townCity, state, address } = hotelAddress;
-      // console.log("Hotel address:", landmark, pincode, townCity, state)
+
       setDetailsData((prev) =>
         prev.map((section) => {
-          if (section?.heading === "Location") {
+          if (section?.type === "location") {
             return {
-              heading: "Location",
+              ...section, //  preserve structure
+              heading: "location.heading",
               details: [
-                { name: "Addresse", value: address || "hotel Address" },
-                { name: "City", value: townCity || "city" },
-                { name: "Locality", value: state || "state" },
-                { name: "Landmark", value: landmark || "landmark" },
-                { name: "Pincode", value: pincode || "pincode" },
+                {
+                  name: "location.fields.address",
+                  value: address || "-",
+                },
+                {
+                  name: "location.fields.city",
+                  value: townCity || "-",
+                },
+                {
+                  name: "location.fields.locality",
+                  value: state || "-",
+                },
+                {
+                  name: "location.fields.landmark",
+                  value: landmark || "-",
+                },
+                {
+                  name: "location.fields.pincode",
+                  value: pincode || "-",
+                },
               ],
             };
-          } else {
-            return section;
           }
-        })
+
+          return section;
+        }),
       );
-      // return { hotelAddress };
     }
   };
 
-  // const getHotelRoomsAndAmenities = async (id) => {
-  //   const {
-  //     data: standardRoomData,
-  //     statusCode: standardRoomStatusCode,
-  //     error: standardRoomError,
-  //     success: standardRoomSuccess,
-  //   } = await apiCall(
-  //     `${ENDPOINTS.HOTEL_ROOM}?hotelId=${id}&roomType=standard`,
-  //     "GET",
-  //     {}
-  //   );
-  //   const {
-  //     data: luxuryRoomData,
-  //     statusCode: luxuryRoomStatusCode,
-  //     error: luxuryRoomError,
-  //     success: luxuryRoomSuccess,
-  //   } = await apiCall(
-  //     `${ENDPOINTS.HOTEL_ROOM}?hotelId=${id}&roomType=luxury`,
-  //     "GET",
-  //     {}
-  //   );
-
-  //   const { data: bookedRoomData } = await apiCall(
-  //     `${ENDPOINTS.HOTEL_ALL_ROOMS}?hotelId=${id}`,
-  //     "GET",
-  //     {}
-  //   );
-
-  //   const standardRoomCount =
-  //     standardRoomData?.data?.sampleRoom?.numberOfRoom ?? "0";
-  //   const luxuryRoomCount =
-  //     luxuryRoomData?.data?.sampleRoom?.numberOfRoom ?? "0";
-  //   const bookedCount = bookedRoomData?.data?.hotelBookedRooms ?? 0;
-  //   const vacantCount = bookedRoomData?.data?.hotelAvailableRooms ?? 0;
-
-  //   setDetailsData((prev) =>
-  //     prev.map((section) => {
-  //       if (section?.heading === "Room Details") {
-  //         return {
-  //           heading: "Room Details",
-  //           details: [
-  //             { name: "Standard Rooms", value: standardRoomCount },
-  //             { name: "Luxury Rooms", value: luxuryRoomCount },
-  //             { name: "Booked Rooms", value: bookedCount },
-  //             { name: "Vacant Rooms", value: vacantCount },
-  //           ],
-  //         };
-  //       } else {
-  //         return section;
-  //       }
-  //     })
-  //   );
-  // };
-
   const getHotelRoomsAndAmenities = async (id) => {
     try {
-      // Fetch standard and luxury room data
-      const {
-        data: standardRoomData,
-        statusCode: standardRoomStatusCode,
-        error: standardRoomError,
-        success: standardRoomSuccess,
-      } = await apiCall(
+      //  API calls
+      const { data: standardRoomData } = await apiCall(
         `${ENDPOINTS.HOTEL_ROOM}?hotelId=${id}&roomType=standard`,
         "GET",
-        {}
       );
 
-      const {
-        data: luxuryRoomData,
-        statusCode: luxuryRoomStatusCode,
-        error: luxuryRoomError,
-        success: luxuryRoomSuccess,
-      } = await apiCall(
+      const { data: luxuryRoomData } = await apiCall(
         `${ENDPOINTS.HOTEL_ROOM}?hotelId=${id}&roomType=luxury`,
         "GET",
-        {}
       );
 
-      // Fetch booked & vacant room data
       const { data: bookedRoomData } = await apiCall(
         `${ENDPOINTS.HOTEL_ALL_ROOMS}?hotelId=${id}`,
         "GET",
-        {}
       );
 
-      // Fetch amenities
       const { data: amenitiesData, success: amenitiesSuccess } = await apiCall(
         `${ENDPOINTS.GET_AMENITIES}?hotelId=${id}`,
         "GET",
-        {}
       );
 
+      //  Safe extraction
       const standardRoomCount =
         standardRoomData?.data?.sampleRoom?.numberOfRoom ?? "0";
+
       const luxuryRoomCount =
         luxuryRoomData?.data?.sampleRoom?.numberOfRoom ?? "0";
+
       const bookedCount = bookedRoomData?.data?.hotelBookedRooms ?? 0;
       const vacantCount = bookedRoomData?.data?.hotelAvailableRooms ?? 0;
 
-      // Set Room Details
+      // Update state
       setDetailsData((prev) =>
         prev.map((section) => {
-          if (section?.heading === "Room Details") {
+          if (section?.type === "roomDetails") {
             return {
-              heading: "Room Details",
+              ...section,
+              heading: "roomDetails.heading", //  no hotelManagement prefix
               details: [
-                { name: "Standard Rooms", value: standardRoomCount },
-                { name: "Luxury Rooms", value: luxuryRoomCount },
-                { name: "Booked Rooms", value: bookedCount },
-                { name: "Vacant Rooms", value: vacantCount },
+                {
+                  name: "roomDetails.fields.standardRooms",
+                  value: standardRoomCount || "-",
+                },
+                {
+                  name: "roomDetails.fields.luxuryRooms",
+                  value: luxuryRoomCount || "-",
+                },
+                {
+                  name: "roomDetails.fields.bookedRooms",
+                  value: bookedCount || "-",
+                },
+                {
+                  name: "roomDetails.fields.vacantRooms",
+                  value: vacantCount || "-",
+                },
               ],
             };
-          } else {
-            return section;
           }
-        })
+
+          return section;
+        }),
       );
 
-      // Set Amenities if API success
+      //  Amenities
       if (amenitiesSuccess) {
         const hotelAmenities =
-          amenitiesData.data?.data?.filter((item) => item.type === "hotel") ||
+          amenitiesData?.data?.data?.filter((item) => item.type === "hotel") ||
           [];
+
         setAmenities(hotelAmenities);
       }
     } catch (err) {
-      console.error("Error fetching hotel data:", err);
+      throw new Error(err);
+      // console.error("Error fetching hotel data:", err);
     }
   };
 
@@ -358,11 +390,10 @@ const HotelManagement = () => {
 
       {/* Header Box */}
       <div className={styles.headerBox}>
-        {/* <h1>Hotel Management</h1> */}
-        <ContentHeading heading="Hotel Management" />
+        <ContentHeading heading={t("heading")} />
         <div>
           <CustomButton
-            buttonText={"Edit Hotel Details"}
+            buttonText={t("editBtnText")}
             buttonSize={"medium"}
             style={{ border: `1px solid ${GlobalStyles.colorPrimaryLight}` }}
             bgColor={GlobalStyles.colorWhite}
@@ -430,7 +461,7 @@ const HotelManagement = () => {
         )}
       </div> */}
       <div className={styles.contentDetailsBox}>
-        <p className={styles.textBold}>Hotel Details</p>
+        <p className={styles.textBold}>{t("hotelDetails.heading")}</p>
 
         <div className={styles.detailsBoxWrapper}>
           {loading
@@ -453,13 +484,16 @@ const HotelManagement = () => {
                   </div>
                 ))
             : detailsData?.map((item, index) => (
-                <div key={index} className={styles.detailsBox}>
-                  <p className={styles.detailsBoxHeading}>{item?.heading}</p>
+                <div key={item.type || index} className={styles.detailsBox}>
+                  <p className={styles.detailsBoxHeading}>{t(item?.heading)}</p>
+
                   <ul>
-                    {item?.details?.map((detail, index) => (
-                      <li key={index} className={styles.detailsBoxKey}>
-                        {detail?.name}:{" "}
-                        <span className={styles.textBold}>{detail?.value}</span>
+                    {item?.details?.map((detail, i) => (
+                      <li key={i} className={styles.detailsBoxKey}>
+                        {t(detail?.name)}:{" "}
+                        <span className={styles.textBold}>
+                          {detail?.value || "-"}
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -487,7 +521,7 @@ const HotelManagement = () => {
             </div>
           </div> */}
           <div key={detailsData.length} className={styles.detailsBox}>
-            <p className={styles.detailsBoxHeading}>Amenities</p>
+            <p className={styles.detailsBoxHeading}>{t("amenities.heading")}</p>
             <div className={styles.amenitiesBox}>
               {loading
                 ? Array(4)
@@ -511,7 +545,7 @@ const HotelManagement = () => {
                         )}
                         <span>{amenity.name}</span>
                       </div>
-                    )
+                    ),
                   )}
             </div>
           </div>

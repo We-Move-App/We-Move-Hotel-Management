@@ -23,56 +23,55 @@ import { tokenFromLocalStorage } from "../../../utils/helperFunctions";
 import Loader from "../../reusable/Loader/Loader";
 import callApi from "../../../hooks/callApi";
 import CustomModal from "../../reusable/custom/CModal/CustomModal";
+import { useTranslation } from "react-i18next";
+import { BankDetailsSchema } from "./validation";
 
-const FILE_SIZE = 2 * 1024 * 1024; // 2MB
-const SUPPORTED_FORMATS = [
-  "application/pdf",
-  "image/png",
-  "image/jpg",
-  "image/jpeg",
-];
 
-const BankDetailsSchema = Yup.object().shape({
-  bankName: Yup.string()
-    .matches(
-      /^[a-zA-Z\s]*$/,
-      "Bank Name should only contain alphabets and spaces"
-    ) // Only alphabets and spaces
-    .test(
-      "noSpaceAtStart",
-      "The first character cannot be a space",
-      (value) => value?.trim().charAt(0) !== " "
-    ) // No space at the start
-    .required("Bank Name is required"),
+// const BankDetailsSchema = Yup.object().shape({
+//   bankName: Yup.string()
+//     .matches(
+//       /^[a-zA-Z\s]*$/,
+//       "Bank Name should only contain alphabets and spaces"
+//     ) // Only alphabets and spaces
+//     .test(
+//       "noSpaceAtStart",
+//       "The first character cannot be a space",
+//       (value) => value?.trim().charAt(0) !== " "
+//     ) // No space at the start
+//     .required("Bank Name is required"),
 
-  bankAccountNumber: Yup.string()
-    .matches(/^[0-9]+$/, "Bank Account Number should only contain numbers")
-    .min(11, "Bank Account Number must be at least 11 digits")
-    .required("Bank Account Number is required"),
+//   bankAccountNumber: Yup.string()
+//     .matches(/^[0-9]+$/, "Bank Account Number should only contain numbers")
+//     .min(11, "Bank Account Number must be at least 11 digits")
+//     .required("Bank Account Number is required"),
 
-  accountHolderName: Yup.string()
-    .matches(
-      /^[a-zA-Z\s]*$/,
-      "Account Holder Name should only contain alphabets and spaces"
-    ) // Only alphabets and spaces
-    .test(
-      "noSpaceAtStart",
-      "The first character cannot be a space",
-      (value) => value?.trim().charAt(0) !== " "
-    ) // No space at the start
-    .required("Account Holder Name is required"),
+//   accountHolderName: Yup.string()
+//     .matches(
+//       /^[a-zA-Z\s]*$/,
+//       "Account Holder Name should only contain alphabets and spaces"
+//     ) // Only alphabets and spaces
+//     .test(
+//       "noSpaceAtStart",
+//       "The first character cannot be a space",
+//       (value) => value?.trim().charAt(0) !== " "
+//     ) // No space at the start
+//     .required("Account Holder Name is required"),
 
-  bankAccountDetails: Yup.mixed()
-    .nullable()
-    // .required('A file is required')
-    .test("fileSize", "File is too large", (value) => {
-      return !value || (value && value.size <= FILE_SIZE);
-    })
-    .test("fileFormat", "Unsupported Format", (value) => {
-      return !value || SUPPORTED_FORMATS.includes(value.type);
-    }),
-});
+//   bankAccountDetails: Yup.mixed()
+//     .nullable()
+//     // .required('A file is required')
+//     .test("fileSize", "File is too large", (value) => {
+//       return !value || (value && value.size <= FILE_SIZE);
+//     })
+//     .test("fileFormat", "Unsupported Format", (value) => {
+//       return !value || SUPPORTED_FORMATS.includes(value.type);
+//     }),
+// });
+
 const AddBankDetails = () => {
+  const { t } = useTranslation("register");
+  const schema = BankDetailsSchema(t);
+
   const { goTo } = useNavigation();
   const [isLoading, setIsLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
@@ -84,7 +83,7 @@ const AddBankDetails = () => {
       accountHolderName: "",
       bankAccountDetails: "",
     },
-    validationSchema: BankDetailsSchema,
+    validationSchema: schema,
 
     onSubmit: async (values) => {
       // console.log('Form submitted');
@@ -111,7 +110,7 @@ const AddBankDetails = () => {
                 //     'Content-Type': 'multipart/form-data',
                 //     Authorization: `Bearer ${JSON.parse(localStorage.getItem('WEMOVE_TOKEN')).accessToken}`
                 // }
-              }
+              },
             );
             if (statusCode === 200 && success) {
               //   console.log(data);
@@ -133,7 +132,7 @@ const AddBankDetails = () => {
     const { data, statusCode, error, success } = await apiCall(
       ENDPOINTS.HOTEL_BANK_DETAILS,
       "GET",
-      {}
+      {},
     );
     return { data, statusCode, error, success };
   };
@@ -189,16 +188,16 @@ const AddBankDetails = () => {
       <CustomModal isOpen={openModal} onClose={() => setOpenModal(false)}>
         <div className={styles.modal}>
           <p className={styles.text}>
-            Bank details cannot be updated until approved by the admin.
+            {t("bankDetails.verificationModal.infoText")}
           </p>
           <div className={styles.modalButtonBox}>
             <CustomButton
-              buttonText={"Cancel"}
+              buttonText={t("bankDetails.verificationModal.cancelBtn")}
               buttonSize={"small"}
               onClick={() => setOpenModal(false)}
             />
             <CustomButton
-              buttonText={"Continue"}
+              buttonText={t("bankDetails.verificationModal.continue")}
               buttonSize={"small"}
               onClick={handleModalSubmit}
             />
@@ -220,15 +219,15 @@ const AddBankDetails = () => {
     <div className={styles.formContainer}>
       {openModal && verificationModal()}
       <FormHeader
-        heading={"Add Bank Details"}
-        subheading={"Welcome to We Move All! Please login to your account."}
+        heading={t("bankDetails.heading")}
+        subheading={t("bankDetails.subHeading")}
       />
 
       <form onSubmit={formik.handleSubmit} className={styles.form}>
         {/* Add your form fields here */}
         <div className={styles.formFieldsContainer}>
           <CustomInput
-            label={"Bank Name"}
+            label={t("bankDetails.form.bankName")}
             required={true}
             name="bankName"
             isDisabled={formik.values?.id}
@@ -240,7 +239,7 @@ const AddBankDetails = () => {
             // error={formik.touched.bankName && formik.errors.bankName}
           />
           <CustomInput
-            label={"Bank Account Number"}
+            label={t("bankDetails.form.accountNumber")}
             required={true}
             name="bankAccountNumber"
             type="text"
@@ -254,7 +253,7 @@ const AddBankDetails = () => {
             // error={formik.touched.bankAccountNumber && formik.errors.bankAccountNumber}
           />
           <CustomInput
-            label={"Account Holder Name"}
+            label={t("bankDetails.form.accountHolderName")}
             required={true}
             name="accountHolderName"
             isDisabled={formik.values?.id}
@@ -267,8 +266,8 @@ const AddBankDetails = () => {
           />
 
           <CustomFileInput
-            label={"Bank Account Details"}
-            placeholder={"Upload file"}
+            label={t("bankDetails.form.bankDetailsFile")}
+            placeholder={t("bankDetails.form.uploadPlaceholder")}
             onChange={formik.handleChange}
             isDisabled={formik.values?.id}
             value={formik.values.bankAccountDetails}
@@ -283,14 +282,16 @@ const AddBankDetails = () => {
         <div className={styles.formSubmitBtn}>
           {/* Submit Button */}
           <CustomButton
-            buttonText={"Continue"}
+            buttonText={t("bankDetails.form.continue")}
             type={"button"}
             onClick={() => setOpenModal(true)}
             style={{ height: "70px" }}
           />
           <div className={styles.skipBox}>
-            <p>OR</p>
-            <p onClick={() => goTo("/hotel-registration")}>Skip</p>
+            <p>{t("bankDetails.form.or")}</p>
+            <p onClick={() => goTo("/hotel-registration")}>
+              {t("bankDetails.form.skip")}
+            </p>
           </div>
         </div>
       </form>

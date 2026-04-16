@@ -1,0 +1,40 @@
+{
+  "bankDetails": {
+    "heading": "Profile",
+
+    "personalDetails": "Personal Details",
+    "companyDetails": "Company Details",
+
+    "verified": "Verified",
+
+    "bankSection": {
+      "heading": "Saved Bank",
+
+      "form": {
+        "bankName": "Bank Name",
+        "bankAccountNumber": "Bank Account Number",
+        "accountHolderName": "Account Holder Name",
+        "bankDetails": "Bank Details",
+        "viewFile": "View file",
+
+        "edit": "Edit",
+        "update": "Update",
+        "addBank": "Add Bank"
+      }
+    },
+    "validation": {
+      "bankNameRequired": "Bank name is required",
+      "bankNamePattern": "Bank name should only contain alphabets and spaces",
+      "noSpaceStart": "The first character cannot be a space",
+
+      "accountNumberRequired": "Bank account number is required",
+      "accountNumberDigits": "Bank account number should only contain numbers",
+
+      "accountHolderRequired": "Account holder name is required",
+      "accountHolderPattern": "Account holder name should only contain alphabets and spaces",
+
+      "fileSize": "File is too large",
+      "fileFormat": "Unsupported format"
+    }
+  }
+}

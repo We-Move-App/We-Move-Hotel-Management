@@ -12,29 +12,31 @@ import * as Yup from "yup";
 import apiCall from "../../../../../hooks/apiCall";
 import { ENDPOINTS } from "../../../../../utils/apiEndpoints";
 import GooglePlacesAutocomplete from "../../../../reusable/googlemap/GooglePlacesAutocomplete";
+import { useTranslation } from "react-i18next";
+import { HotelLocationValidationSchema } from "./validation";
 
-const HotelLocationValidationSchema = Yup.object().shape({
-  hotelAddress: Yup.string()
-    .required("Hotel Address is required")
-    .min(5, "Hotel Address must be at least 5 characters long")
-    .max(500, "Hotel Address cannot exceed 500 characters"),
-  city: Yup.string()
-    .required("City is required")
-    .min(2, "City must be at least 2 characters long")
-    .max(50, "City cannot exceed 50 characters"),
-  locality: Yup.string()
-    .required("Locality is required")
-    .min(2, "Locality must be at least 2 characters long")
-    .max(50, "Locality cannot exceed 50 characters"),
-  landmark: Yup.string()
-    .min(2, "Landmark must be at least 2 characters long")
-    .max(50, "Landmark cannot exceed 50 characters"),
-  pincode: Yup.string()
-    .nullable()
-    .notRequired()
-    .matches(/^\d{6}$/, "Pincode must be exactly 6 digits")
-    .transform((value, originalValue) => (originalValue === "" ? null : value)),
-});
+// const HotelLocationValidationSchema = Yup.object().shape({
+//   hotelAddress: Yup.string()
+//     .required("Hotel Address is required")
+//     .min(5, "Hotel Address must be at least 5 characters long")
+//     .max(500, "Hotel Address cannot exceed 500 characters"),
+//   city: Yup.string()
+//     .required("City is required")
+//     .min(2, "City must be at least 2 characters long")
+//     .max(50, "City cannot exceed 50 characters"),
+//   locality: Yup.string()
+//     .required("Locality is required")
+//     .min(2, "Locality must be at least 2 characters long")
+//     .max(50, "Locality cannot exceed 50 characters"),
+//   landmark: Yup.string()
+//     .min(2, "Landmark must be at least 2 characters long")
+//     .max(50, "Landmark cannot exceed 50 characters"),
+//   pincode: Yup.string()
+//     .nullable()
+//     .notRequired()
+//     .matches(/^\d{6}$/, "Pincode must be exactly 6 digits")
+//     .transform((value, originalValue) => (originalValue === "" ? null : value)),
+// });
 
 const HotelLocationForm = ({
   initialValues,
@@ -42,13 +44,14 @@ const HotelLocationForm = ({
   onNext,
   setMultipartFormState,
 }) => {
+  const { t } = useTranslation("hotelRegistration");
   // const [loading, setLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const formik = useFormik({
     initialValues: initialValues,
     enableReinitialize: true,
-    validationSchema: HotelLocationValidationSchema,
+    validationSchema: HotelLocationValidationSchema(t),
     onSubmit: async (values) => {
       try {
         setIsSubmitting(true);
@@ -77,7 +80,7 @@ const HotelLocationForm = ({
                   JSON.parse(localStorage.getItem("WEMOVE_TOKEN")).accessToken
                 }`,
               },
-            }
+            },
           );
           if (statusCode === 200 && success) {
             onNext(values);
@@ -94,7 +97,7 @@ const HotelLocationForm = ({
                   JSON.parse(localStorage.getItem("WEMOVE_TOKEN")).accessToken
                 }`,
               },
-            }
+            },
           );
           if (statusCode === 201 && success) {
             // console.log(data);
@@ -129,7 +132,7 @@ const HotelLocationForm = ({
       <div className={styles.formFieldsContainer}>
         <div className={styles.mapBox}>
           <label>
-            <p>Add Location</p>
+            <p>{t("hotelLocation.form.addLocation")}</p>
           </label>
           {/* <GoogleMapComponent handleLocation={(locationDetails) => handleLocation(locationDetails)} formik={formik} /> */}
           <GooglePlacesAutocomplete
@@ -142,7 +145,7 @@ const HotelLocationForm = ({
           <CustomInput
             required={true}
             name="city"
-            label="City"
+            label={t("hotelLocation.form.city")}
             value={formik.values.city}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -153,7 +156,7 @@ const HotelLocationForm = ({
           <CustomInput
             required={true}
             name="locality"
-            label="Locality"
+            label={t("hotelLocation.form.locality")}
             value={formik.values.locality}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -167,7 +170,7 @@ const HotelLocationForm = ({
           <CustomInput
             // required={true}
             name="landmark"
-            label="Landmark"
+            label={t("hotelLocation.form.landmark")}
             value={formik.values.landmark}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -178,7 +181,7 @@ const HotelLocationForm = ({
           <CustomInput
             // required={true}
             name="pincode"
-            label="Pincode"
+            label={t("hotelLocation.form.pincode")}
             type="number"
             value={formik.values.pincode}
             onChange={formik.handleChange}
@@ -199,12 +202,12 @@ const HotelLocationForm = ({
             isSubmitting ? (
               <span className={styles.loadingText}>
                 <span className={styles.spinner} />
-                Please wait
+                {t("hotelLocation.form.pleaseWait")}
               </span>
             ) : initialValues._id ? (
-              "Update"
+              t("hotelLocation.form.update")
             ) : (
-              "Continue"
+              t("hotelLocation.form.continue")
             )
           }
         />

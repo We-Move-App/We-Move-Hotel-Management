@@ -1,0 +1,64 @@
+{
+  "breadcrumb": {
+    "booking": "Gestion des réservations",
+    "addCustomer": "Ajouter un nouveau client"
+  },
+
+  "guestDetails": {
+    "title": "Détails du client"
+  },
+
+  "form": {
+    "customerName": "Nom du client",
+    "email": "Adresse e-mail",
+    "mobile": "Numéro de mobile",
+    "roomType": "Type de chambre",
+    "checkIn": "Arrivée",
+    "checkOut": "Départ",
+    "adults": "Adultes",
+    "adult": "Adulte",
+    "kid": "Enfant",
+    "submit": "Réserver"
+  },
+
+  "idCard": {
+    "title": "Ajouter une carte d'identité"
+  },
+
+  "validation": {
+    "customerName": {
+      "required": "Le nom du client est requis",
+      "min": "Le nom doit contenir au moins 2 caractères",
+      "max": "Le nom ne peut pas dépasser 50 caractères",
+      "invalid": "Le nom ne doit contenir que des lettres et des espaces"
+    },
+    "email": {
+      "required": "L'email est requis",
+      "invalid": "Adresse email invalide"
+    },
+    "mobile": {
+      "required": "Le numéro de mobile est requis",
+      "invalid": "Entrez un numéro de 10 chiffres valide"
+    },
+    "checkInDate": {
+      "required": "La date d'arrivée est requise",
+      "invalid": "Date d'arrivée invalide",
+      "past": "La date d'arrivée ne peut pas être dans le passé"
+    },
+    "checkOutDate": {
+      "required": "La date de départ est requise",
+      "invalid": "Date de départ invalide",
+      "min": "La date de départ doit être après la date d'arrivée"
+    },
+    "isAdult": {
+      "required": "Veuillez sélectionner Adulte ou Enfant",
+      "invalid": "Sélection invalide"
+    },
+    "files": {
+      "required": "Le fichier est requis",
+      "min": "Au moins 1 fichier est requis",
+      "size": "Le fichier est trop volumineux",
+      "format": "Format de fichier non pris en charge"
+    }
+  }
+}

@@ -15,10 +15,12 @@ import CustomDropDown from "../reusable/custom/CDropDown/CustomDropDown";
 import { MdOutlineExpandMore } from "react-icons/md";
 import DropdownMenu from "../reusable/Dropdown/DropdownMenu";
 import { BadgeCheck } from "lucide-react";
-import LanguageSelector from "../GoogleTranslate/LanguageSelector";
+import LanguageSelector from "../GoogleTranslate/LanguageSelectori18N";
+import { useTranslation } from "react-i18next";
 
 const Navbar = ({ toggleSidebar, isMobile, isOpen }) => {
   // const token = tokenFromLocalStorage();
+  const {t} = useTranslation("common");
   const { logout } = useAuth();
   const { goTo } = useNavigation();
   const [userName, setUserName] = useState("");
@@ -47,7 +49,7 @@ const Navbar = ({ toggleSidebar, isMobile, isOpen }) => {
         // headers: {
         //     Authorization: `Bearer ${token}`
         // }
-      }
+      },
     );
 
     if (success && statusCode === 200) {
@@ -85,7 +87,7 @@ const Navbar = ({ toggleSidebar, isMobile, isOpen }) => {
         )}
         <div className={styles.logoBox}>
           <img src={images.weMoveLogo} alt="nav-logo" onClick={logoClicked} />
-          <span>WeMove All</span>
+          <span>{t("navbar.appName")}</span>
         </div>
       </div>
 
@@ -104,7 +106,11 @@ const Navbar = ({ toggleSidebar, isMobile, isOpen }) => {
             <span className={styles.nameBlock}>
               <p>{userName}</p>
               {batchVerified && (
-                <BadgeCheck size={18} color="#4CAF50" title="Verified" />
+                <BadgeCheck
+                  size={18}
+                  color="#4CAF50"
+                  title={t("navbar.verified")}
+                />
               )}
             </span>
             {/* <span><MdKeyboardArrowDown /></span> */}
@@ -112,8 +118,11 @@ const Navbar = ({ toggleSidebar, isMobile, isOpen }) => {
             <DropdownMenu
               Icon={MdOutlineExpandMore}
               options={[
-                { label: "Profile", onClick: () => handleProfileNavigation() },
-                { label: "Logout", onClick: handleLogout },
+                {
+                  label: t("navbar.profile"),
+                  onClick: () => handleProfileNavigation(),
+                },
+                { label: t("navbar.logout"), onClick: handleLogout },
               ]}
             />
           </div>

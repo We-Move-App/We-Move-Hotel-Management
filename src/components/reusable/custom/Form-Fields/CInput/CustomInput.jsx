@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./custom-input.module.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { VscUnverified, VscVerifiedFilled } from "react-icons/vsc";
+import { useTranslation } from "react-i18next";
 
 const CustomInput = ({
   label,
@@ -23,6 +24,7 @@ const CustomInput = ({
   boxStyle = {},
   style = {},
 }) => {
+  const {t} = useTranslation("common");
   const [inputValue, setInputValue] = useState(value || "");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -114,12 +116,13 @@ const CustomInput = ({
         </p>
         {verifyStatus === false && (
           <p onClick={handleVerifyStatus}>
-            <VscUnverified className={styles.notVerified} /> Verify Now
+            <VscUnverified className={styles.notVerified} />
+            {t("verify")}
           </p>
         )}
         {verifyStatus && (
           <p>
-            <VscVerifiedFilled className={styles.verified} /> Verified
+            <VscVerifiedFilled className={styles.verified} /> {t("verified")}
           </p>
         )}
       </label>

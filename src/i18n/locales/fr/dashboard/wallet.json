@@ -1,0 +1,47 @@
+{
+  "heading": "Portefeuille",
+
+  "tabs": {
+    "transactions": "Transactions",
+    "withdraw": "Retirer"
+  },
+
+  "withdrawModal": {
+    "heading": "Retirer un montant",
+    "amount": "Montant du retrait",
+    "processing": "Traitement...",
+    "withdraw": "Retirer"
+  },
+
+  "successModal": {
+    "title": "Félicitations ! Opération réussie.",
+    "description": "Nous sommes ravis d'accueillir chaleureusement tous les nouveaux membres ainsi que les membres de retour."
+  },
+
+  "table": {
+    "transactionId": "ID de transaction",
+    "date": "Date",
+    "time": "Heure",
+    "amount": "Montant",
+    "status": "Statut"
+  },
+
+  "profile": {
+    "heading": "Profil",
+
+    "personalDetails": "Informations personnelles",
+    "companyDetails": "Informations de l'entreprise",
+
+    "bank": {
+      "heading": "Banque enregistrée",
+      "bankName": "Nom de la banque",
+      "bankAccountNumber": "Numéro de compte bancaire",
+      "accountHolderName": "Nom du titulaire du compte",
+      "bankDetails": "Détails bancaires",
+      "viewFile": "Voir le fichier",
+      "edit": "Modifier",
+      "update": "Mettre à jour",
+      "addBank": "Ajouter une banque"
+    }
+  }
+}

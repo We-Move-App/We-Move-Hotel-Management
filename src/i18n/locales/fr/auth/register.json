@@ -1,0 +1,89 @@
+{
+  "signup": {
+    "header": {
+      "heading": "Créer un compte",
+      "subHeading": "Bienvenue sur We Move All ! Veuillez créer votre compte ici."
+    },
+
+    "form": {
+      "fullName": "Nom complet",
+      "companyName": "Nom de l'entreprise",
+      "companyAddress": "Adresse de l'entreprise",
+      "branch": "Choisir une agence",
+      "mobile": "Numéro de mobile",
+      "email": "E-mail",
+      "password": "Mot de passe",
+      "verify": "Vérifier maintenant",
+      "verifyEmail": "Veuillez vérifier votre e-mail.",
+      "verifyMobile": "Veuillez vérifier votre numéro de mobile.",
+      "confirmPassword": "Confirmer le mot de passe",
+
+      "submit": "S'inscrire",
+
+      "loginText": "Vous avez déjà un compte ? <link>Se connecter</link> ici",
+      "question": "Vous avez déjà un compte ?",
+      "loginLink": "Se connecter",
+      "here": "ici"
+    },
+
+    "validation": {
+      "mobileRequired": "Le numéro de mobile est requis",
+      "mobileDigits": "Le numéro de mobile doit contenir exactement 9 chiffres",
+      "mobileInvalid": "Le numéro de mobile ne peut pas contenir de caractères spéciaux",
+      "mobileNoSpace": "Le numéro de mobile ne peut pas commencer par un espace",
+
+      "emailRequired": "L'e-mail est requis",
+      "emailInvalid": "Format d'e-mail invalide",
+      "noSpaceStart": "Le premier caractère ne peut pas être un espace",
+
+      "passwordRequired": "Le mot de passe est requis",
+      "passwordMin": "Le mot de passe doit contenir au moins 8 caractères",
+      "passwordPattern": "Le mot de passe doit contenir au moins une lettre, un chiffre et un caractère spécial",
+      "passwordNoSpace": "Le mot de passe ne peut pas commencer par un espace",
+
+      "confirmPasswordRequired": "La confirmation du mot de passe est requise",
+      "confirmPasswordMatch": "Les mots de passe doivent correspondre",
+      "confirmPasswordNoSpace": "Le mot de passe de confirmation ne peut pas commencer par un espace",
+
+      "branchRequired": "L'agence est requise"
+    }
+  },
+
+  "bankDetails": {
+    "heading": "Ajouter les coordonnées bancaires",
+    "subHeading": "Bienvenue sur We Move All ! Veuillez ajouter vos coordonnées bancaires.",
+
+    "form": {
+      "bankName": "Nom de la banque",
+      "accountNumber": "Numéro de compte bancaire",
+      "accountHolderName": "Nom du titulaire du compte",
+      "bankDetailsFile": "Détails du compte bancaire",
+      "uploadPlaceholder": "Télécharger un fichier",
+
+      "continue": "Continuer",
+      "or": "OU",
+      "skip": "Passer"
+    },
+
+    "validation": {
+      "bankNameRequired": "Le nom de la banque est requis",
+      "bankNamePattern": "Le nom de la banque ne doit contenir que des lettres et des espaces",
+      "noSpaceStart": "Le premier caractère ne peut pas être un espace",
+
+      "accountNumberRequired": "Le numéro de compte bancaire est requis",
+      "accountNumberDigits": "Le numéro de compte bancaire ne doit contenir que des chiffres",
+      "accountNumberMin": "Le numéro de compte bancaire doit contenir au moins 11 chiffres",
+
+      "accountHolderRequired": "Le nom du titulaire du compte est requis",
+      "accountHolderPattern": "Le nom du titulaire du compte ne doit contenir que des lettres et des espaces",
+
+      "fileSize": "Le fichier est trop volumineux",
+      "fileFormat": "Format non pris en charge"
+    },
+    "verificationModal": {
+      "infoText": "Les coordonnées bancaires ne peuvent pas être modifiées tant qu'elles ne sont pas approuvées par l'administrateur.",
+      "cancelBtn": "Annuler",
+      "continue": "Continuer"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "heading": "Gestion des réservations",
+
+  "subheading": "Détails des réservations des clients",
+
+  "actions": {
+    "addGuest": "Ajouter un nouveau client"
+  },
+
+  "table": {
+    "bookingId": "ID de réservation",
+    "roomType": "Type de chambre",
+    "guestName": "Nom du client",
+    "mobileNumber": "Numéro de téléphone",
+    "checkinDate": "Date d'arrivée",
+    "checkoutDate": "Date de départ",
+    "adult": "Adulte",
+    "child": "Enfant",
+    "bookedBy": "Réservé par"
+  },
+
+  "noData": "Aucune donnée disponible"
+}

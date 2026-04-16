@@ -1,0 +1,23 @@
+{
+  "heading": "Booking Management",
+
+  "subheading": "Guest Booking Details",
+
+  "actions": {
+    "addGuest": "Add New Guest"
+  },
+
+  "table": {
+    "bookingId": "Booking ID",
+    "roomType": "Room Type",
+    "guestName": "Guest Name",
+    "mobileNumber": "Mobile Number",
+    "checkinDate": "Check-in Date",
+    "checkoutDate": "Checkout Date",
+    "adult": "Adult",
+    "child": "Child",
+    "bookedBy": "Booked By"
+  },
+
+  "noData": "Data not available"
+}
