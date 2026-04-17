@@ -137,7 +137,7 @@ const CustomInput = ({
           name={name}
           type={type === "password" && isPasswordVisible ? "text" : type}
           step={type === "number" && floatNumber ? "any" : undefined}
-          required={required}
+          // required={required}
           placeholder={placeholder}
           disabled={isDisabled}
           value={inputValue}
