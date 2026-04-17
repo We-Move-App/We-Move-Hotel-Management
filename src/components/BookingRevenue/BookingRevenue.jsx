@@ -13,6 +13,7 @@ import {
 import CustomSelect from "../reusable/custom/CSelect/CustomSelect";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
+import { selectedLanguageFromLocalStorage } from "../../utils/helperFunctions";
 
 ChartJS.register(
   CategoryScale,
@@ -25,7 +26,7 @@ ChartJS.register(
 
 const BookingRevenue = () => {
   const BASE_URL = import.meta.env.VITE_BASE_URL;
-  const { t } = useTranslation("dashboard");
+  const { t, i18n } = useTranslation("dashboard");
 
   const [dateFilter, setDateFilter] = useState("Monthly");
 
@@ -185,9 +186,10 @@ const BookingRevenue = () => {
       }
 
       const { accessToken } = JSON.parse(tokenData);
-
+      const ln = selectedLanguageFromLocalStorage();
       const headers = {
         Authorization: `Bearer ${accessToken}`,
+        ln
       };
 
       try {
@@ -235,7 +237,7 @@ const BookingRevenue = () => {
     };
 
     fetchData();
-  }, []);
+  }, [i18n.language]);
 
   return (
     <div className={styles["booking-revenue"]}>

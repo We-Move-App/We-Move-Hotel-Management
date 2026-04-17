@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styles from "./debit-card.module.css";
-import { FaEye, FaEyeSlash } from "react-icons/fa"; // For eye icon (you can use any icon library)
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 
 const DebitCard = ({ showAmount = false, amount }) => {
-  const {t} = useTranslation("common");
+  const { t } = useTranslation("common");
   const [showCardNumber, setShowCardNumber] = useState(false);
   const toggleShowCardNumber = () => setShowCardNumber(!showCardNumber);
   const [walletAmount, setWalletAmount] = useState(null);
@@ -34,7 +34,6 @@ const DebitCard = ({ showAmount = false, amount }) => {
         );
 
         const apiAmount = res.data?.data || 0;
-        // console.log("💳 Wallet API Response:", res.data);
         setWalletAmount(apiAmount);
       } catch (err) {
         throw new Error(err?.message || err);
@@ -55,24 +54,29 @@ const DebitCard = ({ showAmount = false, amount }) => {
 
           <span onClick={toggleShowCardNumber} className={styles.showHideBtn}>
             {showCardNumber ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
-            {/* {showCardNumber ? <FaEye /> : <FaEyeSlash />} */}
           </span>
         </p>
       </div>
       {showAmount && (
         <div className={styles.amount}>
-          {/* <p>{amount || "12,000"}</p> */}
           <p>
-            {walletAmount?.balance.toLocaleString()}{" "}
-            {walletAmount?.currency === "INR"
+            {new Intl.NumberFormat("en", {
+              style: "currency",
+              currency: walletAmount?.currency || "INR",
+              // currencyDisplay: "code",
+            }).format(walletAmount?.balance ?? 0)}
+
+            {/* ------ for 100 eur ------- */}
+            {/* {walletAmount?.balance?.toLocaleString() ?? "0"} */}
+            {/* {walletAmount?.currency === "INR"
               ? "₹"
-              : walletAmount?.currency + " "}{" "}
+              : walletAmount?.currency + " "}{" "} */}
           </p>
         </div>
       )}
       {/* <div className={styles.cardExpiryDate}>
-                <p className={styles.text}>Exp: 05/25</p>
-            </div> */}
+            <p className={styles.text}>Exp: 05/25</p>
+      </div> */}
     </div>
   );
 };

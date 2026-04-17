@@ -11,7 +11,7 @@ const FilesList = ({
   removeFile,
   minRequiredFiles = 0,
 }) => {
-  const {t} = useTranslation("common");
+  const { t } = useTranslation("common");
   return (
     <>
       {files && files.length >= 1 && (
@@ -23,14 +23,15 @@ const FilesList = ({
           )}
           {files?.map((file, index) => (
             <div
-              key={file.name || file.fileName || file._id || index}
+              // key={file.name || file.fileName || file._id || index}
+              key={index}
               className={styles.fileBox}
             >
               <div className={styles.fileInfo}>
                 <CiFileOn className={styles.fileIcon} />
                 <div className={styles.fileDetails}>
                   <p className={styles.fileName}>
-                    {file.name || file.fileName}
+                    {file.fileName ?? file.name}
                   </p>
                   {file.name && !file.fileUrl && (
                     <p className={styles.fileSize}>

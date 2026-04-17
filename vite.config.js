@@ -10,7 +10,7 @@ export default defineConfig({
   server: {
     host: "::",
     port: 5174,
-    allowedHosts: ["commissioners-sitemap-russia-magical.trycloudflare.com"],
+    allowedHosts: ["freedom-alexander-headlines-joe.trycloudflare.com"],
     fs: {
       strict: false,
     },

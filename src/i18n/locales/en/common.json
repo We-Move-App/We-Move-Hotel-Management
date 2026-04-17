@@ -62,5 +62,6 @@
     "next": "Next",
     "prev": "Prev"
   },
-  "search": "Search"
+  "search": "Search",
+  "optional":"optional"
 }

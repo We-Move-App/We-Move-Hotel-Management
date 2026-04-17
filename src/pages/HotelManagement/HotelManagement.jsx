@@ -37,7 +37,7 @@ const Amenities = [
 ];
 
 const HotelManagement = () => {
-  const { t } = useTranslation("hotelManagement");
+  const { t, i18n } = useTranslation("hotelManagement");
   const [showForm, setShowForm] = useState(false);
   const toggleForm = () => setShowForm(!showForm);
   const { goTo } = useNavigation();
@@ -222,7 +222,7 @@ const HotelManagement = () => {
         prev.map((section) => {
           if (section?.type === "hotelDetails") {
             return {
-              ...section, // ✅ preserve structure
+              ...section, // preserve structure
               heading: "hotelDetails.heading",
               details: [
                 {
@@ -378,7 +378,7 @@ const HotelManagement = () => {
 
   useEffect(() => {
     getHotel();
-  }, []);
+  }, [i18n.language]);
 
   return (
     <div className={styles.hotelManagement}>

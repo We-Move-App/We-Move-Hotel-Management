@@ -1,10 +1,12 @@
-
-import axios from 'axios';
-import { tokenFromLocalStorage } from '../utils/helperFunctions';
+import axios from "axios";
+import {
+  selectedLanguageFromLocalStorage,
+  tokenFromLocalStorage,
+} from "../utils/helperFunctions";
 // import { getAccessToken, setAccessToken, clearAccessToken } from './authToken';
 
 const BASEURL = import.meta.env.VITE_BASE_URL;
-const apiVersion = '/api/v1';
+const apiVersion = "/api/v1";
 
 let isRefreshing = false;
 let failedQueue = [];
@@ -21,19 +23,27 @@ const processQueue = (error, token = null) => {
   failedQueue = [];
 };
 
-const apiCall = async (url, method = 'GET', { body = null, params = {}, headers = {}, options = {} } = {}) => {
+const apiCall = async (
+  url,
+  method = "GET",
+  { body = null, params = {}, headers = {}, options = {} } = {},
+) => {
   const fullUrl = `${BASEURL}${apiVersion}${url}`;
 
   const token = tokenFromLocalStorage();
+  const selectedLanguage = selectedLanguageFromLocalStorage();
 
   const axiosInstance = axios.create();
 
   axiosInstance.interceptors.request.use((config) => {
     if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
+    if (selectedLanguage) {
+      config.headers["ln"] = selectedLanguage;
     }
     if (!(body instanceof FormData)) {
-      config.headers['Content-Type'] = 'application/json';
+      config.headers["Content-Type"] = "application/json";
     }
     return config;
   });
@@ -49,7 +59,7 @@ const apiCall = async (url, method = 'GET', { body = null, params = {}, headers 
             failedQueue.push({ resolve, reject });
           })
             .then((token) => {
-              originalRequest.headers['Authorization'] = 'Bearer ' + token;
+              originalRequest.headers["Authorization"] = "Bearer " + token;
               return axiosInstance(originalRequest);
             })
             .catch((err) => Promise.reject(err));
@@ -59,13 +69,17 @@ const apiCall = async (url, method = 'GET', { body = null, params = {}, headers 
         isRefreshing = true;
 
         try {
-          const res = await axios.post(`${BASEURL}${apiVersion}/hotel-manager/auth/refresh-token`, {}, { withCredentials: true });
+          const res = await axios.post(
+            `${BASEURL}${apiVersion}/hotel-manager/auth/refresh-token`,
+            {},
+            { withCredentials: true },
+          );
           const newToken = res.data.accessToken;
 
           setAccessToken(newToken);
           processQueue(null, newToken);
 
-          originalRequest.headers['Authorization'] = 'Bearer ' + newToken;
+          originalRequest.headers["Authorization"] = "Bearer " + newToken;
           return axiosInstance(originalRequest);
         } catch (err) {
           processQueue(err, null);
@@ -81,7 +95,7 @@ const apiCall = async (url, method = 'GET', { body = null, params = {}, headers 
       }
 
       return Promise.reject(error);
-    }
+    },
   );
 
   try {
@@ -104,14 +118,13 @@ const apiCall = async (url, method = 'GET', { body = null, params = {}, headers 
       success: response.data.success,
     };
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return {
       data: null,
       statusCode: error.response?.status || 500,
-      error: error.response?.data || 'Network Error',
+      error: error.response?.data || "Network Error",
     };
   }
 };
 
 export default apiCall;
-

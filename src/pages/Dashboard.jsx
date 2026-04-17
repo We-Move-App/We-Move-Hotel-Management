@@ -13,12 +13,15 @@ import SearchBar from "../components/SearchBar/SearchBar";
 import CustomTable from "../components/Table/CustomTable";
 import useNavigation from "../hooks/useNavigation";
 import ContentHeading from "../components/reusable/Content-Heading/ContentHeading";
-import { tokenFromLocalStorage } from "../utils/helperFunctions";
+import {
+  selectedLanguageFromLocalStorage,
+  tokenFromLocalStorage,
+} from "../utils/helperFunctions";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 
 const Dashboard = () => {
-  const { t } = useTranslation("dashboard");
+  const { t, i18n } = useTranslation("dashboard");
   const { goTo } = useNavigation();
   const [transactions, setTransactions] = useState([]);
   const [formattedTransactions, setFormattedTransactions] = useState([]);
@@ -48,7 +51,7 @@ const Dashboard = () => {
         page = Number.isFinite(+page) ? Number(page) : 1;
         limit = Number.isFinite(+limit) ? Number(limit) : 10;
         search = typeof search === "string" ? search : "";
-
+        const ln = selectedLanguageFromLocalStorage();
         setLoading(true);
         const token = tokenFromLocalStorage();
         console.debug("[fetchTransactions] REQUEST params:", {
@@ -61,7 +64,7 @@ const Dashboard = () => {
         const res = await axios.get(
           `${import.meta.env.VITE_BASE_URL}/api/v1/wallet/transactions`,
           {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: { Authorization: `Bearer ${token}`, ln },
             params: {
               entity: "hotelManager",
               page,
@@ -141,7 +144,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchTransactions(1, pagination.limit, searchQuery);
-  }, []);
+  }, [i18n.language]);
 
   const handlePageChange = (page) => {
     const p = Number(page) || 1;
