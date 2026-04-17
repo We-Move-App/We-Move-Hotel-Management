@@ -51,6 +51,7 @@ const HotelLocationForm = ({
   const formik = useFormik({
     initialValues: initialValues,
     enableReinitialize: true,
+    validateOnBlur: true,
     validationSchema: HotelLocationValidationSchema(t),
     onSubmit: async (values) => {
       try {

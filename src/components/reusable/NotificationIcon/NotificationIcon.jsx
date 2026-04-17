@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
 import styles from "./notification-icon.module.css";
-import { IoNotifications, IoPerson } from "react-icons/io5";
+import { IoPerson } from "react-icons/io5";
+import { Bell } from "lucide-react";
 import apiCall from "../../../hooks/apiCall";
 import { ENDPOINTS } from "../../../utils/apiEndpoints";
-import { Bell } from "lucide-react";
 
-const NotificationIcon = ({ value = 0 }) => {
+const NotificationIcon = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  //  Derived state (NO useState needed)
   const unreadCount = notifications.filter((n) => !n.isRead).length;
+
+  //  Fetch notifications
   const fetchNotifications = async () => {
     try {
       setLoading(true);
@@ -31,19 +35,26 @@ const NotificationIcon = ({ value = 0 }) => {
     }
   };
 
+  //  Initial fetch + polling (optional but recommended)
   useEffect(() => {
     fetchNotifications();
+
+    const interval = setInterval(() => {
+      fetchNotifications();
+    }, 15000); // every 15 sec
+
+    return () => clearInterval(interval);
   }, []);
 
+  //  Toggle dropdown
   const handleNotificationClick = () => {
-    const nextState = !isOpen;
-    setIsOpen(nextState);
+    setIsOpen((prev) => !prev);
 
-    if (nextState && notifications.length === 0) {
-      fetchNotifications();
-    }
+    // Optional: mark all as read locally
+    setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
   };
 
+  //  Format date
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
@@ -52,15 +63,16 @@ const NotificationIcon = ({ value = 0 }) => {
     });
   };
 
+  //  Format subtitle
   const formatSubtitle = (text) => {
     if (!text) return "";
-
     const index = text.indexOf(" on ");
     return index !== -1 ? text.substring(0, index) : text;
   };
 
   return (
     <div className={styles.notification}>
+      {/* Bell Icon */}
       <div
         className={styles.notificationBlock}
         onClick={handleNotificationClick}
@@ -75,7 +87,7 @@ const NotificationIcon = ({ value = 0 }) => {
           )}
         </div>
       </div>
-      {/* {count > 0 && <span className={styles.notificationCount}>{count}</span>} */}
+
       {/* Dropdown */}
       {isOpen && (
         <div className={styles.dropdown}>
@@ -93,11 +105,9 @@ const NotificationIcon = ({ value = 0 }) => {
             ) : (
               notifications.map((item) => (
                 <div key={item._id} className={styles.notificationItem}>
-                  {/* Left icon */}
+                  {/* Icon */}
                   <div className={styles.iconCircle}>
-                    <span>
-                      <IoPerson size={20} color="#111" />
-                    </span>
+                    <IoPerson size={20} color="#111" />
                   </div>
 
                   {/* Text */}
