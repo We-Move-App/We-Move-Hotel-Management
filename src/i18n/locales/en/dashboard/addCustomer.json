@@ -43,7 +43,7 @@
     "checkInDate": {
       "required": "Check-in date is required",
       "invalid": "Check-in date is invalid",
-      "past": "Check-in date cannot be in the past"
+      "past": "Check-in dates cannot be in the past"
     },
     "checkOutDate": {
       "required": "Check-out date is required",

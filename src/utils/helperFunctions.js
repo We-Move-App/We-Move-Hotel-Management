@@ -45,6 +45,14 @@ export const tokenFromLocalStorage = () => {
     return wemoveToken ? wemoveToken.accessToken : undefined;
 }
 
+
+export const selectedLanguageFromLocalStorage = () => {
+  const selectedLanguage = localStorage.getItem("preferred_lang");
+//   const selectedLanguage = JSON.parse(localStorage.getItem("i18nextLng"));
+//   return selectedLanguage ? selectedLanguage : "en";
+  return selectedLanguage ;
+};
+
 export const getDataFromLocalStorage = (key) => {
     const data = JSON.parse(localStorage.getItem(key));
     return data ? data : undefined;

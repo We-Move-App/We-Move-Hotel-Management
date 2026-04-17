@@ -30,7 +30,7 @@ const Wallet = () => {
     accountHolderName: "",
     bankDetails: null,
   });
-  
+
   const [formattedTransactions, setFormattedTransactions] = useState([]);
   const [pagination, setPagination] = useState({
     page: 1,
@@ -196,7 +196,6 @@ const Wallet = () => {
   };
 
   const [amount, setAmount] = useState("");
-  const walletBalance = 1000;
   const [transactions, setTransactions] = useState([]);
 
   const handleSubmit = async (e) => {
@@ -228,12 +227,12 @@ const Wallet = () => {
       // console.log("Withdraw success:", res.data);
 
       setIsModalOpen(false);
-      setAmount("");
+      // setAmount("");
       handleOpenCongratulationModal();
       fetchTransactions();
     } catch (err) {
-      // console.error("❌ Withdraw failed:", err);
       alert("Withdraw failed. Please try again.");
+      throw new Error(err.response.message || err.message);
     } finally {
       setLoading(false);
     }
@@ -248,20 +247,11 @@ const Wallet = () => {
             <CustomInput
               label={t("withdrawModal.amount")}
               required={true}
+              floatNumber={true}
               type="number"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
             />
-
-            {/* <div className={styles.walletSection}>
-              <CustomLabel labelText={"Your Wallet"} />
-              <div>
-                <CustomRadioButton id={1} label={"Withdraw All"} />
-                <p className={styles.wallet_balance}>
-                  Balance: ${walletBalance.toFixed(2)}XAF
-                </p>
-              </div>
-            </div> */}
 
             <div className={styles.btnWrapper}>
               <CustomButton

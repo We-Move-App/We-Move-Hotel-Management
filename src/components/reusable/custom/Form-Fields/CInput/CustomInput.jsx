@@ -111,7 +111,7 @@ const CustomInput = ({
           {required ? (
             <span style={{ color: "red" }}>*</span>
           ) : (
-            <span style={{ fontSize: "14px" }}>(optional)</span>
+            <span style={{ fontSize: "14px" }}>({t("optional")})</span>
           )}
         </p>
         {verifyStatus === false && (

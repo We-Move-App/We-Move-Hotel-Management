@@ -310,8 +310,16 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
   const [amenitiesCount, setAmenitiesCount] = useState(9); // Default to 3 components
 
   const [tabBarData, setTabBarData] = useState([
-    { name: t("hotelRooms&Amenities.tabBarData.standard"), status: true },
-    { name: t("hotelRooms&Amenities.tabBarData.luxury"), status: false },
+    {
+      name: "hotelRooms&Amenities.tabBarData.standard",
+      key: "standardRoom",
+      status: true,
+    },
+    {
+      name: "hotelRooms&Amenities.tabBarData.luxury",
+      key: "luxuryRoom",
+      status: false,
+    },
   ]);
   const [activeTabBar, setActiveTabBar] = useState(
     tabBarData[0].status ? "standardRoom" : "luxuryRoom",
@@ -368,13 +376,30 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
     setFileComponentsCount(fileComponentsCount + 1);
   };
 
+  // const handleRoomTypeChange = () => {
+  //   // window.focus();
+  //   setTabBarData([
+  //     { name: t("hotelRooms&Amenities.tabBarData.standard"), status: true },
+  //     { name: t("hotelRooms&Amenities.tabBarData.luxury"), status: false },
+  //   ]);
+  //   setExternalActiveTab(1);
+  //   if (formTopRef.current) {
+  //     formTopRef.current.scrollIntoView({
+  //       behavior: "smooth",
+  //       block: "start",
+  //     });
+  //   }
+  // };
   const handleRoomTypeChange = () => {
-    // window.focus();
-    setTabBarData([
-      { name: t("hotelRooms&Amenities.tabBarData.standard"), status: true },
-      { name: t("hotelRooms&Amenities.tabBarData.luxury"), status: false },
-    ]);
+    setTabBarData((prev) =>
+      prev.map((tab) => ({
+        ...tab,
+        status: tab.key === "luxuryRoom", //  activate luxury properly
+      })),
+    );
+
     setExternalActiveTab(1);
+
     if (formTopRef.current) {
       formTopRef.current.scrollIntoView({
         behavior: "smooth",
@@ -383,9 +408,15 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
     }
   };
 
+  // useEffect(() => {
+  //   setActiveTabBar(tabBarData[0].status ? "standardRoom" : "luxuryRoom");
+  //   // console.log(tabBarData);
+  // }, [tabBarData]);
   useEffect(() => {
-    setActiveTabBar(tabBarData[0].status ? "standardRoom" : "luxuryRoom");
-    // console.log(tabBarData);
+    const activeTab = tabBarData.find((tab) => tab.status);
+    if (activeTab) {
+      setActiveTabBar(activeTab.key);
+    }
   }, [tabBarData]);
 
   return (
@@ -398,6 +429,7 @@ const HotelRoomsForm = ({ initialValues, onPrev, onNext, formTopRef }) => {
           intialActiveTab={tabBarData[0].status ? 0 : 1}
           externalActiveTab={externalActiveTab}
           setExternalActiveTab={setExternalActiveTab}
+          t={t}
         />
         {activeTabBar === "standardRoom" && (
           <div className={styles.formFieldsContainer}>

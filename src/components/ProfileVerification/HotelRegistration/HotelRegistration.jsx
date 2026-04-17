@@ -30,7 +30,7 @@ import { useTranslation } from "react-i18next";
 // ];
 
 const HotelRegistration = () => {
-  const { t } = useTranslation("hotelRegistration");
+  const { t, i18n } = useTranslation("hotelRegistration");
 
   const formTopRef = useRef(null);
   const [activeTab, setActiveTab] = useState(0);
@@ -80,28 +80,65 @@ const HotelRegistration = () => {
     },
   });
 
+  // const [multistepTabs, setMultistepTabs] = useState([
+  //   {
+  //     name: t("hotelDetails.heading"),
+  //     status: false,
+  //     subheading: t("hotelDetails.subHeading"),
+  //   },
+  //   {
+  //     name: t("hotelLocation.heading"),
+  //     status: false,
+  //     subheading: t("hotelLocation.subHeading"),
+  //   },
+  //   {
+  //     name: t("hotelRooms&Amenities.heading"),
+  //     status: false,
+  //     subheading: t("hotelRooms&Amenities.subHeading"),
+  //   },
+  //   {
+  //     name: t("hotelPolicy.heading"),
+  //     status: false,
+  //     subheading: t("hotelPolicy.subHeading"),
+  //   },
+  // ]);
+
   const [multistepTabs, setMultistepTabs] = useState([
     {
+      key: "hotelDetails",
       name: t("hotelDetails.heading"),
       status: false,
       subheading: t("hotelDetails.subHeading"),
     },
     {
+      key: "hotelLocation",
       name: t("hotelLocation.heading"),
       status: false,
       subheading: t("hotelLocation.subHeading"),
     },
     {
+      key: "hotelRooms&Amenities",
       name: t("hotelRooms&Amenities.heading"),
       status: false,
       subheading: t("hotelRooms&Amenities.heading"),
     },
     {
+      key: "hotelPolicy",
       name: t("hotelPolicy.heading"),
       status: false,
       subheading: t("hotelPolicy.heading"),
     },
   ]);
+
+  useEffect(() => {
+    setMultistepTabs((prev) =>
+      prev.map((tab) => ({
+        ...tab,
+        name: t(`${tab.key}.heading`),
+        subheading: t(`${tab.key}.subHeading`),
+      })),
+    );
+  }, [i18n.language]);
 
   const updateCentralizedState = (step, values) => {
     setMultipartFormState((prevData) => ({
@@ -493,7 +530,8 @@ const HotelRegistration = () => {
     >
       <FormHeader
         heading={t("header")}
-        subheading={subheading}
+        subheading={t(multistepTabs[activeTab]?.subheading)}
+        // subheading={subheading}
         headingStyle={{ fontSize: "32px" }}
       >
         {/* Multipart form tabs. */}

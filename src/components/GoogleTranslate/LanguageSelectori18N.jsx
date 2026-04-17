@@ -12,7 +12,7 @@ export default function LanguageSelector() {
   const { i18n } = useTranslation();
 
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState(languages[1]);
+  const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
   const dropdownRef = useRef(null);
 
   // Load saved language

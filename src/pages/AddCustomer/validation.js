@@ -35,7 +35,7 @@ export const customerValidationSchema = (t) =>
     checkOutDate: Yup.date()
       .required(t("validation.checkOutDate.required"))
       .typeError(t("validation.checkOutDate.invalid"))
-      .min(Yup.ref("checkInDate"), t("validation.checkOutDate.beforeCheckIn")),
+      .min(Yup.ref("checkInDate"), t("validation.checkOutDate.min")),
 
     // isAdult: Yup.number()
     //   .typeError(t("validation.isAdult.invalid"))
