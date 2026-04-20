@@ -49,7 +49,6 @@ export const tokenFromLocalStorage = () => {
 export const selectedLanguageFromLocalStorage = () => {
   const selectedLanguage = localStorage.getItem("preferred_lang");
 //   const selectedLanguage = JSON.parse(localStorage.getItem("i18nextLng"));
-//   return selectedLanguage ? selectedLanguage : "en";
   return selectedLanguage ;
 };
 
