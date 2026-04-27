@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styles from "./notification-icon.module.css";
 import { IoPerson } from "react-icons/io5";
 import { Bell } from "lucide-react";
 import apiCall from "../../../hooks/apiCall";
 import { ENDPOINTS } from "../../../utils/apiEndpoints";
+import { useTranslation } from "react-i18next";
+import { useOutsideClick } from "../../../hooks/useOutsideClick";
 
 const NotificationIcon = () => {
+  const { t } = useTranslation("common");
   const [isOpen, setIsOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(false);
+  const wrapperRef = useRef(null);
 
   //  Derived state (NO useState needed)
   const unreadCount = notifications.filter((n) => !n.isRead).length;
@@ -35,23 +39,20 @@ const NotificationIcon = () => {
     }
   };
 
-  //  Initial fetch + polling (optional but recommended)
-  useEffect(() => {
-    fetchNotifications();
-
-    const interval = setInterval(() => {
-      fetchNotifications();
-    }, 15000); // every 15 sec
-
-    return () => clearInterval(interval);
-  }, []);
-
   //  Toggle dropdown
-  const handleNotificationClick = () => {
-    setIsOpen((prev) => !prev);
+  // const handleNotificationClick = () => {
+  //   setIsOpen((prev) => !prev);
 
-    // Optional: mark all as read locally
-    setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
+  //   // Optional: mark all as read locally
+  //   setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
+  // };
+  const handleNotificationClick = () => {
+    setIsOpen((prev) => {
+      if (!prev) {
+        setNotifications((n) => n.map((i) => ({ ...i, isRead: true })));
+      }
+      return !prev;
+    });
   };
 
   //  Format date
@@ -70,8 +71,21 @@ const NotificationIcon = () => {
     return index !== -1 ? text.substring(0, index) : text;
   };
 
+  //  Initial fetch + polling (optional but recommended)
+  useEffect(() => {
+    fetchNotifications();
+
+    const interval = setInterval(() => {
+      fetchNotifications();
+    }, 15000); // every 15 sec
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useOutsideClick(wrapperRef, () => setIsOpen(false));
+
   return (
-    <div className={styles.notification}>
+    <div className={styles.notification} ref={wrapperRef}>
       {/* Bell Icon */}
       <div
         className={styles.notificationBlock}
@@ -93,7 +107,7 @@ const NotificationIcon = () => {
         <div className={styles.dropdown}>
           {/* Header */}
           <div className={styles.dropdownHeader}>
-            <span>Notifications</span>
+            <span>{t("notification.title")}</span>
           </div>
 
           {/* Content */}
@@ -101,7 +115,9 @@ const NotificationIcon = () => {
             {loading ? (
               <p className={styles.loader}>Loading...</p>
             ) : notifications.length === 0 ? (
-              <p className={styles.empty}>No notifications</p>
+              <p className={styles.empty}>
+                {t("notification.noNotifications")}
+              </p>
             ) : (
               notifications.map((item) => (
                 <div key={item._id} className={styles.notificationItem}>

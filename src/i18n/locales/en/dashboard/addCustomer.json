@@ -18,6 +18,8 @@
     "adults": "Adults",
     "adult": "Adult",
     "kid": "Kid",
+    "select": "Select",
+    "datePlaceholder": "Date",
     "submit": "Book"
   },
 
@@ -38,7 +40,7 @@
     },
     "mobile": {
       "required": "Mobile number is required",
-      "invalid": "Enter a valid 10-digit mobile number"
+      "invalid": "Enter a valid 09 digit mobile number"
     },
     "checkInDate": {
       "required": "Check-in date is required",

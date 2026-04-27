@@ -3,8 +3,10 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import styles from './custom-datepicker.module.css'
+import { useTranslation } from "react-i18next";
 
 const CustomDatePicker = ({ value = null, onChange }) => {
+    const {t} = useTranslation("common");
     const [selectedDate, setSelectedDate] = useState(value);
     const datePickerRef = useRef(null);
 
@@ -34,7 +36,7 @@ const CustomDatePicker = ({ value = null, onChange }) => {
                     selected={selectedDate}
                     className={styles.datePickerInput}
                     onChange={handleChange}
-                    placeholderText="Date"
+                    placeholderText={t("datePlaceholder")}
                     dateFormat="dd/MM/yyyy"
                     // readOnly
                 />

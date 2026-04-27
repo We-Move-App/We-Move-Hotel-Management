@@ -43,5 +43,11 @@
       "update": "Mettre à jour",
       "addBank": "Ajouter une banque"
     }
+  },
+  "messages": {
+    "withdrawSuccess": "Retrait effectué avec succès",
+    "withdrawFailed": "Échec du retrait. Veuillez réessayer.",
+    "invalidAmount": "Veuillez saisir un montant valide.",
+    "fetchError": "Échec du chargement des transactions."
   }
 }

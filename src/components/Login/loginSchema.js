@@ -21,15 +21,14 @@ export const loginSchema = (t) =>
 
     password: Yup.string()
       .test(
-        "noSpaceAtStart",
-        "The first character cannot be a space",
+        t("validation.noSpaceStart"),
         (value) => value?.trim().charAt(0) !== " ",
       )
-      .required("Password is required")
-      .min(6, "Password must be at least 6 characters long")
-      .max(20, "Password must be at most 20 characters long")
+      .required(t("validation.requiredPassword"))
+      .min(6, t("validation.passwordMin"))
+      .max(20, t("validation.passwordMax"))
       .matches(
         /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>]).*$/,
-        "Password must contain at least one letter, one number, and one special character",
+        t("validation.passwordPattern"),
       ),
   });

@@ -21,7 +21,6 @@ import apiCall from "../../../hooks/apiCall";
 import { ENDPOINTS } from "../../../utils/apiEndpoints";
 import { tokenFromLocalStorage } from "../../../utils/helperFunctions";
 import Loader from "../../reusable/Loader/Loader";
-import callApi from "../../../hooks/callApi";
 import CustomModal from "../../reusable/custom/CModal/CustomModal";
 import { useTranslation } from "react-i18next";
 import { BankDetailsSchema } from "./validation";

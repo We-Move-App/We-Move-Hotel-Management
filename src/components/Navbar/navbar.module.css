@@ -53,14 +53,17 @@
 }
 
 .profileImageBox {
-  width: 59px;
-  height: 59px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   overflow: hidden;
   cursor: pointer;
+  background: white;
+  border: transparent 1px solid;
 }
 
 .profileImageBox img {
+  margin-top: 5px;
   width: 100%;
   height: 100%;
   overflow: hidden;

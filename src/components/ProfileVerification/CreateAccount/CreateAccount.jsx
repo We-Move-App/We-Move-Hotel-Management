@@ -15,11 +15,9 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import useNavigation from "../../../hooks/useNavigation";
-import callApi from "../../../hooks/callApi";
 import CustomModal from "../../reusable/custom/CModal/CustomModal";
 import VerificationModal from "../VerificationModal/VerificationModal";
 
-import useApi from "../../../hooks/callApi";
 import apiCall from "../../../hooks/apiCall";
 import { ENDPOINTS } from "../../../utils/apiEndpoints";
 import { tokenDecode } from "../../../utils/helperFunctions";
@@ -162,6 +160,7 @@ const CreateAccount = () => {
           goTo("/add-bank");
         }
       } catch (err) {
+        throw new Error(err?.message || err);
         // console.log("Error during API call:", err);
       }
     },
