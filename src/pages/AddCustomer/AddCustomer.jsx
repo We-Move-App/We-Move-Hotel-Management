@@ -27,48 +27,6 @@ const SUPPORTED_FORMATS = [
   "application/pdf",
 ];
 
-// const customerValidationSchema = Yup.object().shape({
-//   customerName: Yup.string()
-//     .required("Customer Name is required")
-//     .min(2, "Customer Name must be at least 2 characters")
-//     .max(50, "Customer Name cannot exceed 50 characters"),
-//   email: Yup.string()
-//     .email("Invalid email address")
-//     .required("Email is required"),
-//   mobile: Yup.string()
-//     .required("Mobile number is required")
-//     .matches(/^[0-9]{10}$/, "Mobile number must be exactly 10 digits"),
-
-//   checkInDate: Yup.date()
-//     .required("Check-in date is required")
-//     .typeError("Check-in date is invalid"),
-
-//   checkOutDate: Yup.date()
-//     .required("Check-out date is required")
-//     .typeError("Check-out date is invalid")
-//     .min(
-//       Yup.ref("checkInDate"),
-//       "Check-out date cannot be before check-in date",
-//     ),
-//   isAdult: Yup.string().required("Number of adults is required"),
-//   files: Yup.array()
-//     .of(
-//       Yup.mixed()
-//         .required("A file is required")
-//         .test("file-check", "Invalid file", (value) => {
-//           if (value instanceof File) {
-//             const validSize = value.size <= FILE_SIZE_LIMIT;
-//             const validFormat = SUPPORTED_FORMATS.includes(value.type);
-//             return validSize && validFormat;
-//           }
-//           return true;
-//         }),
-//     )
-//     .test("file-count", "At least 1 file is required", function (value) {
-//       const count = value?.length || 0;
-//       return count >= 1;
-//     }),
-// });
 const AddCustomer = () => {
   const { t } = useTranslation("addCustomer");
   const navigate = useNavigate();
@@ -170,7 +128,6 @@ const AddCustomer = () => {
     onSubmit: async (values) => {
       const hotelId = localStorage.getItem("WEMOVE_HOTELID");
       if (!hotelId) {
-        console.error("Hotel ID not found in localStorage");
         setSnackbar({
           open: true,
           message: "Hotel ID missing. Please login again.",
@@ -208,7 +165,6 @@ const AddCustomer = () => {
           err?.response?.data?.message ||
           err?.message ||
           "Failed to fetch room type. Please try again.";
-        console.error("Error fetching room type ID:", err);
         setSnackbar({ open: true, message, severity: "error" });
         return;
       }
@@ -255,8 +211,8 @@ const AddCustomer = () => {
 
         const success = bookingResponse?.success ?? false;
         const status = bookingResponse?.statusCode;
-        const serverMessage =
-          bookingResponse?.message || bookingResponse?.data?.message || "";
+        // const serverMessage =
+        //   bookingResponse?.message || bookingResponse?.data?.message || "";
 
         if (success && status === 201) {
           setSnackbar({
@@ -435,6 +391,7 @@ const AddCustomer = () => {
                           ...opt,
                           label: t(opt.label),
                         }))}
+                        placeholder={t("form.select")}
                         value={formik?.values.isAdult}
                         onChange={handelSelect}
                       />

@@ -9,14 +9,14 @@ import CustomButton from "../../components/reusable/custom/CButton/CustomButton"
 import CustomModal from "../../components/reusable/custom/CModal/CustomModal";
 import images from "../../assets/images";
 import { ENDPOINTS } from "../../utils/apiEndpoints";
-import apiCall from "../../hooks/apiCall";
 import { tokenFromLocalStorage } from "../../utils/helperFunctions";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { toast, ToastContainer } from "react-toastify";
 
 const Wallet = () => {
-  const { t } = useTranslation("wallet");
+  const { t, i18n } = useTranslation("wallet");
 
   const navigate = useNavigate();
   const [tabBarData, setTabBarData] = useState([
@@ -24,13 +24,14 @@ const Wallet = () => {
     { name: "tabs.withdraw", status: false, key: "withdraw" },
   ]);
 
-  const [bankDetails, setBankDetails] = useState({
-    bankName: "",
-    bankAccountNumber: "",
-    accountHolderName: "",
-    bankDetails: null,
-  });
+  // const [bankDetails, setBankDetails] = useState({
+  //   bankName: "",
+  //   bankAccountNumber: "",
+  //   accountHolderName: "",
+  //   bankDetails: null,
+  // });
 
+  const [transactions, setTransactions] = useState([]);
   const [formattedTransactions, setFormattedTransactions] = useState([]);
   const [pagination, setPagination] = useState({
     page: 1,
@@ -40,6 +41,11 @@ const Wallet = () => {
   });
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCongratulationModalOpen, setIsCongratulationModalOpen] =
+    useState(false);
+  const [amount, setAmount] = useState("");
 
   const fetchTransactions = useCallback(
     async (page = 1, limit = 10, search = "") => {
@@ -72,7 +78,10 @@ const Wallet = () => {
         const res = await axios.get(
           `${import.meta.env.VITE_BASE_URL}/api/v1/wallet/transactions`,
           {
-            headers: { Authorization: `Bearer ${token}` },
+            headers: {
+              Authorization: `Bearer ${token}`,
+              ln: i18n.language || "en",
+            },
             params: {
               entity: "hotelManager",
               page,
@@ -147,12 +156,8 @@ const Wallet = () => {
         setLoading(false);
       }
     },
-    [],
+    [i18n.language],
   );
-
-  useEffect(() => {
-    fetchTransactions(1, pagination.limit, searchQuery);
-  }, []);
 
   const handlePageChange = (page) => {
     const p = Number(page) || 1;
@@ -165,38 +170,45 @@ const Wallet = () => {
     fetchTransactions(p, pagination.limit, searchQuery);
   };
 
-  const handleSearchSubmit = (e) => {
-    if (e && e.preventDefault) e.preventDefault();
-    fetchTransactions(1, pagination.limit, searchQuery);
-  };
+  // const handleSearchSubmit = (e) => {
+  //   if (e && e.preventDefault) e.preventDefault();
+  //   fetchTransactions(1, pagination.limit, searchQuery);
+  // };
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isCongratulationModalOpen, setIsCongratulationModalOpen] =
-    useState(false);
-
-  const handleOpenModal = () => setIsModalOpen(true);
+  // const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
+  // const setActiveTab = (indexToActivate) => {
+  //   setTabBarData((prev) =>
+  //     prev.map((tab, index) => ({
+  //       ...tab,
+  //       status: index === indexToActivate,
+  //     })),
+  //   );
+  // };
   const setActiveTab = (indexToActivate) => {
-    setTabBarData((prev) =>
-      prev.map((tab, index) => ({
+    setTabBarData((prev) => {
+      const updated = prev.map((tab, index) => ({
         ...tab,
         status: index === indexToActivate,
-      })),
-    );
+      }));
+      return [...updated]; // force new reference
+    });
   };
-  const handleOpenCongratulationModal = () =>
-    setIsCongratulationModalOpen(true);
+
+  // const handleOpenCongratulationModal = () =>
+  //   setIsCongratulationModalOpen(true);
+
   const handleCloseCongratulationModal = () => {
     setIsCongratulationModalOpen(false);
-    window.location.reload();
+
+    // switch tab AFTER closing success modal
+    setActiveTab(0);
+
+    // optional refresh
     setTimeout(() => {
-      setActiveTab(0);
       navigate("/dashboard/wallet");
     }, 300);
   };
-
-  const [amount, setAmount] = useState("");
-  const [transactions, setTransactions] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -205,13 +217,13 @@ const Wallet = () => {
     const withdrawAmount = Number(amount);
 
     if (!withdrawAmount || withdrawAmount <= 0) {
-      alert("Please enter a valid amount.");
+      toast.error(t("messages.invalidAmount"));
       return;
     }
 
     try {
       setLoading(true);
-      const res = await axios.post(
+      const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/v1/momo/withdraw`,
         {
           amount: withdrawAmount,
@@ -220,23 +232,62 @@ const Wallet = () => {
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            ln: i18n.language || "en",
           },
         },
       );
 
-      // console.log("Withdraw success:", res.data);
+      if (response?.data?.success) {
+        // STEP 1: Close withdraw modal
+        setIsModalOpen(false);
 
-      setIsModalOpen(false);
-      // setAmount("");
-      handleOpenCongratulationModal();
-      fetchTransactions();
+        // STEP 3: open success modal
+        setIsCongratulationModalOpen(true);
+
+        //  STEP 3: Reset amount
+        setAmount("");
+
+        //  STEP 4: Fetch data in background (no await)
+        fetchTransactions(1, pagination.limit, "");
+        toast.success(t("messages.withdrawSuccess"));
+      } else {
+        toast.error(t("messages.withdrawFailed"));
+        console.error(
+          "Withdraw API responded with failure:",
+          response?.data?.message || response?.data?.error || "Unknown error",
+        );
+        return;
+      }
     } catch (err) {
-      alert("Withdraw failed. Please try again.");
-      throw new Error(err.response.message || err.message);
+      const msg =
+        err?.response?.data?.message ||
+        err?.message ||
+        t("messages.withdrawFailed");
+
+      toast.error(msg);
+      return;
     } finally {
       setLoading(false);
     }
   };
+
+  // const fetchUserBank = async () => {
+  //   const { data, statusCode, error, success } = await apiCall(
+  //     ENDPOINTS.HOTEL_BANK_DETAILS,
+  //     "GET",
+  //   );
+
+  //   if (success && statusCode === 200 && data.data.bank) {
+  //     const { bankName, accountHolderName, accountNumber, _id, bankDocs } =
+  //       data.data.bank;
+  //     setBankDetails({
+  //       bankName,
+  //       bankAccountNumber: accountNumber,
+  //       accountHolderName,
+  //       bankDetails: bankDocs,
+  //     });
+  //   }
+  // };
 
   const firstModal = () => {
     // Withdraw Amount Modal
@@ -295,27 +346,14 @@ const Wallet = () => {
     );
   };
 
-  const fetchUserBank = async () => {
-    const { data, statusCode, error, success } = await apiCall(
-      ENDPOINTS.HOTEL_BANK_DETAILS,
-      "GET",
-    );
-
-    if (success && statusCode === 200 && data.data.bank) {
-      const { bankName, accountHolderName, accountNumber, _id, bankDocs } =
-        data.data.bank;
-      setBankDetails({
-        bankName,
-        bankAccountNumber: accountNumber,
-        accountHolderName,
-        bankDetails: bankDocs,
-      });
-    }
-  };
+  useEffect(() => {
+    fetchTransactions(1, pagination.limit, searchQuery);
+  }, [i18n.language]);
 
   useEffect(() => {
     const withdrawTab = tabBarData.find((tab) => tab.key === "withdraw");
 
+    // open only when switching to withdraw tab
     if (withdrawTab?.status) {
       setIsModalOpen(true);
     } else {
@@ -325,6 +363,7 @@ const Wallet = () => {
 
   return (
     <div className={styles.wallet}>
+      <ToastContainer position="top-center" closeOnClick autoClose={3000} />
       <h1>{t("heading")}</h1>
       <div className={styles.digitalWalletWrapper}>
         <DebitCard showAmount={true} />
@@ -361,7 +400,8 @@ const Wallet = () => {
           </div>
         )}
 
-        {tabBarData[1].status && <>{isModalOpen && firstModal()}</>}
+        {tabBarData[1].status && isModalOpen && firstModal()}
+
         {isCongratulationModalOpen && secondModal()}
       </div>
     </div>

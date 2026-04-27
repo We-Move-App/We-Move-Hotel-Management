@@ -43,5 +43,11 @@
       "update": "Update",
       "addBank": "Add Bank"
     }
+  },
+  "messages": {
+    "withdrawSuccess": "Withdrawal successful",
+    "withdrawFailed": "Withdrawal failed. Please try again.",
+    "invalidAmount": "Please enter a valid amount.",
+    "fetchError": "Failed to load transactions."
   }
 }

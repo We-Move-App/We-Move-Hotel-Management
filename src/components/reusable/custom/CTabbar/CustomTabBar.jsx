@@ -30,15 +30,22 @@ const CustomTabBar = ({
     setExternalActiveTab && setExternalActiveTab(index);
   };
 
-  useEffect(() => {
-    toggleTab(activeTab);
-  }, []);
+  // useEffect(() => {
+  //   // toggleTab(activeTab);
+  //   handleTabBarStatusChange(activeTab);
+  // }, []);
 
+  // useEffect(() => {
+  //   if (externalActiveTab !== undefined && externalActiveTab !== activeTab) {
+  //     toggleTab(externalActiveTab);
+  //   }
+  // }, [externalActiveTab]);
   useEffect(() => {
-    if (externalActiveTab !== undefined && externalActiveTab !== activeTab) {
-      toggleTab(externalActiveTab);
+    const activeIndex = tabBarData.findIndex((tab) => tab.status);
+    if (activeIndex !== -1 && activeIndex !== activeTab) {
+      setActiveTab(activeIndex);
     }
-  }, [externalActiveTab]);
+  }, [tabBarData]);
 
   return (
     <div className={styles.tabsBox}>

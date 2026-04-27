@@ -112,7 +112,7 @@
   flex-direction: column;
   column-gap: var(--flex-gap-sm);
   /* flex-wrap: wrap; */
-  /* row-gap: var(--flex-gap-md); */
+  row-gap: var(--flex-gap-md);
 }
 
 .bookingRevenue {

@@ -10,7 +10,6 @@ import { useAuth } from "../../context/AuthContext";
 import useNavigation from "../../hooks/useNavigation";
 import { ENDPOINTS } from "../../utils/apiEndpoints";
 import apiCall from "../../hooks/apiCall";
-import { tokenFromLocalStorage } from "../../utils/helperFunctions";
 import CustomDropDown from "../reusable/custom/CDropDown/CustomDropDown";
 import { MdOutlineExpandMore } from "react-icons/md";
 import DropdownMenu from "../reusable/Dropdown/DropdownMenu";
@@ -19,8 +18,7 @@ import LanguageSelector from "../GoogleTranslate/LanguageSelectori18N";
 import { useTranslation } from "react-i18next";
 
 const Navbar = ({ toggleSidebar, isMobile, isOpen }) => {
-  // const token = tokenFromLocalStorage();
-  const {t} = useTranslation("common");
+  const { t } = useTranslation("common");
   const { logout } = useAuth();
   const { goTo } = useNavigation();
   const [userName, setUserName] = useState("");
@@ -35,14 +33,13 @@ const Navbar = ({ toggleSidebar, isMobile, isOpen }) => {
     logout();
     return;
   };
-  const customDropDownList = [
-    { label: "Profile", onClick: handleProfileNavigation },
-    { label: "Logout", onClick: handleLogout },
-    // { href: '#item3', label: 'Item 3' },
-  ];
+  // const customDropDownList = [
+  //   { label: "Profile", onClick: handleProfileNavigation },
+  //   { label: "Logout", onClick: handleLogout },
+  // ];
 
   const fetchUserDetails = async () => {
-    const { data, statusCode, error, success } = await apiCall(
+    const { data, statusCode, success } = await apiCall(
       ENDPOINTS.PROFILE,
       "GET",
       {
@@ -53,15 +50,18 @@ const Navbar = ({ toggleSidebar, isMobile, isOpen }) => {
     );
 
     if (success && statusCode === 200) {
-      const { email, phoneNumber, fullName, avatar, batchVerified } =
-        data?.data?.user;
+      // const { email, phoneNumber, fullName, avatar, batchVerified } =
+      const user = data?.data?.user;
+      if (!user) return;
+
+      const { fullName, avatar, batchVerified } = user;
       setUserName(fullName);
+
       avatar
         ? setUserProfile(avatar?.url)
         : setUserProfile(images.profileImage);
+
       setBatchVerified(batchVerified);
-    } else {
-      return;
     }
   };
 

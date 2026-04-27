@@ -18,6 +18,8 @@
     "adults": "Adultes",
     "adult": "Adulte",
     "kid": "Enfant",
+    "select": "Sélectionner",
+    "datePlaceholder": "Date",
     "submit": "Réserver"
   },
 
@@ -38,7 +40,7 @@
     },
     "mobile": {
       "required": "Le numéro de mobile est requis",
-      "invalid": "Entrez un numéro de 10 chiffres valide"
+      "invalid": "Entrez un numéro de 09 chiffres valide"
     },
     "checkInDate": {
       "required": "La date d'arrivée est requise",

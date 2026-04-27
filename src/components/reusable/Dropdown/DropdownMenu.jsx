@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styles from "./dropdown-menu.module.css";
+import { useOutsideClick } from "../../../hooks/useOutsideClick";
 
 const DropdownMenu = ({ options, Icon, buttonLabel = "View List" }) => {
   const [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
+  useOutsideClick(dropdownRef, () => setOpen(false));
+
   return (
-    <div className={styles.dropdownContainer}>
+    <div className={styles.dropdownContainer} ref={dropdownRef}>
       {Icon ? (
         <Icon className={styles.icon} onClick={() => setOpen(!open)} />
       ) : (

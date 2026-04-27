@@ -63,5 +63,11 @@
     "prev": "Prev"
   },
   "search": "Search",
-  "optional": "optional"
+  "optional": "optional",
+  "datePlaceholder": "Date",
+  "select": "Select",
+  "notification": {
+    "title": "Notifications",
+    "noNotifications": "No notifications"
+  }
 }

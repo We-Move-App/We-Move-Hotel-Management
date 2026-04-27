@@ -11,45 +11,11 @@ import CustomInput from "../reusable/custom/Form-Fields/CInput/CustomInput";
 import CustomButton from "../reusable/custom/CButton/CustomButton";
 import useNavigation from "../../hooks/useNavigation";
 import { useAuth } from "../../context/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import apiCall from "../../hooks/apiCall";
 import { ENDPOINTS } from "../../utils/apiEndpoints";
-import { toast } from "react-toastify";
 import axios from "axios";
 import { loginSchema } from "./loginSchema";
-
-// const loginSchema = Yup.object().shape({
-//   emailOrPhone: Yup.string()
-//     .test(
-//       "noSpaceAtStart",
-//       t(""),
-//       (value) => value?.trim().charAt(0) !== " ",
-//     )
-//     .test(
-//       "emailOrPhone",
-//       "Please enter a valid email or phone number",
-//       function (value) {
-//         const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-//         const phoneRegex = /^\d{10}$/;
-//         return emailRegex.test(value) || phoneRegex.test(value);
-//       },
-//     )
-//     .required("Email or phone number is required"),
-
-//   password: Yup.string()
-//     .test(
-//       "noSpaceAtStart",
-//       "The first character cannot be a space",
-//       (value) => value?.trim().charAt(0) !== " ",
-//     )
-//     .required("Password is required")
-//     .min(6, "Password must be at least 6 characters long")
-//     .max(20, "Password must be at most 20 characters long")
-//     .matches(
-//       /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>]).*$/,
-//       "Password must contain at least one letter, one number, and one special character",
-//     ),
-// });
 
 const BASEURL = `${import.meta.env.VITE_BASE_URL}/api/v1`;
 const Login = () => {
@@ -66,7 +32,8 @@ const Login = () => {
     },
     validationSchema: schema,
 
-    onSubmit: async (values, { setErrors, setStatus }) => {
+    // onSubmit: async (values, { setErrors, setStatus }) => {
+    onSubmit: async (values, { setStatus }) => {
       const emailOrPhone = values.emailOrPhone.split("").includes("@")
         ? values.emailOrPhone
         : "+91" + values.emailOrPhone;
@@ -93,9 +60,6 @@ const Login = () => {
                 if (res.success && hotelId) {
                   localStorage.setItem("WEMOVE_HOTELID", hotelId);
                 }
-                // else {
-                //   console.warn("HotelId not found in response");
-                // }
               })
               .catch((err) => {
                 console.error("Failed to fetch hotelId after login", err);
