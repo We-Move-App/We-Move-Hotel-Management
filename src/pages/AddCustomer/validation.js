@@ -25,7 +25,7 @@ export const customerValidationSchema = (t) =>
 
     mobile: Yup.string()
       .required(t("validation.mobile.required"))
-      .matches(/^[6-9]\d{9}$/, t("validation.mobile.invalid")),
+      .matches(/^[6-9]\d{8}$/, t("validation.mobile.invalid")),
 
     checkInDate: Yup.date()
       .required(t("validation.checkInDate.required"))

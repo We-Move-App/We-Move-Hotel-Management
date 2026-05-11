@@ -3,7 +3,7 @@ import * as Yup from "yup";
 export const SignupSchema = (t) =>
   Yup.object().shape({
     mobile: Yup.string()
-      .matches(/^[0-9]{9}$/, t("signup.validation.mobileDigits"))
+      .matches(/^[6-9]{8}$/, t("signup.validation.mobileDigits"))
       .matches(/^\d+$/, t("signup.validation.mobileInvalid"))
       .required(t("signup.validation.mobileRequired"))
       .test(
