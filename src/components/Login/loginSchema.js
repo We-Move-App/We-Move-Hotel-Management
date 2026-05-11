@@ -13,12 +13,12 @@ export const loginSchema = (t) =>
         t("validation.invalidEmailPhone"),
         function (value) {
           const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-          const phoneRegex = /^\d{10}$/;
+          const phoneRegex = /^[6-9]\d{8}$/;
           return emailRegex.test(value) || phoneRegex.test(value);
         },
       )
       .required(t("validation.requiredEmailPhone")),
-
+      
     password: Yup.string()
       .test(
         t("validation.noSpaceStart"),

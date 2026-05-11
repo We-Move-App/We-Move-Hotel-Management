@@ -15,7 +15,7 @@
   },
   "validation": {
     "noSpaceStart": "The first character cannot be a space",
-    "invalidEmailPhone": "Please enter a valid email or phone number",
+    "invalidEmailPhone": "Please enter a valid email or 9 digit phone number",
     "requiredEmailPhone": "Email or phone number is required",
     "requiredPassword": "Password is required",
     "passwordMin": "Password must be at least 6 characters long",
