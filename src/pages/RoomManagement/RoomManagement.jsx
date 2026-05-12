@@ -110,6 +110,7 @@ const RoomManagement = () => {
         noOfRooms,
         noOfKids,
         _id,
+        bookingId
       } = data.data.bookings[0];
 
       const userObj = {};
@@ -125,7 +126,7 @@ const RoomManagement = () => {
       }
 
       setBookingTableData({
-        bookingId: _id || "",
+        bookingId: bookingId || "",
         roomType: roomType || "",
         adult: noOfAdults || "",
         children: noOfKids ?? 0,
@@ -284,7 +285,7 @@ const RoomManagement = () => {
     }
 
     if (success) {
-      console.log("ROOM VACANT:", data.data);
+      // console.log("ROOM VACANT:", data.data);
 
       // ✅ Show toast
       toast.success("Room checked out successfully!");
@@ -301,7 +302,6 @@ const RoomManagement = () => {
     getAllRooms();
   }, [tabPages, tabBarData, date]);
 
-  console.log("Total Pages:", totalPages);
 
   return (
     <div className={styles.roomManagement}>
