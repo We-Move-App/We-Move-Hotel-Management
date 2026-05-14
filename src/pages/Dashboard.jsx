@@ -54,12 +54,12 @@ const Dashboard = () => {
         const ln = selectedLanguageFromLocalStorage();
         setLoading(true);
         const token = tokenFromLocalStorage();
-        console.debug("[fetchTransactions] REQUEST params:", {
-          entity: "hotelManager",
-          page,
-          limit,
-          search: search || null,
-        });
+        // console.debug("[fetchTransactions] REQUEST params:", {
+        //   entity: "hotelManager",
+        //   page,
+        //   limit,
+        //   transactionId: search || null,
+        // });
 
         const res = await axios.get(
           `${import.meta.env.VITE_BASE_URL}/api/v1/wallet/transactions`,
@@ -69,12 +69,12 @@ const Dashboard = () => {
               entity: "hotelManager",
               page,
               limit,
-              ...(search ? { search } : {}),
+              ...(search ? { transactionId: search } : {}),
             },
           },
         );
 
-        console.debug("[fetchTransactions] RESPONSE raw ->", res?.data);
+        // console.debug("[fetchTransactions] RESPONSE raw ->", res?.data);
         const paginationData = res?.data?.data?.pagination;
         if (paginationData) {
           const pagesNum = Number(paginationData.pages) || 1;
@@ -82,12 +82,12 @@ const Dashboard = () => {
           const totalNum = Number(paginationData.total) || 0;
           const limitNum = Number(paginationData.limit) || limit;
 
-          console.debug("[fetchTransactions] server pagination ->", {
-            page: pageNum,
-            pages: pagesNum,
-            total: totalNum,
-            limit: limitNum,
-          });
+          // console.debug("[fetchTransactions] server pagination ->", {
+          //   page: pageNum,
+          //   pages: pagesNum,
+          //   total: totalNum,
+          //   limit: limitNum,
+          // });
 
           setPagination({
             page: pageNum,
@@ -148,12 +148,12 @@ const Dashboard = () => {
 
   const handlePageChange = (page) => {
     const p = Number(page) || 1;
-    console.debug(
-      "[handlePageChange] clicked page ->",
-      p,
-      "current search:",
-      searchQuery,
-    );
+    // console.debug(
+    //   "[handlePageChange] clicked page ->",
+    //   p,
+    //   "current search:",
+    //   searchQuery,
+    // );
     fetchTransactions(p, pagination.limit, searchQuery);
   };
 

@@ -65,9 +65,7 @@ const PersonalDetails = () => {
         validationSchema: PersonalDetailSchema,
 
         onSubmit: async (values) => {
-            console.log('Form submitted', values);
             if (Object.keys(formik.errors).length === 0) {
-                console.log('Form submitted successfully', values);
                 try {
                     const payloadBody = new FormData();
                     payloadBody.append('fullName', values.fullName);
@@ -87,11 +85,10 @@ const PersonalDetails = () => {
                     //     goTo('/hotel-registration')
                     // }
                 } catch (err) {
-                    console.error('Error during API call:', err);
+                    throw new Error(err);
+                    // console.error('Error during API call:', err);
                 }
-            } else {
-                console.log('Form has errors:', formik.errors);
-            }
+            } 
             // If successfully submitted
             // goTo('/hotel-registration')
         },
@@ -125,7 +122,7 @@ const PersonalDetails = () => {
     };
 
     const removeFile = (index, fileName) => {
-        console.log('removeFile', fileName, index);
+        // console.log('removeFile', fileName, index);
         const files = formik.values.files;
         formik.setFieldValue('files', [...files.slice(0, index), ...files.slice(index + 1)]);
         setFileProgress(prev => {

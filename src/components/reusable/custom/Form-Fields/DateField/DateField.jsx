@@ -5,7 +5,7 @@ import { FaRegCalendarAlt } from "react-icons/fa";
 
 const DateField = ({ labelText, name, onChange, dateValue, required = false }) => {
     const handleChange = (event) => {
-        console.log('date', event.target.value)
+        // console.log('date', event.target.value)
     }
     return (
         <div className={styles.dateFieldContainer}>

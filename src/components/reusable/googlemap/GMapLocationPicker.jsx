@@ -61,9 +61,9 @@ const GoogleMapLocationPicker = ({ apiKey = "AIzaSyC53C8Dber8sF4eImYJ3jdQ5Sql-BF
       ({ coords }) => {
         const userCoords = { lat: coords.latitude, lng: coords.longitude };
         setHasPermission(true);
-        console.log("Permission given", coords)
+        // console.log("Permission given", coords)
         setCurrentCoords(userCoords);
-        console.log("CORDS:", currentCoords)
+        // console.log("CORDS:", currentCoords)
 
         updateMarkerPosition(userCoords.lat, userCoords.lng);
         mapInstance.current?.setCenter(userCoords);
@@ -91,14 +91,14 @@ const GoogleMapLocationPicker = ({ apiKey = "AIzaSyC53C8Dber8sF4eImYJ3jdQ5Sql-BF
   };
 
   const fetchLocationDetails = (lat, lng) => {
-    console.log("from fetchLocationDetails", lat, lng);
+    // console.log("from fetchLocationDetails", lat, lng);
     
     const geocoder = new window.google.maps.Geocoder();
     const request = { location: { lat, lng } };
   
     try {
       const response = geocoder.geocode(request);
-      console.log("Geocode Response:", response);
+      // console.log("Geocode Response:", response);
       if (response.status === "OK" && response.results[0]) {
         const components = response.results[0].address_components;
         const get = (type) =>
@@ -114,7 +114,7 @@ const GoogleMapLocationPicker = ({ apiKey = "AIzaSyC53C8Dber8sF4eImYJ3jdQ5Sql-BF
           landmark: get("point_of_interest") || get("premise") || get("natural_feature"),
         };
   
-        console.log("addressInfo:", addressInfo);
+        // console.log("addressInfo:", addressInfo);
         setLocationData(addressInfo);
       }
     } catch (error) {

@@ -102,8 +102,8 @@ const BookingRevenue = () => {
           callback: (value) => `${value}`,
         },
         min: 0,
-        max: 120,
-        stepSize: 10,
+        max: 100000,
+        stepSize: 20,
       },
     },
     layout: {

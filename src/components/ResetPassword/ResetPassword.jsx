@@ -112,7 +112,7 @@ const ResetPassword = () => {
         "POST",
         { body: payload },
       );
-      console.log(data, error);
+      // console.log(data, error);
       if (error) {
         setError(error?.message);
         setOpen(false);
@@ -124,19 +124,20 @@ const ResetPassword = () => {
         setError(null);
       }
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
+      // console.log(error);
     }
   };
 
   const resendOtp = () => {
     // Re-trigger OTP API call
-    console.log("Resend OTP to -", emailOrPhone);
+    // console.log("Resend OTP to -", emailOrPhone);
     sendOtp({ emailOrPhone });
   };
 
   const sendOtp = async (values) => {
     try {
-      console.log(values);
+      // console.log(values);
       const payload = { emailOrPhone: values.emailOrPhone };
       setEmailOrPhone(values.emailOrPhone);
       setOtp("");
@@ -149,7 +150,8 @@ const ResetPassword = () => {
       // console.log(data, error);
       setOpen(true);
     } catch (error) {
-      console.log(error);
+      throw new Error(error);
+      // console.log(error);
     }
   };
 
@@ -188,7 +190,7 @@ const ResetPassword = () => {
         });
       }
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       setSnackbar({
         open: true,
         message: "Server error. Please try again later.",

@@ -111,7 +111,7 @@ const DragDrop = ({
             // fileInputRef.current.files = files; // Programmatically set the dropped files in the input element
             // fileInputRef.current.files = droppedFiles; // Programmatically set the dropped files in the input element
         }
-        console.log(droppedFiles, e.dataTransfer.files)
+        // console.log(droppedFiles, e.dataTransfer.files)
     };
 
     const handleFileSelect = (e) => {
