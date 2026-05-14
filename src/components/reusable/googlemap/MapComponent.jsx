@@ -24,13 +24,13 @@ const GoogleMapComponent = ({ formik, handleLocation }) => {
     //     }
     // }, []);
     useEffect(() => {
-        console.log("Component Mounted: Loading Google Maps API...");
+        // console.log("Component Mounted: Loading Google Maps API...");
 
         const loadGoogleMaps = () => {
             const checkIfGoogleMapsLoaded = setInterval(() => {
                 if (window.google && window.google.maps) {
                     clearInterval(checkIfGoogleMapsLoaded);
-                    console.log("Google Maps script loaded successfully.");
+                    // console.log("Google Maps script loaded successfully.");
                     initMap();
                 }
             }, 100);
@@ -44,7 +44,7 @@ const GoogleMapComponent = ({ formik, handleLocation }) => {
             document.body.appendChild(script);
 
             script.onload = () => {
-                console.log("Google Maps API script tag loaded.");
+                // console.log("Google Maps API script tag loaded.");
                 loadGoogleMaps();
             };
 
@@ -58,16 +58,12 @@ const GoogleMapComponent = ({ formik, handleLocation }) => {
 
 
     const initMap = () => {
-        console.log("Initializing Map...");
 
         // Get user's current location
         if (navigator.geolocation) {
-            console.log("Asking for user's location...");
             navigator.geolocation.getCurrentPosition(
                 (position) => {
-                    console.log("POSITION:", position)
                     const { latitude, longitude } = position.coords;
-                    console.log("Location retrieved: ", { latitude, longitude });
                     setCurrentLocation({ lat: latitude, lng: longitude });
                     setLoading(false); // Set loading to false when location is fetched
 
@@ -78,7 +74,6 @@ const GoogleMapComponent = ({ formik, handleLocation }) => {
                     };
                     const newMap = new window.google.maps.Map(document.getElementById('map'), mapOptions);
                     setMap(newMap);
-                    console.log("Map initialized with user's location.");
 
                     // Add a marker at the user's location
                     const newMarker = new window.google.maps.Marker({
@@ -87,7 +82,6 @@ const GoogleMapComponent = ({ formik, handleLocation }) => {
                         draggable: true,
                     });
                     setMarker(newMarker);
-                    console.log("Marker placed at user's location.");
 
                     // Reverse Geocode to get detailed address
                     getAddressDetails(latitude, longitude);
@@ -96,7 +90,6 @@ const GoogleMapComponent = ({ formik, handleLocation }) => {
                     newMarker.addListener('dragend', (e) => {
                         const lat = e.latLng.lat();
                         const lng = e.latLng.lng();
-                        console.log(`Marker dragged to: Latitude: ${lat}, Longitude: ${lng}`);
                         setSelectedLocation({ lat, lng });
                         getAddressDetails(lat, lng);
                     });
@@ -113,20 +106,18 @@ const GoogleMapComponent = ({ formik, handleLocation }) => {
                 }
             );
         } else {
-            console.log("Geolocation is not supported by this browser.");
+            // console.log("Geolocation is not supported by this browser.");
             setError("Geolocation is not supported by this browser.");
             setLoading(false);
         }
     };
 
     const getAddressDetails = (lat, lng) => {
-        console.log(`Fetching address details for coordinates: ${lat}, ${lng}`);
         const geocoder = new window.google.maps.Geocoder();
         const latLng = new window.google.maps.LatLng(lat, lng);
 
         geocoder.geocode({ location: latLng }, (results, status) => {
             if (status === 'OK' && results[0]) {
-                console.log("Address details retrieved:", results);
 
                 const address = results[0].formatted_address;
                 const components = results[0].address_components;
@@ -155,18 +146,6 @@ const GoogleMapComponent = ({ formik, handleLocation }) => {
                     street,
                 });
 
-
-
-                console.log("Address details updated:", {
-                    address,
-                    city,
-                    locality,
-                    landmark,
-                    state,
-                    country,
-                    postalCode,
-                    street,
-                });
                 handleLocation({
                     address,
                     city,
@@ -177,13 +156,6 @@ const GoogleMapComponent = ({ formik, handleLocation }) => {
                     postalCode,
                     street,
                 });
-                // Update Formik values
-                // formik.setFieldValue('hotelAddress', address);
-                // formik.setFieldValue('city', city);
-                // formik.setFieldValue('locality', locality);
-                // formik.setFieldValue('landmark', landmark);
-                // formik.setFieldValue('pincode', postalCode);
-                // console.log(formik);
 
             } else {
                 console.error('Geocoder failed due to: ' + status);

@@ -41,7 +41,6 @@ const CustomerFeedback = () => {
     );
     if (success) {
       const { feedbacks, page } = data?.data;
-      console.log(data);
       setCurrentPage(page);
       setFeedback(data?.data?.feedbacks);
       // setTotalPages()

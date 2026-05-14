@@ -29,7 +29,7 @@ const VerificationModal = ({
   const { mobile, email } = detailsText;
   const value = mobile || email;
   const handleClick = () => {
-    console.log(otp);
+    // console.log(otp);
     if (otp === "1234") {
       onClick();
     }
@@ -52,7 +52,7 @@ const VerificationModal = ({
     return () => {
       controller.abort(); // Marks the signal as aborted
       clearTimeout(timeoutId); // Optional but good practice
-      console.log("Aborted and timeout cleared");
+      // console.log("Aborted and timeout cleared");
     };
   }, []);
 

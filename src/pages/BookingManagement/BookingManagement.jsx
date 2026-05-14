@@ -47,7 +47,6 @@ const BookingManagement = () => {
       }
 
       const url = `${ENDPOINTS.HOTEL_BOOKINGS}?${params.toString()}`;
-      console.log("Fetching bookings:", url);
 
       const { data, statusCode, error, success } = await apiCall(url, "GET");
       if (!success) {

@@ -86,7 +86,7 @@ const Wallet = () => {
               entity: "hotelManager",
               page,
               limit,
-              ...(search ? { search } : {}),
+              ...(search ? { transactionId:search } : {}),
             },
           },
         );

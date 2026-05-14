@@ -61,9 +61,8 @@ export const getAmenities = async () => {
     try {
         const { data, satusCode, error, success } = await apiCall(`${ENDPOINTS.GET_AMENITIES}`, {});
         if (error) {
-            console.log(error);
+            console.error(error);
         } else {
-            console.log(data)
             return data.data
         }
     } catch (error) {

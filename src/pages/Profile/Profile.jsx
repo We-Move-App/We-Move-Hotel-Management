@@ -91,8 +91,6 @@ const Profile = () => {
     },
     validationSchema: BankDetailsSchema(t),
     onSubmit: async (values) => {
-      // if bankId then update else add a bank
-      console.log("Formik values:", values);
       setIsEdit(!isEdit);
       setLoading(true);
 
@@ -117,7 +115,6 @@ const Profile = () => {
         );
 
         if (success && statusCode === 200) {
-          console.log("BANK UPDATED:", data);
           fetchUserBank();
           // setLoading(false)
         }
@@ -134,7 +131,6 @@ const Profile = () => {
         );
 
         if (success && statusCode === 201) {
-          console.log("BANK UPDATED:", data);
           fetchUserBank();
           // setLoading(false)
         }
@@ -204,7 +200,6 @@ const Profile = () => {
   };
 
   const handleFileChange = (file) => {
-    console.log(file);
     const currentFormikValues = formik.values;
     formik.setValues({
       ...currentFormikValues,
