@@ -13,7 +13,7 @@ export const loginSchema = (t) =>
         t("validation.invalidEmailPhone"),
         function (value) {
           const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-          const phoneRegex = /^[6-9]\d{8}$/;
+          const phoneRegex = /^[2-5]\d{8}$/;
           return emailRegex.test(value) || phoneRegex.test(value);
         },
       )

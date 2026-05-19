@@ -99,7 +99,7 @@ const CreateAccount = () => {
         const payloadBody = {
           email: values.email,
           password: values.password,
-          phoneNumber: "+91" + values.mobile,
+          phoneNumber: "+237" + values.mobile,
           fullName: values.fullName || "userName",
           // role: 'hotelManager',
           companyName: values.companyName || "We Move All",
@@ -188,7 +188,8 @@ const CreateAccount = () => {
 
     if (mobileNumber.length === 9) {
       const payload = {
-        emailOrPhone: "+91" + mobileNumber,
+        // emailOrPhone: mobileNumber,
+        emailOrPhone: "+237" + mobileNumber,
       };
       // console.log(formik.values)
       try {
@@ -255,7 +256,9 @@ const CreateAccount = () => {
     try {
       const payload = {
         otp: mobileOtp,
-        phoneNumber: "+91" + formik.values.mobile,
+        // phoneNumber: formik.values.mobile,
+        // +237 399999999
+        phoneNumber: "+237" + formik.values.mobile,
       };
       const { data, statusCode, error } = await apiCall(
         ENDPOINTS.VERIFY_OTP_MOBILE,
@@ -313,7 +316,7 @@ const CreateAccount = () => {
     return (
       <CustomModal isOpen={verifyMobileModal} onClose={closeMobileModal}>
         <VerificationModal
-          detailsText={{ mobile: formik.values.mobile }}
+          detailsText={{ mobile:  formik.values.mobile }}
           otp={mobileOtp}
           setOTP={setMobileOtp}
           resendOtp={handleVerifyMobileStatus}

@@ -13,8 +13,8 @@ export const formatFileSize = (bytes) => {
 };
 
 export const maskInput = (input) => {
-    // Check if the input is a mobile number (assuming it's a 10-digit number)
-    if (/^\d{10}$/.test(input)) {
+    // Check if the input is a mobile number (assuming it's a 9-digit number)
+    if (/^\d{9}$/.test(input)) {
         // Mask mobile number as *** *** 1234
         return `*** *** ${input.slice(-4)}`;
     }

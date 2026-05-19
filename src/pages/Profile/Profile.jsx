@@ -189,7 +189,7 @@ const Profile = () => {
       setUser((prev) => ({
         ...prev,
         userName: fullName || "Priya Dey Bhaumik",
-        mobile: phoneNumber || "+91 8767760912",
+        mobile: phoneNumber || "8767760912",
         email: email || "priyadey.d@gmail.com",
         batchVerified: batchVerified || "",
         avatar: avatar?.url,

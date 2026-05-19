@@ -36,7 +36,8 @@ const Login = () => {
     onSubmit: async (values, { setStatus }) => {
       const emailOrPhone = values.emailOrPhone.split("").includes("@")
         ? values.emailOrPhone
-        : "+91" + values.emailOrPhone;
+        // :  values.emailOrPhone;
+        : "+237" + values.emailOrPhone;
       const payloadBody = {
         emailOrPhone: emailOrPhone,
         password: values.password,

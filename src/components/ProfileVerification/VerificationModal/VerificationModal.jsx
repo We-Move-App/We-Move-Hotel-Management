@@ -13,7 +13,7 @@ const VerificationModal = ({
   detailsText,
   resendOtp,
 }) => {
-  const {t} = useTranslation("common");
+  const { t } = useTranslation("common");
   const { isTablet, isMobile } = useScreen();
   const [showResendOtp, setShowResendOtp] = useState(false);
   const otpInputDimensions = {
@@ -28,12 +28,10 @@ const VerificationModal = ({
   };
   const { mobile, email } = detailsText;
   const value = mobile || email;
-  const handleClick = () => {
-    // console.log(otp);
-    if (otp === "1234") {
-      onClick();
-    }
-  };
+  // const handleClick = () => {
+  //   // console.log(otp);
+  //   onClick();
+  // };
 
   const handleResendOtp = () => {
     resendOtp();
@@ -97,7 +95,7 @@ const VerificationModal = ({
         type={"button"}
         buttonText={t("verificationModel.verify")}
         buttonSize={"medium"}
-        onClick={handleClick}
+        onClick={onClick}
       />
     </div>
   );
