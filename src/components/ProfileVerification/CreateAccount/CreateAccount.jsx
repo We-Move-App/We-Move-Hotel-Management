@@ -99,13 +99,15 @@ const CreateAccount = () => {
         const payloadBody = {
           email: values.email,
           password: values.password,
-          phoneNumber: "+237" + values.mobile,
+          phoneNumber:  "+237"+values.mobile,
           fullName: values.fullName || "userName",
           // role: 'hotelManager',
           companyName: values.companyName || "We Move All",
           address: values.companyAddress || "123 kathmandu",
           branch: values.branch,
         };
+
+        console.log("Payload for registration:", payloadBody);
 
         if (!mobileVerifyStatus || !emailVerifyStatus) {
           // toast.info('Please verify your mobile and email first.');
