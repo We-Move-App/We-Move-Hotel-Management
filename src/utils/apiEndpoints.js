@@ -31,7 +31,7 @@ export const ENDPOINTS = {
 
   ADD_GUEST: "/hotelmanager-booking/bookHotel",
 
-  GET_AMENITIES: "/amenities",
+  GET_AMENITIES: "/admin/amenities",
 
   GET_NOTIFICATIONS: "/global/notification/get",
 

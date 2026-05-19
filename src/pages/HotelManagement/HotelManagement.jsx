@@ -39,10 +39,10 @@ const Amenities = [
 const HotelManagement = () => {
   const { t, i18n } = useTranslation("hotelManagement");
   const [showForm, setShowForm] = useState(false);
-  const toggleForm = () => setShowForm(!showForm);
+  // const toggleForm = () => setShowForm(!showForm);
   const { goTo } = useNavigation();
   const [loading, setLoading] = useState(true);
-  const user = getDataFromLocalStorage("WEMOVE_USER") || {};
+  // const user = getDataFromLocalStorage("WEMOVE_USER") || {};
 
   const [gridImages, setGridImages] = useState([
     images.img1,
