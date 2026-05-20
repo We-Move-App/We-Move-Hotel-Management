@@ -168,31 +168,6 @@ const RoomManagement = () => {
     }
   };
 
-  // const getAllRooms = async () => {
-  //   const activeTab = tabBarData.find((tab) => tab.status)?.name;
-  //   let status = "all";
-  //   if (activeTab === "Available Rooms") status = "available";
-  //   else if (activeTab === "Reserved Rooms") status = "booked";
-
-  //   const currentPage = tabPages[status];
-
-  //   const { data, statusCode, error, success } = await apiCall(
-  //     `${ENDPOINTS.GET_ALL_ROOMS}?hotelId=${hotelID}&status=${status}&page=${currentPage}&limit=${limit}`,
-  //     "GET",
-  //   );
-
-  //   if (success && statusCode === 200) {
-  //     console.log("HOTEL ROOMS:", data);
-
-  //     const rooms = data?.data?.rooms || [];
-  //     const total = data?.data?.totalRooms || 0;
-
-  //     setRooms(rooms);
-  //     setTotalPages(Math.ceil(total / limit));
-  //     setLoading(false);
-  //   }
-  // };
-
   const getAllRooms = async () => {
     const activeTab = tabBarData.find((tab) => tab.status)?.name;
 
@@ -279,7 +254,7 @@ const RoomManagement = () => {
     );
 
     if (error) {
-      console.log("Checkout error:", error);
+      // console.log("Checkout error:", error);
       toast.error("Failed to checkout. Please try again.");
       return;
     }
@@ -288,7 +263,7 @@ const RoomManagement = () => {
       // console.log("ROOM VACANT:", data.data);
 
       // ✅ Show toast
-      toast.success("Room checked out successfully!");
+      // toast.success("Room checked out successfully!");
 
       // ✅ Refresh rooms
       getAllRooms();
