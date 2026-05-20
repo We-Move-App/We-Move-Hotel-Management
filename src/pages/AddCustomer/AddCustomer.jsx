@@ -30,6 +30,8 @@ const SUPPORTED_FORMATS = [
 const AddCustomer = () => {
   const { t } = useTranslation("addCustomer");
   const navigate = useNavigate();
+  const submitLock = React.useRef(false);
+
   const formik = useFormik({
     initialValues: {
       customerName: "",
@@ -43,10 +45,18 @@ const AddCustomer = () => {
     },
     validationSchema: customerValidationSchema(t),
     onSubmit: async (values, { setSubmitting }) => {
+      // ==========================================
+      // PREVENT MULTIPLE SUBMITS
+      // ==========================================
+
+      if (submitLock.current) {
+        return;
+      }
+
+      submitLock.current = true;
+
       try {
         setSubmitting(true);
-
-        // console.log("FORM VALUES =>", values);
 
         const hotelId = localStorage.getItem("WEMOVE_HOTELID");
 
@@ -60,9 +70,9 @@ const AddCustomer = () => {
           return;
         }
 
-        // ==================================================
+        // ==========================================
         // FETCH ROOM TYPE
-        // ==================================================
+        // ==========================================
 
         let roomTypeId = "";
 
@@ -71,8 +81,6 @@ const AddCustomer = () => {
             `/hotel-room/?hotelId=${hotelId}&roomType=${values.roomType}`,
             "GET",
           );
-
-          console.log("ROOM RESPONSE =>", roomResponse);
 
           const sampleRoom = roomResponse?.data?.data?.sampleRoom;
 
@@ -88,8 +96,6 @@ const AddCustomer = () => {
 
           roomTypeId = sampleRoom._id;
         } catch (err) {
-          console.error("ROOM FETCH ERROR =>", err);
-
           setSnackbar({
             open: true,
             message: "Failed to fetch room type",
@@ -99,9 +105,9 @@ const AddCustomer = () => {
           return;
         }
 
-        // ==================================================
+        // ==========================================
         // PREPARE FORM DATA
-        // ==================================================
+        // ==========================================
 
         const fd = new FormData();
 
@@ -130,9 +136,9 @@ const AddCustomer = () => {
 
         fd.append("noOfRoom", "1");
 
-        // ==================================================
+        // ==========================================
         // USER OBJECT
-        // ==================================================
+        // ==========================================
 
         const user = {
           name: values.customerName,
@@ -144,35 +150,25 @@ const AddCustomer = () => {
 
         fd.append("user", JSON.stringify(user));
 
-        // ==================================================
+        // ==========================================
         // FILES
-        // ==================================================
+        // ==========================================
 
         (values.files || []).forEach((file) => {
           fd.append("identity_card", file);
         });
 
-        // ==================================================
-        // DEBUG FORM DATA
-        // ==================================================
-
-        for (let pair of fd.entries()) {
-          console.log(pair[0], pair[1]);
-        }
-
-        // ==================================================
+        // ==========================================
         // API CALL
-        // ==================================================
+        // ==========================================
 
         const bookingResponse = await apiCall(ENDPOINTS.ADD_GUEST, "POST", {
           body: fd,
         });
 
-        console.log("BOOKING RESPONSE =>", bookingResponse);
-
-        // ==================================================
+        // ==========================================
         // SUCCESS
-        // ==================================================
+        // ==========================================
 
         if (bookingResponse?.success && bookingResponse?.statusCode === 201) {
           setSnackbar({
@@ -210,9 +206,181 @@ const AddCustomer = () => {
           severity: "error",
         });
       } finally {
+        submitLock.current = false;
         setSubmitting(false);
       }
     },
+    // onSubmit: async (values, { setSubmitting }) => {
+    //   try {
+    //     setSubmitting(true);
+
+    //     // console.log("FORM VALUES =>", values);
+
+    //     const hotelId = localStorage.getItem("WEMOVE_HOTELID");
+
+    //     if (!hotelId) {
+    //       setSnackbar({
+    //         open: true,
+    //         message: "Hotel ID missing. Please login again.",
+    //         severity: "error",
+    //       });
+
+    //       return;
+    //     }
+
+    //     // ==================================================
+    //     // FETCH ROOM TYPE
+    //     // ==================================================
+
+    //     let roomTypeId = "";
+
+    //     try {
+    //       const roomResponse = await apiCall(
+    //         `/hotel-room/?hotelId=${hotelId}&roomType=${values.roomType}`,
+    //         "GET",
+    //       );
+
+    //       console.log("ROOM RESPONSE =>", roomResponse);
+
+    //       const sampleRoom = roomResponse?.data?.data?.sampleRoom;
+
+    //       if (!sampleRoom?._id) {
+    //         setSnackbar({
+    //           open: true,
+    //           message: "Room type not found",
+    //           severity: "error",
+    //         });
+
+    //         return;
+    //       }
+
+    //       roomTypeId = sampleRoom._id;
+    //     } catch (err) {
+    //       console.error("ROOM FETCH ERROR =>", err);
+
+    //       setSnackbar({
+    //         open: true,
+    //         message: "Failed to fetch room type",
+    //         severity: "error",
+    //       });
+
+    //       return;
+    //     }
+
+    //     // ==================================================
+    //     // PREPARE FORM DATA
+    //     // ==================================================
+
+    //     const fd = new FormData();
+
+    //     const formatDate = (date) => {
+    //       if (!(date instanceof Date)) {
+    //         date = new Date(date);
+    //       }
+
+    //       return date.toLocaleDateString("en-CA");
+    //     };
+
+    //     fd.append("hotelId", hotelId);
+    //     fd.append("roomTypeId", roomTypeId);
+
+    //     fd.append("checkInDate", formatDate(values.checkInDate));
+
+    //     fd.append("checkOutDate", formatDate(values.checkOutDate));
+
+    //     fd.append("totalAmount", "55489");
+
+    //     fd.append("paymentStatus", "PAID");
+
+    //     fd.append("noOfAdults", values.isAdult ? "1" : "0");
+
+    //     fd.append("noOfKids", values.isAdult ? "0" : "1");
+
+    //     fd.append("noOfRoom", "1");
+
+    //     // ==================================================
+    //     // USER OBJECT
+    //     // ==================================================
+
+    //     const user = {
+    //       name: values.customerName,
+    //       age: 32,
+    //       gender: "male",
+    //       email: values.email,
+    //       phoneNumber: values.mobile,
+    //     };
+
+    //     fd.append("user", JSON.stringify(user));
+
+    //     // ==================================================
+    //     // FILES
+    //     // ==================================================
+
+    //     (values.files || []).forEach((file) => {
+    //       fd.append("identity_card", file);
+    //     });
+
+    //     // ==================================================
+    //     // DEBUG FORM DATA
+    //     // ==================================================
+
+    //     for (let pair of fd.entries()) {
+    //       console.log(pair[0], pair[1]);
+    //     }
+
+    //     // ==================================================
+    //     // API CALL
+    //     // ==================================================
+
+    //     const bookingResponse = await apiCall(ENDPOINTS.ADD_GUEST, "POST", {
+    //       body: fd,
+    //     });
+
+    //     console.log("BOOKING RESPONSE =>", bookingResponse);
+
+    //     // ==================================================
+    //     // SUCCESS
+    //     // ==================================================
+
+    //     if (bookingResponse?.success && bookingResponse?.statusCode === 201) {
+    //       setSnackbar({
+    //         open: true,
+    //         message: "Booking successful!",
+    //         severity: "success",
+    //       });
+
+    //       setTimeout(() => {
+    //         navigate("/dashboard/booking-management");
+    //       }, 700);
+    //     } else {
+    //       const message =
+    //         bookingResponse?.message ||
+    //         bookingResponse?.error?.message ||
+    //         "Booking failed";
+
+    //       setSnackbar({
+    //         open: true,
+    //         message,
+    //         severity: "error",
+    //       });
+    //     }
+    //   } catch (err) {
+    //     console.error("BOOKING ERROR =>", err);
+
+    //     const message =
+    //       err?.response?.data?.message ||
+    //       err?.message ||
+    //       "Something went wrong";
+
+    //     setSnackbar({
+    //       open: true,
+    //       message,
+    //       severity: "error",
+    //     });
+    //   } finally {
+    //     setSubmitting(false);
+    //   }
+    // },
   });
   const [fileProgress, setFileProgress] = useState({});
   const [snackbar, setSnackbar] = useState({
@@ -253,7 +421,7 @@ const AddCustomer = () => {
   };
 
   const removeFile = (index, fileName) => {
-    console.log("removeFile", fileName, index);
+    // console.log("removeFile", fileName, index);
     const files = formik.values.files;
     formik.setFieldValue("files", [
       ...files.slice(0, index),
