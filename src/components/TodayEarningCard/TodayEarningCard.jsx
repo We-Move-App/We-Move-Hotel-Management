@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styles from "./today-earning-card.module.css";
 import images from "../../assets/images";
 import axios from "axios";
@@ -40,7 +40,10 @@ const TodayEarningCard = () => {
     fetchWalletAmount();
   }, []);
 
-  const todayProfit = dailyIncome?.analytics?.[0]?.profit ?? 0;
+  const todayProfit = useMemo(() => {
+    return dailyIncome?.analytics?.[0]?.profit ?? 0;
+  }, [dailyIncome]);
+  
   return (
     <div
       className={styles.earningCard}

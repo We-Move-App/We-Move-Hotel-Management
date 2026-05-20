@@ -86,7 +86,7 @@ const Wallet = () => {
               entity: "hotelManager",
               page,
               limit,
-              ...(search ? { transactionId:search } : {}),
+              ...(search ? { transactionId: search } : {}),
             },
           },
         );
@@ -161,30 +161,17 @@ const Wallet = () => {
 
   const handlePageChange = (page) => {
     const p = Number(page) || 1;
-    console.debug(
-      "[handlePageChange] clicked page ->",
-      p,
-      "current search:",
-      searchQuery,
-    );
+    // console.debug(
+    //   "[handlePageChange] clicked page ->",
+    //   p,
+    //   "current search:",
+    //   searchQuery,
+    // );
     fetchTransactions(p, pagination.limit, searchQuery);
   };
 
-  // const handleSearchSubmit = (e) => {
-  //   if (e && e.preventDefault) e.preventDefault();
-  //   fetchTransactions(1, pagination.limit, searchQuery);
-  // };
-
-  // const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
-  // const setActiveTab = (indexToActivate) => {
-  //   setTabBarData((prev) =>
-  //     prev.map((tab, index) => ({
-  //       ...tab,
-  //       status: index === indexToActivate,
-  //     })),
-  //   );
-  // };
+
   const setActiveTab = (indexToActivate) => {
     setTabBarData((prev) => {
       const updated = prev.map((tab, index) => ({
@@ -194,9 +181,6 @@ const Wallet = () => {
       return [...updated]; // force new reference
     });
   };
-
-  // const handleOpenCongratulationModal = () =>
-  //   setIsCongratulationModalOpen(true);
 
   const handleCloseCongratulationModal = () => {
     setIsCongratulationModalOpen(false);
