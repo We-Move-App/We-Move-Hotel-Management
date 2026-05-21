@@ -469,6 +469,7 @@ const AddCustomer = () => {
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
                 label={t("form.customerName")}
+                value={formik.values.customerName}
                 type="text"
                 name="customerName"
                 required
@@ -480,6 +481,7 @@ const AddCustomer = () => {
                 type="email"
                 takeSpecialChar={true}
                 name="email"
+                value={formik.values.email}
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
                 required
@@ -488,11 +490,12 @@ const AddCustomer = () => {
               />
               <CustomInput
                 label={t("form.mobile")}
-                type="number"
+                type="tel"
                 name="mobile"
+                value={formik.values.mobile}
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
-                required
+                required={true}
                 error={formik.errors?.mobile}
                 touched={formik.touched?.mobile}
               />
