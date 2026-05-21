@@ -8,7 +8,6 @@ import CustomInput from "../../components/reusable/custom/Form-Fields/CInput/Cus
 import CustomButton from "../../components/reusable/custom/CButton/CustomButton";
 import CustomModal from "../../components/reusable/custom/CModal/CustomModal";
 import images from "../../assets/images";
-import { ENDPOINTS } from "../../utils/apiEndpoints";
 import { tokenFromLocalStorage } from "../../utils/helperFunctions";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -19,61 +18,62 @@ const Wallet = () => {
   const { t, i18n } = useTranslation("wallet");
 
   const navigate = useNavigate();
+
   const [tabBarData, setTabBarData] = useState([
     { name: "tabs.transactions", status: true, key: "transactions" },
     { name: "tabs.withdraw", status: false, key: "withdraw" },
   ]);
 
-  // const [bankDetails, setBankDetails] = useState({
-  //   bankName: "",
-  //   bankAccountNumber: "",
-  //   accountHolderName: "",
-  //   bankDetails: null,
-  // });
-
   const [transactions, setTransactions] = useState([]);
   const [formattedTransactions, setFormattedTransactions] = useState([]);
+
   const [pagination, setPagination] = useState({
     page: 1,
     pages: 1,
     total: 0,
     limit: 10,
   });
+
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(false);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [isCongratulationModalOpen, setIsCongratulationModalOpen] =
     useState(false);
+
   const [amount, setAmount] = useState("");
 
+  // =========================
+  // DEBIT CARD REFRESH KEY
+  // =========================
+  const [walletRefreshKey, setWalletRefreshKey] = useState(0);
+
+  // =========================
+  // FETCH TRANSACTIONS
+  // =========================
   const fetchTransactions = useCallback(
     async (page = 1, limit = 10, search = "") => {
       try {
         if (typeof page === "string") {
           const digitsOnly = /^\d+$/.test(page);
-          if (digitsOnly) page = Number.parseInt(page, 10);
-          else {
-            console.warn(
-              "[fetchTransactions] first arg non-numeric -> treating as search:",
-              page,
-            );
+
+          if (digitsOnly) {
+            page = Number.parseInt(page, 10);
+          } else {
             search = page;
             page = 1;
           }
         }
+
         page = Number.isFinite(+page) ? Number(page) : 1;
         limit = Number.isFinite(+limit) ? Number(limit) : 10;
         search = typeof search === "string" ? search : "";
 
+        setSearchQuery(search);
         setLoading(true);
+
         const token = tokenFromLocalStorage();
-        // console.debug("[fetchTransactions] REQUEST params:", {
-        //   entity: "hotelManager",
-        //   page,
-        //   limit,
-        //   search: search || null,
-        // });
 
         const res = await axios.get(
           `${import.meta.env.VITE_BASE_URL}/api/v1/wallet/transactions`,
@@ -91,46 +91,37 @@ const Wallet = () => {
           },
         );
 
-        // console.debug("[fetchTransactions] RESPONSE raw ->", res?.data);
         const paginationData = res?.data?.data?.pagination;
+
         if (paginationData) {
-          const pagesNum = Number(paginationData.pages) || 1;
-          const pageNum = Number(paginationData.page) || 1;
-          const totalNum = Number(paginationData.total) || 0;
-          const limitNum = Number(paginationData.limit) || limit;
-
-          // console.debug("[fetchTransactions] server pagination ->", {
-          //   page: pageNum,
-          //   pages: pagesNum,
-          //   total: totalNum,
-          //   limit: limitNum,
-          // });
-
           setPagination({
-            page: pageNum,
-            pages: pagesNum,
-            total: totalNum,
-            limit: limitNum,
+            page: Number(paginationData.page) || 1,
+            pages: Number(paginationData.pages) || 1,
+            total: Number(paginationData.total) || 0,
+            limit: Number(paginationData.limit) || limit,
           });
-        } else {
-          console.warn(
-            "[fetchTransactions] response missing pagination object",
-          );
         }
+
         const inner = res?.data?.data;
+
         let rawArray = [];
+
         if (!inner) rawArray = [];
-        else if (Array.isArray(inner.transactions))
+        else if (Array.isArray(inner.transactions)) {
           rawArray = inner.transactions;
-        else if (Array.isArray(inner)) rawArray = inner;
-        else if (typeof inner === "object") rawArray = [inner];
-        else rawArray = [];
+        } else if (Array.isArray(inner)) {
+          rawArray = inner;
+        } else if (typeof inner === "object") {
+          rawArray = [inner];
+        }
 
         setTransactions(rawArray);
 
         const formatted = rawArray.map((t, idx) => {
           const createdAt = t.createdAt || t.created_at;
+
           const dt = createdAt ? new Date(createdAt) : null;
+
           return {
             id: t.transactionId || t._id || idx,
             transactionId: t.transactionId || t._id || "",
@@ -150,6 +141,7 @@ const Wallet = () => {
         setFormattedTransactions(formatted);
       } catch (err) {
         console.error("Error fetching transactions:", err);
+
         setTransactions([]);
         setFormattedTransactions([]);
       } finally {
@@ -159,45 +151,57 @@ const Wallet = () => {
     [i18n.language],
   );
 
+  // =========================
+  // PAGE CHANGE
+  // =========================
   const handlePageChange = (page) => {
     const p = Number(page) || 1;
-    // console.debug(
-    //   "[handlePageChange] clicked page ->",
-    //   p,
-    //   "current search:",
-    //   searchQuery,
-    // );
+
     fetchTransactions(p, pagination.limit, searchQuery);
   };
 
-  const handleCloseModal = () => setIsModalOpen(false);
+  // =========================
+  // CLOSE MODAL
+  // =========================
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
+  // =========================
+  // SET ACTIVE TAB
+  // =========================
   const setActiveTab = (indexToActivate) => {
     setTabBarData((prev) => {
       const updated = prev.map((tab, index) => ({
         ...tab,
         status: index === indexToActivate,
       }));
-      return [...updated]; // force new reference
+
+      return [...updated];
     });
   };
 
+  // =========================
+  // CLOSE SUCCESS MODAL
+  // =========================
   const handleCloseCongratulationModal = () => {
     setIsCongratulationModalOpen(false);
 
-    // switch tab AFTER closing success modal
     setActiveTab(0);
 
-    // optional refresh
     setTimeout(() => {
       navigate("/dashboard/wallet");
     }, 300);
   };
 
+  // =========================
+  // WITHDRAW SUBMIT
+  // =========================
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const token = tokenFromLocalStorage();
+
     const withdrawAmount = Number(amount);
 
     if (!withdrawAmount || withdrawAmount <= 0) {
@@ -207,6 +211,7 @@ const Wallet = () => {
 
     try {
       setLoading(true);
+
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/v1/momo/withdraw`,
         {
@@ -222,25 +227,24 @@ const Wallet = () => {
       );
 
       if (response?.data?.success) {
-        // STEP 1: Close withdraw modal
+        // CLOSE WITHDRAW MODAL
         setIsModalOpen(false);
 
-        // STEP 3: open success modal
+        // OPEN SUCCESS MODAL
         setIsCongratulationModalOpen(true);
 
-        //  STEP 3: Reset amount
+        // RESET AMOUNT
         setAmount("");
 
-        //  STEP 4: Fetch data in background (no await)
+        // REFRESH TRANSACTIONS
         fetchTransactions(1, pagination.limit, "");
+
+        // REFRESH DEBIT CARD DATA
+        setWalletRefreshKey((prev) => prev + 1);
+
         toast.success(t("messages.withdrawSuccess"));
       } else {
         toast.error(t("messages.withdrawFailed"));
-        console.error(
-          "Withdraw API responded with failure:",
-          response?.data?.message || response?.data?.error || "Unknown error",
-        );
-        return;
       }
     } catch (err) {
       const msg =
@@ -249,32 +253,15 @@ const Wallet = () => {
         t("messages.withdrawFailed");
 
       toast.error(msg);
-      return;
     } finally {
       setLoading(false);
     }
   };
 
-  // const fetchUserBank = async () => {
-  //   const { data, statusCode, error, success } = await apiCall(
-  //     ENDPOINTS.HOTEL_BANK_DETAILS,
-  //     "GET",
-  //   );
-
-  //   if (success && statusCode === 200 && data.data.bank) {
-  //     const { bankName, accountHolderName, accountNumber, _id, bankDocs } =
-  //       data.data.bank;
-  //     setBankDetails({
-  //       bankName,
-  //       bankAccountNumber: accountNumber,
-  //       accountHolderName,
-  //       bankDetails: bankDocs,
-  //     });
-  //   }
-  // };
-
+  // =========================
+  // WITHDRAW MODAL
+  // =========================
   const firstModal = () => {
-    // Withdraw Amount Modal
     return (
       <CustomModal onClose={handleCloseModal} isOpen={isModalOpen}>
         <form className={styles.withdrawModal} onSubmit={handleSubmit}>
@@ -305,8 +292,10 @@ const Wallet = () => {
     );
   };
 
+  // =========================
+  // SUCCESS MODAL
+  // =========================
   const secondModal = () => {
-    // Congratulations Modal
     return (
       <CustomModal
         isOpen={isCongratulationModalOpen}
@@ -320,8 +309,10 @@ const Wallet = () => {
                 alt="congratulation image"
               />
             </div>
+
             <div className={styles.modalBody}>
               <p className={styles.modalBoldText}>{t("successModal.title")}</p>
+
               <p>{t("successModal.description")}</p>
             </div>
           </div>
@@ -330,14 +321,19 @@ const Wallet = () => {
     );
   };
 
+  // =========================
+  // INITIAL FETCH
+  // =========================
   useEffect(() => {
     fetchTransactions(1, pagination.limit, searchQuery);
   }, [i18n.language]);
 
+  // =========================
+  // OPEN/CLOSE WITHDRAW MODAL
+  // =========================
   useEffect(() => {
     const withdrawTab = tabBarData.find((tab) => tab.key === "withdraw");
 
-    // open only when switching to withdraw tab
     if (withdrawTab?.status) {
       setIsModalOpen(true);
     } else {
@@ -348,10 +344,13 @@ const Wallet = () => {
   return (
     <div className={styles.wallet}>
       <ToastContainer position="top-center" closeOnClick autoClose={3000} />
+
       <h1>{t("heading")}</h1>
+
       <div className={styles.digitalWalletWrapper}>
-        <DebitCard showAmount={true} />
+        <DebitCard showAmount={true} refreshWallet={walletRefreshKey} />
       </div>
+
       <div className={styles.transactionHistoryAndBankDetialsContianer}>
         <CustomTabBar
           tabBarData={tabBarData}
@@ -365,14 +364,29 @@ const Wallet = () => {
             <div>
               <SearchBar onSearch={(q) => fetchTransactions(q)} />
             </div>
+
             <CustomTable
               columns={[
-                { Header: t("table.transactionId"), accessor: "transactionId" },
-                // { Header: "User Name", accessor: "userName" },
-                { Header: t("table.date"), accessor: "date" },
-                { Header: t("table.time"), accessor: "time" },
-                { Header: t("table.amount"), accessor: "amount" },
-                { Header: t("table.status"), accessor: "status" },
+                {
+                  Header: t("table.transactionId"),
+                  accessor: "transactionId",
+                },
+                {
+                  Header: t("table.date"),
+                  accessor: "date",
+                },
+                {
+                  Header: t("table.time"),
+                  accessor: "time",
+                },
+                {
+                  Header: t("table.amount"),
+                  accessor: "amount",
+                },
+                {
+                  Header: t("table.status"),
+                  accessor: "status",
+                },
               ]}
               data={formattedTransactions}
               customRowClass="customRow"
