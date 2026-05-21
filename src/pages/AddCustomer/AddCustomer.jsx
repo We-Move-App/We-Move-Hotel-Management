@@ -171,6 +171,11 @@ const AddCustomer = () => {
         // ==========================================
 
         if (bookingResponse?.success && bookingResponse?.statusCode === 201) {
+          formik.resetForm();
+
+          // clear file upload progress
+          setFileProgress({});
+
           setSnackbar({
             open: true,
             message: "Booking successful!",
@@ -179,7 +184,7 @@ const AddCustomer = () => {
 
           setTimeout(() => {
             navigate("/dashboard/booking-management");
-          }, 700);
+          }, 50);
         } else {
           const message =
             bookingResponse?.message ||
@@ -193,7 +198,7 @@ const AddCustomer = () => {
           });
         }
       } catch (err) {
-        console.error("BOOKING ERROR =>", err);
+        // console.error("BOOKING ERROR =>", err);
 
         const message =
           err?.response?.data?.message ||
