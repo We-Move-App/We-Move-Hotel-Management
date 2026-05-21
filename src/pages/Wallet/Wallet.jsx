@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import styles from "./wallet.module.css";
 import DebitCard from "../../components/DebitCard/DebitCard";
 import CustomTabBar from "../../components/reusable/custom/CTabbar/CustomTabBar";
@@ -43,6 +43,7 @@ const Wallet = () => {
     useState(false);
 
   const [amount, setAmount] = useState("");
+  const isSubmittingRef = useRef(false);
 
   // =========================
   // DEBIT CARD REFRESH KEY
@@ -200,6 +201,11 @@ const Wallet = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // PREVENT MULTIPLE CLICK / API CALL
+    if (loading || isSubmittingRef.current) {
+      return;
+    }
+
     const token = tokenFromLocalStorage();
 
     const withdrawAmount = Number(amount);
@@ -210,6 +216,8 @@ const Wallet = () => {
     }
 
     try {
+      isSubmittingRef.current = true;
+
       setLoading(true);
 
       const response = await axios.post(
@@ -237,7 +245,7 @@ const Wallet = () => {
         setAmount("");
 
         // REFRESH TRANSACTIONS
-        fetchTransactions(1, pagination.limit, "");
+        await fetchTransactions(1, pagination.limit, "");
 
         // REFRESH DEBIT CARD DATA
         setWalletRefreshKey((prev) => prev + 1);
@@ -254,6 +262,8 @@ const Wallet = () => {
 
       toast.error(msg);
     } finally {
+      isSubmittingRef.current = false;
+
       setLoading(false);
     }
   };
@@ -276,7 +286,17 @@ const Wallet = () => {
             />
 
             <div className={styles.btnWrapper}>
+              {/* <CustomButton
+                buttonText={
+                  loading
+                    ? t("withdrawModal.processing")
+                    : t("withdrawModal.withdraw")
+                }
+                buttonSize={"medium"}
+                type="submit"
+              /> */}
               <CustomButton
+                disabled={loading}
                 buttonText={
                   loading
                     ? t("withdrawModal.processing")
