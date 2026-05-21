@@ -145,7 +145,7 @@ const AddCustomer = () => {
           age: 32,
           gender: "male",
           email: values.email,
-          phoneNumber: values.mobile,
+          phoneNumber: "+237" + values.mobile,
         };
 
         fd.append("user", JSON.stringify(user));
