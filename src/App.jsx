@@ -22,7 +22,7 @@ import AddBankDetails from "./components/ProfileVerification/AddBankDetails/AddB
 import HotelRegistration from "./components/ProfileVerification/HotelRegistration/HotelRegistration";
 import NotFound from "./pages/NotFound/NotFound";
 import BookingManagement from "./pages/BookingManagement/BookingManagement";
-import CustomerFeedback from "./pages/CustomerFeedback/CustomerFeedback";
+// import CustomerFeedback from "./pages/CustomerFeedback/CustomerFeedback";
 import ProfileVerificationSuccess from "./components/ProfileVerification/ProfileVerificationSuccess/ProfileVerificationSuccess";
 import AddCustomer from "./pages/AddCustomer/AddCustomer";
 import Profile from "./pages/Profile/Profile";
@@ -109,7 +109,7 @@ function App() {
                 element={<BookingManagement />}
               />
               <Route path="booking-management/add" element={<AddCustomer />} />
-              <Route path="customer-feedback" element={<CustomerFeedback />} />
+              {/* <Route path="customer-feedback" element={<CustomerFeedback />} /> */}
               <Route path="profile" element={<Profile />} />
 
               <Route path="*" element={<NotFound />} />

@@ -32,11 +32,11 @@ const mainSidebarLinks = [
   },
 ];
 
-const feedbackLink = {
-  title: "sidebar.customerFeedback",
-  link: "/dashboard/customer-feedback",
-  icon: images.customerFeedbackIcon,
-};
+// const feedbackLink = {
+//   title: "sidebar.customerFeedback",
+//   link: "/dashboard/customer-feedback",
+//   icon: images.customerFeedbackIcon,
+// };
 
 const Sidebar = ({ isOpen, toggleSidebar, isMobile }) => {
   const {t} = useTranslation("common");
@@ -45,7 +45,7 @@ const Sidebar = ({ isOpen, toggleSidebar, isMobile }) => {
 
   useEffect(() => {
     const currentPath = location.pathname;
-    const allLinks = [...mainSidebarLinks, feedbackLink];
+    const allLinks = [...mainSidebarLinks];
 
     const sortedLinks = [...allLinks].sort(
       (a, b) => b.link.length - a.link.length,
@@ -98,7 +98,7 @@ const Sidebar = ({ isOpen, toggleSidebar, isMobile }) => {
           ))}
         </ul>
 
-        <div className={styles.bottomLink}>
+        {/* <div className={styles.bottomLink}>
           <li
             className={styles.listTab}
             onClick={() => handleRouteChange(mainSidebarLinks.length)}
@@ -116,7 +116,7 @@ const Sidebar = ({ isOpen, toggleSidebar, isMobile }) => {
               </div>
             </Link>
           </li>
-        </div>
+        </div> */}
       </div>
     </div>
   );
